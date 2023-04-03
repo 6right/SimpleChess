@@ -1,9 +1,6 @@
 package database;
 
-import android.content.Context;
-import android.database.sqlite.*;
-
-public class DatabaseHelper {
+public class Constants {
 
     //Table Name
     public static final String TABLE_NAME = "players";
@@ -19,13 +16,7 @@ public class DatabaseHelper {
     static final int DB_VERSION = 1;
 
     //Create Table query
-    public static final String CREATE_TABLE = "create table " + TABLE_NAME + "("
-
-    public DatabaseHelper(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
-    }
-
-    public void onCreate(SQLiteDatabase db) {
-
-    }
+    public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
+            _ID + " INTEGER PRIMARY KEY," +
+            NICKNAME + " TEXT)";
 }
