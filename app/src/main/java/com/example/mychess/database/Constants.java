@@ -1,4 +1,4 @@
-package database;
+package com.example.mychess.database;
 
 public class Constants {
 

@@ -1,4 +1,4 @@
-package com.example.chess;
+package com.example.mychess;
 
 import org.junit.Test;
 

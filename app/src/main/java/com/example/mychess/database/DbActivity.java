@@ -1,7 +1,4 @@
-package database;
-
-import static database.Constants.NICKNAME;
-import static database.Constants.TABLE_NAME;
+package com.example.mychess.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,8 +20,8 @@ public class DbActivity {
 
     public void insertDb(String title){
         ContentValues values = new ContentValues();
-        values.put(NICKNAME, title);
-        db.insert(TABLE_NAME, null, values);
+        values.put(Constants.NICKNAME, title);
+        db.insert(Constants.TABLE_NAME, null, values);
     }
 
 }
