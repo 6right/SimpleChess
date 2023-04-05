@@ -1,4 +1,4 @@
-package com.example.mychess;
+package com.example.simplechess;
 
 import androidx.appcompat.app.AppCompatActivity;
 
