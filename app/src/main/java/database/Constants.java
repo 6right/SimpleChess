@@ -19,4 +19,7 @@ public class Constants {
     public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             _ID + " INTEGER PRIMARY KEY," +
             NICKNAME + " TEXT)";
+
+    public static final String DROP_TABLE =
+            "DROP TABLE IF EXISTS " + TABLE_NAME;
 }
