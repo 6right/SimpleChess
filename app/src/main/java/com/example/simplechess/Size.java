@@ -1,8 +1,8 @@
 package com.example.simplechess;
 
 public class Size {
-    public int width;
-    public int height;
+    protected int width;
+    protected int height;
 
     public Size(int width, int height) {
         this.width = width;
