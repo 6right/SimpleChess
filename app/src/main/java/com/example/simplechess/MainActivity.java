@@ -10,7 +10,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Field field = new Field(this, new Size(8, 8));
+        Field field = new Field(this /*,new Size(8, 8)*/);
         setContentView(field);
     }
 }

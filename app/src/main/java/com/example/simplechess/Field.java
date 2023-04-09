@@ -25,26 +25,16 @@ public class Field extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-//       Отрисовка всего поля без клеток
-        int width = getWidth();
-        int height = getHeight();
-        int size = Math.min(width, height);
-        int left = (width - size) / 2;
-        int top = (height - size) / 2;
-        int right = left + size;
-        int bottom = top + size;
+//        Отрисовка поля
 
-        canvas.drawRect(left, top, right, bottom, brownPaint);
-
-
-//        Отрисовка клеток
-
-        int cellWidth = (size - 100) / 8;
-        int cellHeight = (size - 100) / 8;
+        int size = Math.min(getWidth(), getHeight());
+        int yCenter = (getHeight() - size) / 2;
+        int cellWidth = (size) / 8;
+        int cellHeight = (size) / 8;
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 int x = col * cellWidth;
-                int y = row * cellHeight;
+                int y = row * cellHeight + yCenter;
                 if ((row + col) % 2 == 0) {
                     canvas.drawRect(x, y, x + cellWidth, y + cellHeight, orangePaint);
                 } else {
