@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 public class Constants {
 
-    // Colors
+    //  Colors
 
     protected static Paint brownPaint = new Paint();
     protected static Paint orangePaint = new Paint();
