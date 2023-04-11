@@ -25,11 +25,12 @@ public class Field extends View {
 
         int size = Math.min(getWidth(), getHeight());
         int yCenter = (getHeight() - size) / 2;
+        int xCenter = (getWidth() - size) / 2;
         int cellWidth = size / yCel;
         int cellHeight = size / xCel;
         for (int row = 0; row < xCel; row++) {
             for (int col = 0; col < yCel; col++) {
-                int x = col * cellWidth;
+                int x = col * cellWidth + xCenter;
                 int y = row * cellHeight + yCenter;
                 if ((row + col) % 2 == 0) {
                     canvas.drawRect(x, y, x + cellWidth, y + cellHeight, orangePaint);
