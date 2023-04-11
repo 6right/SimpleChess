@@ -10,8 +10,11 @@ import androidx.annotation.NonNull;
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     private Thread gameThread; // поток игры
+
+    Context context;
     public Game(Context context) {
         super(context);
+        this.context = context;
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
     }
@@ -71,10 +74,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        Bishop bishop = new Bishop();
+
+        Field field = new Field(context,new Size(8,8));
+        field.draw(canvas);
+
+        Bishop bishop = new Bishop(context);
         bishop.draw(canvas);
 
-        ChessField chessField = new ChessField();
-        chessField.draw(canvas);
     }
 }

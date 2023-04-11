@@ -8,24 +8,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.View;
 
-public class Field extends View {
+public class Field {
 
     private int xCel;
     private int yCel;
+
+    Context context;
     public Field(Context context, Size size) {
-        super(context);
+        this.context = context;
         xCel = size.width;
         yCel = size.height;
     }
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
+    protected void draw(Canvas canvas) {
 //        Отрисовка поля
 
-        int size = Math.min(getWidth(), getHeight());
-        int yCenter = (getHeight() - size) / 2;
-        int xCenter = (getWidth() - size) / 2;
+        int size = Math.min(canvas.getWidth(), canvas.getHeight());
+        int yCenter = (canvas.getHeight() - size) / 2;
+        int xCenter = (canvas.getWidth() - size) / 2;
         int cellWidth = size / yCel;
         int cellHeight = size / xCel;
         for (int row = 0; row < xCel; row++) {

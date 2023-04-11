@@ -1,6 +1,9 @@
 package com.example.simplechess;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,13 +11,22 @@ import android.view.SurfaceHolder;
 
 import androidx.annotation.NonNull;
 
-public class Bishop {
+public class Bishop extends Figure{
+
+    private int posX;
+    private int poxY;
+    private Context context;
+
+    public Bishop (Context context){
+        this.context = context;
+    }
+
 
     public void draw(Canvas canvas) {
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.chess_bdt45);
 
-        // нарисовать квадрат с помощью метода drawRect
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        canvas.drawRect(200, 200, 300, 230, paint);
-    }
+            canvas.drawBitmap(bitmap, 500 , 500, null);
+        }
+
+
 }
