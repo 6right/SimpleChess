@@ -24,20 +24,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceCreated( SurfaceHolder surfaceHolder) {
+    public void surfaceCreated(SurfaceHolder surfaceHolder) {
         // начать поток игры при создании поверхности
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
+            surfaceHolder = getHolder();
+            surfaceHolder.addCallback(this);
+            gameLoop = new GameLoop(this, surfaceHolder);
+        }
+        gameLoop.stopLoop();
 
 
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        // Перезапуск игры (нити)
-        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
-            surfaceHolder = getHolder();
-            surfaceHolder.addCallback(this);
-            gameLoop = new GameLoop(this, surfaceHolder);
-        }
+//         Перезапуск игры (нити)
 
     }
 
