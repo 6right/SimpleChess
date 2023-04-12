@@ -6,19 +6,20 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 public class Field {
 
-    private int xCel;
-    private int yCel;
+    private int xCel = 8;
+    private int yCel = 8;
 
-    Context context;
     public Field(Context context, Size size) {
-        this.context = context;
+
         xCel = size.width;
         yCel = size.height;
     }
+
     protected void draw(Canvas canvas) {
 //        Отрисовка поля
 
@@ -27,6 +28,7 @@ public class Field {
         int xCenter = (canvas.getWidth() - size) / 2;
         int cellWidth = size / yCel;
         int cellHeight = size / xCel;
+
         for (int row = 0; row < xCel; row++) {
             for (int col = 0; col < yCel; col++) {
                 int x = col * cellWidth + xCenter;

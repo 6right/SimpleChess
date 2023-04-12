@@ -1,6 +1,7 @@
 package com.example.simplechess;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread {
@@ -9,8 +10,9 @@ public class GameLoop extends Thread {
     private boolean isRunning = false;
 
     public GameLoop(Game game, SurfaceHolder holder) {
-        surfaceHolder = holder;
         this.game = game;
+        surfaceHolder = holder;
+
     }
     public void startLoop(){
         isRunning = true;
@@ -19,6 +21,7 @@ public class GameLoop extends Thread {
 
     @Override
     public void run() {
+        Log.d("start loop", "LOOP IS STARTED");
         super.run();
         Canvas canvas = null;
         while (isRunning) {

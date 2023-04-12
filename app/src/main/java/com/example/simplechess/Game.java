@@ -2,6 +2,7 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -12,28 +13,27 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
     private Field field;
     private Bishop bishop;
-
-
-    public Game(Context context) {
+        public Game(Context context) {
         super(context);
 
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
-    }
+
+        field = new Field(context, new Size(8,8));
+        bishop = new Bishop(context);
+   }
 
     @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        // начать поток игры при создании поверхности
+    public void surfaceCreated(SurfaceHolder holder) {
+//         начать поток игры при создании поверхности
         if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
-            surfaceHolder = getHolder();
+            SurfaceHolder surfaceHolder = getHolder();
             surfaceHolder.addCallback(this);
             gameLoop = new GameLoop(this, surfaceHolder);
         }
-        gameLoop.stopLoop();
-
-
+        gameLoop.startLoop();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         field.draw(canvas);
-        bishop.draw(canvas);
 
+        bishop.draw(canvas);
     }
 }
