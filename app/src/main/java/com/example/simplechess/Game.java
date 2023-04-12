@@ -2,18 +2,17 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import androidx.annotation.NonNull;
-
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
-
     private GameLoop gameLoop;
     private Field field;
     private Bishop bishop;
-        public Game(Context context) {
+    private boolean shouldDrawBishop = false;
+
+    public Game(Context context) {
         super(context);
 
         SurfaceHolder surfaceHolder = getHolder();
@@ -23,11 +22,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         field = new Field(context, new Size(8,8));
         bishop = new Bishop(context);
-   }
+    }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-//         начать поток игры при создании поверхности
         if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             SurfaceHolder surfaceHolder = getHolder();
             surfaceHolder.addCallback(this);
@@ -38,12 +36,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-//         Перезапуск игры (нити)
-
+        // Перезапуск игры (нити)
     }
 
     @Override
-    public void surfaceDestroyed( SurfaceHolder surfaceHolder) {
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         boolean retry = true;
         while (retry) {
             try {
@@ -53,7 +50,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 gameLoop.startLoop();// попытаться остановить поток еще раз
             }
         }
-
     }
 
     public void draw(Canvas canvas) {
@@ -61,6 +57,16 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         field.draw(canvas);
 
-        bishop.draw(canvas);
+        if (shouldDrawBishop) {
+            bishop.draw(canvas);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            shouldDrawBishop = !shouldDrawBishop;
+        }
+        return super.onTouchEvent(event);
     }
 }

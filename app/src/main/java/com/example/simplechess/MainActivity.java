@@ -3,12 +3,6 @@ package com.example.simplechess;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
