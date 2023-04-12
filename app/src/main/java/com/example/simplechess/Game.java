@@ -9,26 +9,35 @@ import androidx.annotation.NonNull;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
-    private Thread gameThread; // поток игры
+    private GameLoop gameLoop;
+    private Field field;
+    private Bishop bishop;
 
-    Context context;
+
     public Game(Context context) {
         super(context);
-        this.context = context;
+
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
+
+        gameLoop = new GameLoop(this, surfaceHolder);
     }
 
     @Override
     public void surfaceCreated( SurfaceHolder surfaceHolder) {
         // начать поток игры при создании поверхности
-        gameThread = new Thread(new GameLoopRunnable(surfaceHolder));
-        gameThread.start();
+
 
     }
 
     @Override
-    public void surfaceChanged( SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+        // Перезапуск игры (нити)
+        if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
+            surfaceHolder = getHolder();
+            surfaceHolder.addCallback(this);
+            gameLoop = new GameLoop(this, surfaceHolder);
+        }
 
     }
 
@@ -37,48 +46,19 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
-                gameThread.join();
+                gameLoop.join();
                 retry = false;
             } catch (InterruptedException e) {
-                // попытаться остановить поток еще раз
+                gameLoop.startLoop();// попытаться остановить поток еще раз
             }
         }
 
-    }
-
-    private class GameLoopRunnable implements Runnable {
-        private SurfaceHolder surfaceHolder;
-
-        public GameLoopRunnable(SurfaceHolder holder) {
-            surfaceHolder = holder;
-        }
-
-        @Override
-        public void run() {
-            while (!Thread.currentThread().isInterrupted()) {
-                Canvas canvas = null;
-                try {
-                    canvas = surfaceHolder.lockCanvas();
-                    synchronized (surfaceHolder) {
-                        // отрисовка объектов на canvas
-                        draw(canvas);
-                    }
-                } finally {
-                    if (canvas != null) {
-                        surfaceHolder.unlockCanvasAndPost(canvas);
-                    }
-                }
-            }
-        }
     }
 
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        Field field = new Field(context,new Size(8,8));
         field.draw(canvas);
-
-        Bishop bishop = new Bishop(context);
         bishop.draw(canvas);
 
     }
