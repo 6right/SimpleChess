@@ -4,6 +4,8 @@ import static com.example.simplechess.Constants.*;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 
 public class Cell {
@@ -12,17 +14,13 @@ public class Cell {
     private int height;
     private int width;
 
-    public Cell(Canvas canvas, int height, int width) {
-        int size = Math.min(canvas.getWidth(), canvas.getHeight());
-        this.yPositionCenter = (canvas.getHeight() - size) / 2;
-        this.xPositionCenter = (canvas.getWidth() - size) / 2;
-        this.height = height;
-        this.width = width;
-    }
+    public Cell(int width, int height, int screenWidth, int screenHeight) {
+        // Set position of field
+        int size = Math.min(screenWidth, screenHeight);
+        this.yPositionCenter = (screenHeight - size) / 2;
+        this.xPositionCenter = (screenWidth - size) / 2;
 
-    public Cell(int yPositionCenter, int xPositionCenter, int height, int width) {
-        this.yPositionCenter = yPositionCenter;
-        this.xPositionCenter = xPositionCenter;
+        // Set size of cell
         this.height = height;
         this.width = width;
     }

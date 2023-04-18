@@ -1,39 +1,28 @@
 package com.example.simplechess;
 
-import static com.example.simplechess.Constants.*;
-
 import android.content.Context;
 import android.graphics.Canvas;
 
 public class Field {
 
-    private int xCelQuantity = 8;
-    private int yCelQuantity = 8;
+    private CellCounts cellCounts;
     Cell cell;
 
-    public Field(Canvas canvas, Size size) {
+    public Field(CellCounts cellCounts, ScreenSize screenSize) {
         // Set size of field
-        this.xCelQuantity = size.width;
-        this.yCelQuantity = size.height;
+        this.cellCounts = cellCounts;
 
         // Set size of cell
-        int sizeCell = Math.min(canvas.getWidth(), canvas.getHeight());
-        int cellWidth = sizeCell / this.xCelQuantity;
-        int cellHeight = sizeCell / this.yCelQuantity;
-        this.cell = new Cell(canvas, cellHeight, cellWidth);
+        int sizeCell = Math.min(screenSize.getWidth(), screenSize.getHeight());
+        int cellWidth = sizeCell / this.cellCounts.getXQuantity();
+        int cellHeight = sizeCell / this.cellCounts.getYQuantity();
+        this.cell = new Cell(cellWidth, cellHeight, screenSize.getWidth(), screenSize.getHeight());
     }
 
     protected void draw(Canvas canvas) {
-//        Отрисовка поля
-
-        int size = Math.min(canvas.getWidth(), canvas.getHeight());
-        int yCenter = (canvas.getHeight() - size) / 2;
-        int xCenter = (canvas.getWidth() - size) / 2;
-        int cellWidth = size / this.xCelQuantity;
-        int cellHeight = size / this.yCelQuantity;
-
-        for (int row = 0; row < xCelQuantity; row++) {
-            for (int col = 0; col < yCelQuantity; col++) {
+        // Отрисовка поля
+        for (int row = 0; row < cellCounts.getXQuantity(); row++) {
+            for (int col = 0; col < cellCounts.getYQuantity(); col++) {
                 this.cell.draw(canvas, row, col);
             }
         }

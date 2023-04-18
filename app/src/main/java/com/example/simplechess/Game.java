@@ -8,15 +8,12 @@ import android.view.SurfaceView;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
-    private Canvas canvas;
     private Context context;
     private Field field;
     private Player whitePlayer;
     private Player blackPlayer;
-    private int yCellQuantity;
-    private int xCellQuantity;
+    private ScreenSize screenSize;
 
-//    private Bishop bishop;
     private boolean shouldDrawBishop = false;
 
     public Game(Context context) {
@@ -24,18 +21,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         // Получить ячейку по координатам
         SurfaceHolder surfaceHolder = getHolder();
-        Canvas canvas = surfaceHolder.lockCanvas();
-        yCellQuantity = 8;
-        xCellQuantity = 8;
-
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
-//
-//        field = new Field(canvas, new Size(yCellQuantity,xCellQuantity));
-        whitePlayer = new Player(context, true);
-        blackPlayer = new Player(context, false);
-//        bishop = new Bishop(context);
     }
 
     @Override
@@ -44,17 +32,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             SurfaceHolder surfaceHolder = getHolder();
             surfaceHolder.addCallback(this);
         }
-
-        this.canvas = holder.lockCanvas();
         this.context = getContext();
-        int width = canvas.getWidth();
-        int height = canvas.getHeight();
-        yCellQuantity = 8;
-        xCellQuantity = 8;
-        field = new Field(canvas, new Size(yCellQuantity,xCellQuantity));
-        whitePlayer = new Player(context, true);
+        this.screenSize = new ScreenSize(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height());
+        CellCounts cellCounts = new CellCounts(8, 8);
+
+        field = new Field(cellCounts, this.screenSize);
+        whitePlayer = new Player(this.context, true);
+        blackPlayer = new Player(this.context, false);
         gameLoop = new GameLoop(this, holder);
-        holder.unlockCanvasAndPost(canvas);
+
         gameLoop.startLoop();
     }
 
@@ -81,6 +67,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         field.draw(canvas);
         whitePlayer.draw(canvas);
+        blackPlayer.draw(canvas);
     }
 
     @Override
