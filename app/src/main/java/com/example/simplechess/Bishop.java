@@ -13,20 +13,17 @@ import androidx.annotation.NonNull;
 
 public class Bishop extends Figure{
 
-    private int posX;
-    private int poxY;
-    private Context context;
-
-    public Bishop (Context context){
-        this.context = context;
+    public Bishop (Context context, Position position, boolean isWhite){
+        super(context, position, isWhite);
+        bitmap = BitmapFactory.decodeResource(
+                context.getResources(),
+                isWhite ? R.drawable.chess_blt45 : R.drawable.chess_bdt45
+        );
     }
 
 
     public void draw(Canvas canvas) {
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.chess_bdt45);
-
-            canvas.drawBitmap(bitmap, 500 , 500, null);
-        }
-
-
+        canvas.drawBitmap(bitmap, 500 , 500, null);
+    }
 }

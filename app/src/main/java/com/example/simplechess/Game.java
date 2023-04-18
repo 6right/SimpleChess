@@ -8,20 +8,34 @@ import android.view.SurfaceView;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
+    private Canvas canvas;
+    private Context context;
     private Field field;
-    private Bishop bishop;
+    private Player whitePlayer;
+    private Player blackPlayer;
+    private int yCellQuantity;
+    private int xCellQuantity;
+
+//    private Bishop bishop;
     private boolean shouldDrawBishop = false;
 
     public Game(Context context) {
         super(context);
 
+        // Получить ячейку по координатам
         SurfaceHolder surfaceHolder = getHolder();
+        Canvas canvas = surfaceHolder.lockCanvas();
+        yCellQuantity = 8;
+        xCellQuantity = 8;
+
         surfaceHolder.addCallback(this);
 
         gameLoop = new GameLoop(this, surfaceHolder);
-
-        field = new Field(context, new Size(8,8));
-        bishop = new Bishop(context);
+//
+//        field = new Field(canvas, new Size(yCellQuantity,xCellQuantity));
+        whitePlayer = new Player(context, true);
+        blackPlayer = new Player(context, false);
+//        bishop = new Bishop(context);
     }
 
     @Override
@@ -29,8 +43,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
             SurfaceHolder surfaceHolder = getHolder();
             surfaceHolder.addCallback(this);
-            gameLoop = new GameLoop(this, surfaceHolder);
         }
+
+        this.canvas = holder.lockCanvas();
+        this.context = getContext();
+        int width = canvas.getWidth();
+        int height = canvas.getHeight();
+        yCellQuantity = 8;
+        xCellQuantity = 8;
+        field = new Field(canvas, new Size(yCellQuantity,xCellQuantity));
+        whitePlayer = new Player(context, true);
+        gameLoop = new GameLoop(this, holder);
+        holder.unlockCanvasAndPost(canvas);
         gameLoop.startLoop();
     }
 
@@ -56,10 +80,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         field.draw(canvas);
-
-        if (shouldDrawBishop) {
-            bishop.draw(canvas);
-        }
+        whitePlayer.draw(canvas);
     }
 
     @Override

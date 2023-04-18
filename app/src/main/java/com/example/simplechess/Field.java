@@ -4,20 +4,23 @@ import static com.example.simplechess.Constants.*;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.Log;
-import android.view.View;
 
 public class Field {
 
-    private int xCel = 8;
-    private int yCel = 8;
+    private int xCelQuantity = 8;
+    private int yCelQuantity = 8;
+    Cell cell;
 
-    public Field(Context context, Size size) {
+    public Field(Canvas canvas, Size size) {
+        // Set size of field
+        this.xCelQuantity = size.width;
+        this.yCelQuantity = size.height;
 
-        xCel = size.width;
-        yCel = size.height;
+        // Set size of cell
+        int sizeCell = Math.min(canvas.getWidth(), canvas.getHeight());
+        int cellWidth = sizeCell / this.xCelQuantity;
+        int cellHeight = sizeCell / this.yCelQuantity;
+        this.cell = new Cell(canvas, cellHeight, cellWidth);
     }
 
     protected void draw(Canvas canvas) {
@@ -26,18 +29,12 @@ public class Field {
         int size = Math.min(canvas.getWidth(), canvas.getHeight());
         int yCenter = (canvas.getHeight() - size) / 2;
         int xCenter = (canvas.getWidth() - size) / 2;
-        int cellWidth = size / yCel;
-        int cellHeight = size / xCel;
+        int cellWidth = size / this.xCelQuantity;
+        int cellHeight = size / this.yCelQuantity;
 
-        for (int row = 0; row < xCel; row++) {
-            for (int col = 0; col < yCel; col++) {
-                int x = col * cellWidth + xCenter;
-                int y = row * cellHeight + yCenter;
-                if ((row + col) % 2 == 0) {
-                    canvas.drawRect(x, y, x + cellWidth, y + cellHeight, orangePaint);
-                } else {
-                    canvas.drawRect(x, y, x + cellWidth, y + cellHeight, whitePaint);
-                }
+        for (int row = 0; row < xCelQuantity; row++) {
+            for (int col = 0; col < yCelQuantity; col++) {
+                this.cell.draw(canvas, row, col);
             }
         }
     }
