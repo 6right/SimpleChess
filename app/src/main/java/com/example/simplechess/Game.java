@@ -32,13 +32,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             SurfaceHolder surfaceHolder = getHolder();
             surfaceHolder.addCallback(this);
         }
-        this.context = getContext();
-        this.screenSize = new ScreenSize(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height());
+        context = getContext();
+        screenSize = new ScreenSize(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height());
         CellCounts cellCounts = new CellCounts(8, 8);
 
-        field = new Field(cellCounts, this.screenSize);
-        whitePlayer = new Player(this.context, true);
-        blackPlayer = new Player(this.context, false);
+        field = new Field(cellCounts, screenSize);
+        whitePlayer = new Player(context, true);
+        blackPlayer = new Player(context, false);
         gameLoop = new GameLoop(this, holder);
 
         gameLoop.startLoop();
