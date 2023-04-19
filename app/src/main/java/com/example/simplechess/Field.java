@@ -1,6 +1,5 @@
 package com.example.simplechess;
 
-import android.content.Context;
 import android.graphics.Canvas;
 
 public class Field {

@@ -1,16 +1,15 @@
 package com.example.simplechess;
 
-import static com.example.simplechess.Constants.*;
-
 import android.content.Context;
 import android.graphics.Canvas;
 
 public class Player {
-    protected Pawn[] pawns = new Pawn[8];
-    protected Rook[] rooks = new Rook[2];
-    protected Knight[] knights = new Knight[2];
-    protected Bishop[] bishops = new Bishop[2];
-    protected Queen queen;
+    private Pawn[] pawns = new Pawn[8];
+    private Rook[] rooks = new Rook[2];
+    private Knight[] knights = new Knight[2];
+    private Bishop[] bishops = new Bishop[2];
+    private Queen queen;
+    private King king;
 
     public Player(Context context, boolean isWhite) {
         for (int i = 0; i < 8; i++) {
@@ -42,17 +41,24 @@ public class Player {
                 (isWhite ? new Position(3, 0) : new Position(3, 7)),
                 isWhite
         );
+
+        king = new King(
+                context,
+                (isWhite ? new Position(4, 0) : new Position(4, 7)),
+                isWhite
+        );
     }
 
     protected void draw(Canvas canvas) {
         for (int i = 0; i < 8; i++) {
             pawns[i].draw(canvas);
         }
-//        for (int i = 0; i < 2; i++) {
-//            rooks[i].draw(canvas);
-//            knights[i].draw(canvas);
-//            bishops[i].draw(canvas);
-//        }
-//        queen.draw(canvas);
+        for (int i = 0; i < 2; i++) {
+            rooks[i].draw(canvas);
+            knights[i].draw(canvas);
+            bishops[i].draw(canvas);
+        }
+        king.draw(canvas);
+        queen.draw(canvas);
     }
 }

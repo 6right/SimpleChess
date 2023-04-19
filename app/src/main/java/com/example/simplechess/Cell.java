@@ -2,11 +2,7 @@ package com.example.simplechess;
 
 import static com.example.simplechess.Constants.*;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.util.DisplayMetrics;
-import android.view.SurfaceHolder;
 
 public class Cell {
     private int yPositionCenter;
