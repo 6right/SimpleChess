@@ -2,6 +2,7 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -77,7 +78,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            shouldDrawBishop = !shouldDrawBishop;
+            Cell clickedCell = field.getCell();
+            int x = (int) event.getX();
+            int y = (int) event.getY();
+            whitePlayer.handleClick(x,y);
+//            whitePlayer = new Player(context, true, );
+//            Log.d("TOUCH_EVENT", "X: " + x + " Y: " + y);
         }
         return super.onTouchEvent(event);
     }

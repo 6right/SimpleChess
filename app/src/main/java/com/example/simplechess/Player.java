@@ -2,71 +2,35 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
+
+import com.example.simplechess.Figures.Figure;
+import com.example.simplechess.Figures.Pawn;
+import com.example.simplechess.Figures.Position;
+
+import java.util.HashMap;
 
 public class Player {
-    private Pawn[] pawns = new Pawn[8];
-    private Rook[] rooks = new Rook[2];
-    private Knight[] knights = new Knight[2];
-    private Bishop[] bishops = new Bishop[2];
-    private Queen queen;
-    private King king;
-
-    // Конструктор игрока, где создаются все фигуры
+    protected HashMap<Position, Figure> figureMap = new HashMap<>();
     public Player(Context context, boolean isWhite, Cell cell) {
         for (int i = 0; i < 8; i++) {
-            pawns[i] = new Pawn(
-                    context,
-                    (isWhite ? new Position(i, 1) : new Position(i, 6)),
-                    isWhite,
-                    cell
-            );
+            Position position = isWhite ? new Position(i, 1) : new Position(i, 6);
+            Pawn pawn = new Pawn(context, position, isWhite, cell);
+            figureMap.put(position, pawn);
         }
-        for (int i = 0; i < 2; i++) {
-            rooks[i] = new Rook(
-                    context,
-                    (isWhite ? new Position(i * 7, 0) : new Position(i * 7, 7)),
-                    isWhite,
-                    cell
-            );
-            knights[i] = new Knight(
-                    context,
-                    (isWhite ? new Position(i * 5 + 1, 0) : new Position(i * 5 + 1, 7)),
-                    isWhite,
-                    cell
-            );
-            bishops[i] = new Bishop(
-                    context,
-                    (isWhite ? new Position(i * 3 + 2, 0) : new Position(i * 3 + 2, 7)),
-                    isWhite,
-                    cell
-            );
-        }
-        queen = new Queen(
-                context,
-                (isWhite ? new Position(3, 0) : new Position(3, 7)),
-                isWhite,
-                cell
-        );
-
-        king = new King(
-                context,
-                (isWhite ? new Position(4, 0) : new Position(4, 7)),
-                isWhite,
-                cell
-        );
     }
-
-    // Отрисовка фигуры. Если она съедена, то не отрисовывается уже внутри класса Figure
     protected void draw(Canvas canvas) {
-        for (int i = 0; i < 8; i++) {
-            pawns[i].draw(canvas);
+        for (Figure figure : figureMap.values()) {
+            figure.draw(canvas);
         }
-        for (int i = 0; i < 2; i++) {
-            rooks[i].draw(canvas);
-            knights[i].draw(canvas);
-            bishops[i].draw(canvas);
+    }
+    public void handleClick(int x, int y) {
+        for (Position position : figureMap.keySet()) {
+            Figure figure = figureMap.get(position);
+            if (figure.contains(x, y)) {
+                Log.d("Player", "Clicked on " + position.toString());
+                break;
+            }
         }
-        king.draw(canvas);
-        queen.draw(canvas);
     }
 }

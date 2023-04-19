@@ -1,8 +1,11 @@
-package com.example.simplechess;
+package com.example.simplechess.Figures;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+
+import com.example.simplechess.Cell;
+import com.example.simplechess.Figures.Position;
 
 public class Figure {
     // Взял из Cell, думаю как-то вынести в отдельный класс Object
@@ -24,11 +27,11 @@ public class Figure {
     public Figure(Position position, boolean isWhite, Cell cell) {
         this.position = position;
         this.isWhite = isWhite;
-        this.isDead = false;
-        this.yPositionCenter = cell.getYPositionCenter();
-        this.xPositionCenter = cell.getXPositionCenter();
-        this.height = cell.getHeight();
-        this.width = cell.getWidth();
+        isDead = false;
+        yPositionCenter = cell.getYPositionCenter();
+        xPositionCenter = cell.getXPositionCenter();
+        height = cell.getHeight();
+        width = cell.getWidth();
     }
 
     // Надо разобраться, сделано путем тыка
@@ -40,8 +43,15 @@ public class Figure {
         canvas.drawBitmap(bitmap, null, dstRect, null);
     }
 
+    public boolean contains(int x, int y) {
+        int cellX = position.getX() * width + xPositionCenter;
+        int cellY = position.getY() * height + yPositionCenter;
+        return x >= cellX && x <= cellX + width && y >= cellY && y <= cellY + height;
+    }
+
 
     public boolean canMove(Position position) {
         return false;
     }
+
 }

@@ -1,4 +1,4 @@
-package com.example.simplechess;
+package com.example.simplechess.Figures;
 
 // Класс, хранящий координаты ячейки, не зависящий от размеров доски
 // Используется для хранения координат фигур
@@ -10,7 +10,6 @@ public class Position {
         this.x = x;
         this.y = y;
     }
-
     public int getX() {
         return x;
     }
