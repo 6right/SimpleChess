@@ -49,6 +49,10 @@ public class Figure {
         return x >= cellX && x <= cellX + width && y >= cellY && y <= cellY + height;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
 
     public boolean canMove(Position position) {
         return false;

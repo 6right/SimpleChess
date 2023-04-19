@@ -70,8 +70,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         field.draw(canvas);
-        whitePlayer.draw(canvas);
         blackPlayer.draw(canvas);
+        whitePlayer.draw(canvas);
     }
 
     // Метод, который вызывается при нажатии на экран
@@ -81,10 +81,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             Cell clickedCell = field.getCell();
             int x = (int) event.getX();
             int y = (int) event.getY();
-            whitePlayer.handleClick(x,y);
-            blackPlayer.handleClick(x,y);
-
-
+            whitePlayer.handleClick(context, field, x,y);
+//            blackPlayer.handleClick(context, field, x,y);
         }
         return super.onTouchEvent(event);
     }
