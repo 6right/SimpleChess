@@ -28,7 +28,7 @@ public class Player {
         for (Position position : figureMap.keySet()) {
             Figure figure = figureMap.get(position);
             if (figure.contains(x, y)) {
-                Log.d("Player", "Clicked on " + position.toString());
+                Log.d("Player", "Clicked on position x = " + position.getX() + ", y = " + position.getY());
                 break;
             }
         }
