@@ -82,8 +82,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             int x = (int) event.getX();
             int y = (int) event.getY();
             whitePlayer.handleClick(x,y);
-//            whitePlayer = new Player(context, true, );
-//            Log.d("TOUCH_EVENT", "X: " + x + " Y: " + y);
+            blackPlayer.handleClick(x,y);
+
+
         }
         return super.onTouchEvent(event);
     }

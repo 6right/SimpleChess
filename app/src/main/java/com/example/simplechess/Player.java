@@ -9,9 +9,10 @@ import com.example.simplechess.Figures.Pawn;
 import com.example.simplechess.Figures.Position;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Player {
-    protected HashMap<Position, Figure> figureMap = new HashMap<>();
+    protected ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     public Player(Context context, boolean isWhite, Cell cell) {
         for (int i = 0; i < 8; i++) {
             Position position = isWhite ? new Position(i, 1) : new Position(i, 6);
@@ -24,12 +25,14 @@ public class Player {
             figure.draw(canvas);
         }
     }
+    public void removeFigure(Position position) {
+        figureMap.remove(position);
+    }
     public void handleClick(int x, int y) {
         for (Position position : figureMap.keySet()) {
             Figure figure = figureMap.get(position);
             if (figure.contains(x, y)) {
-                Log.d("Player", "Clicked on position x = " + position.getX() + ", y = " + position.getY());
-                break;
+                removeFigure(position);
             }
         }
     }
