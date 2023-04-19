@@ -7,6 +7,7 @@ public class Constants {
 
     //  Colors
 
+    // Используется для отрисовки ячеек, на которые можно сходить
     protected static Paint brownPaint = new Paint();
     protected static Paint orangePaint = new Paint();
     protected static Paint blackPaint = new Paint();

@@ -5,11 +5,13 @@ import static com.example.simplechess.Constants.*;
 import android.graphics.Canvas;
 
 public class Cell {
+    // Охота перенсти в отдельный класс Object, а то используется в нескольких классах
     private int yPositionCenter;
     private int xPositionCenter;
     private int height;
     private int width;
 
+    // Конструктор, который принимает размеры экрана и размеры клетки
     public Cell(int width, int height, int screenWidth, int screenHeight) {
         // Set position of field
         int size = Math.min(screenWidth, screenHeight);
@@ -37,6 +39,7 @@ public class Cell {
         return yPositionCenter;
     }
 
+    // Отрисовка клетки
     public void draw(Canvas canvas, int row, int col) {
         int x = col * width + xPositionCenter;
         int y = row * height + yPositionCenter;

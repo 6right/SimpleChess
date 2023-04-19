@@ -26,6 +26,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder);
     }
 
+    // Пытался создавать объекты в конструкторе Game, но была проблема с Canvas
+    // Можно попробовать вернуть, так как по итогу не использую Canvas, хватает Context'a
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         if (gameLoop.getState().equals(Thread.State.TERMINATED)) {
@@ -62,6 +64,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         }
     }
 
+    // Отрисовка поля и фигур через игроков
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
@@ -70,6 +73,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         blackPlayer.draw(canvas);
     }
 
+    // Метод, который вызывается при нажатии на экран
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {

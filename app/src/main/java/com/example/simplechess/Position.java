@@ -1,5 +1,7 @@
 package com.example.simplechess;
 
+// Класс, хранящий координаты ячейки, не зависящий от размеров доски
+// Используется для хранения координат фигур
 public class Position {
     private int x;
     private int y;

@@ -3,6 +3,7 @@ package com.example.simplechess;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
+// Класс фигуры коня
 public class Knight extends Figure {
     public Knight(Context context, Position position, boolean isWhite, Cell cell) {
         super(position, isWhite, cell);

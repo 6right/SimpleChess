@@ -1,5 +1,6 @@
 package com.example.simplechess;
 
+// Класс, хранящий размеры экрана
 public class ScreenSize {
     private int width;
     private int height;

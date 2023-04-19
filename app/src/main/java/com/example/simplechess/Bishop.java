@@ -3,6 +3,7 @@ package com.example.simplechess;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
+// Класс фигуры слона
 public class Bishop extends Figure{
 
     public Bishop (Context context, Position position, boolean isWhite, Cell cell){

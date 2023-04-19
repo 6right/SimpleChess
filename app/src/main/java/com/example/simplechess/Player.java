@@ -11,6 +11,7 @@ public class Player {
     private Queen queen;
     private King king;
 
+    // Конструктор игрока, где создаются все фигуры
     public Player(Context context, boolean isWhite, Cell cell) {
         for (int i = 0; i < 8; i++) {
             pawns[i] = new Pawn(
@@ -55,6 +56,7 @@ public class Player {
         );
     }
 
+    // Отрисовка фигуры. Если она съедена, то не отрисовывается уже внутри класса Figure
     protected void draw(Canvas canvas) {
         for (int i = 0; i < 8; i++) {
             pawns[i].draw(canvas);

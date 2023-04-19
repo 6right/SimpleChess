@@ -1,5 +1,6 @@
 package com.example.simplechess;
 
+// Класс, хранящий количество ячеек по горизонтали и вертикали
 public class CellCounts {
     private int xQuantity;
     private int yQuantity;
