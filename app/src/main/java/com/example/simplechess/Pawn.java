@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 
 public class Pawn extends Figure {
-    public Pawn(Context context, Position position, boolean isWhite) {
-        super(position, isWhite);
+    public Pawn(Context context, Position position, boolean isWhite, Cell cell) {
+        super(position, isWhite, cell);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_plt45 : R.drawable.chess_pdt45

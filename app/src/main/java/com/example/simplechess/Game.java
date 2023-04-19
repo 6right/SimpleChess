@@ -37,8 +37,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         CellCounts cellCounts = new CellCounts(8, 8);
 
         field = new Field(cellCounts, screenSize);
-        whitePlayer = new Player(context, true);
-        blackPlayer = new Player(context, false);
+        whitePlayer = new Player(context, true, field.getCell());
+        blackPlayer = new Player(context, false, field.getCell());
         gameLoop = new GameLoop(this, holder);
 
         gameLoop.startLoop();

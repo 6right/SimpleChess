@@ -21,6 +21,22 @@ public class Cell {
         this.width = width;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getXPositionCenter() {
+        return xPositionCenter;
+    }
+
+    public int getYPositionCenter() {
+        return yPositionCenter;
+    }
+
     public void draw(Canvas canvas, int row, int col) {
         int x = col * width + xPositionCenter;
         int y = row * height + yPositionCenter;

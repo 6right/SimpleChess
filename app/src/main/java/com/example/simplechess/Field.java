@@ -18,7 +18,11 @@ public class Field {
         cell = new Cell(cellWidth, cellHeight, screenSize.getWidth(), screenSize.getHeight());
     }
 
-    protected void draw(Canvas canvas) {
+    public Cell getCell() {
+        return cell;
+    }
+
+    public void draw(Canvas canvas) {
         // Отрисовка поля
         for (int row = 0; row < cellCounts.getXQuantity(); row++) {
             for (int col = 0; col < cellCounts.getYQuantity(); col++) {
