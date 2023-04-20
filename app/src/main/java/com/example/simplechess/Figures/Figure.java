@@ -53,6 +53,11 @@ public class Figure {
         return position;
     }
 
+    public void setPosition(int x, int y) {
+        position.setX(x);
+        position.setY(y);
+    }
+
 
     public boolean canMove(Position position) {
         return false;

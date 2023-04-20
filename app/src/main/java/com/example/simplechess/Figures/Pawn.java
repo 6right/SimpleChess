@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 
 import com.example.simplechess.Cell;
-import com.example.simplechess.Figures.Figure;
-import com.example.simplechess.Figures.Position;
 import com.example.simplechess.R;
 
 // Класс фигуры пешки
