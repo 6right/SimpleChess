@@ -26,6 +26,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         gameLoop = new GameLoop(this, surfaceHolder);
     }
 
+    public Player getPlayer(boolean isWhite) {
+        return isWhite ? whitePlayer : blackPlayer;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
     // Пытался создавать объекты в конструкторе Game, но была проблема с Canvas
     // Можно попробовать вернуть, так как по итогу не использую Canvas, хватает Context'a
     @Override
@@ -79,8 +87,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-            whitePlayer.handleClick(context, field, x,y);
-            blackPlayer.handleClick(context, field, x,y);
+            whitePlayer.handleClick(context, this, x,y);
+//            blackPlayer.handleClick(context, this, x,y);
         }
         return super.onTouchEvent(event);
     }

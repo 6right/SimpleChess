@@ -7,16 +7,19 @@ import android.util.Log;
 import com.example.simplechess.Figures.*;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Player {
-    protected Figure figure;
     protected Figure selectedFigure = null;
+    protected boolean isWhite;
 
     protected ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
 
     public Player(Context context, boolean isWhite, Cell cell) {
         // Для расстановки фигур по y
+        this.isWhite = isWhite;
         int y;
 
         y = isWhite ? 1 : 6;
@@ -66,43 +69,47 @@ public class Player {
         figureMap.remove(position);
     }
 
-    public void handleClick(Context context, Field field, int x, int y) {
+    public void handleClick(Context context, Game game, int x, int y) {
+        Field field = game.getField();
+        int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
+        int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
+        Position newPosition = new Position(positionX, positionY);
 
         //Выбираем фигуру, проверяем что есть в списке.
         if (selectedFigure == null) {
-            for (Position position : figureMap.keySet()) {
-                figure = figureMap.get(position);
-                if (figure.contains(x, y) && selectedFigure == null) {
-                    selectedFigure = figure;
+            // Проходим по всем фигурам и проверяем, есть ли фигура на этой клетке
+            for (Map.Entry<Position, Figure> entry : figureMap.entrySet()) {
+                Position position = entry.getKey();
+
+                if (position.equals(newPosition)) {
+                    selectedFigure = entry.getValue();
                     removeFigure(position);
                 }
             }
-        } else {
-            //Ставим фигуру в новую клетку
-            int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
-            int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
-            Position newPosition = new Position(positionX, positionY);
 
-            if (!positionFree(newPosition)) {
+        } else {
+            // Ставим фигуру в новую клетку
+            if (positionFree(newPosition, game.getPlayer(!isWhite))) {
                 selectedFigure.setPosition(newPosition);
                 figureMap.put(newPosition, selectedFigure);
-                // Если клетка занята, возвращаем фигуру на свое место.
-            } else {
-                figureMap.put(new Position(x, y), selectedFigure);
+                selectedFigure = null;
             }
-            selectedFigure = null;
         }
     }
 
-    //Проверка на наличие другой фигуры на клетке (схожей по цвету)
-    public boolean positionFree(Position position) {
-        boolean isFree = false;
+    // Проверка на наличие другой фигуры на клетке (схожей по цвету)
+    public boolean positionFree(Position position, Player otherPlayer) {
         for (Position pos : figureMap.keySet()) {
             if (position.equals(pos)) {
-                isFree = true;
-                break;
+                return false;
             }
         }
-        return isFree;
+        for (Position pos : otherPlayer.figureMap.keySet()) {
+            if (position.equals(pos)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
