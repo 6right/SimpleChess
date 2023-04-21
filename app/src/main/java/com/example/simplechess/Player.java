@@ -66,34 +66,54 @@ public class Player {
         figureMap.remove(position);
     }
 
+    private int savedX;
+    private int savedY;
+
+
     public void handleClick(Context context, Field field, int x, int y) {
-        // Проходим по всем фигурам и проверяем попадает ли координата в область фигуры.
-        if(selectedFigure == null) {
+        savedX = x;
+        savedY = y;
+        if (selectedFigure == null) {
             for (Position position : figureMap.keySet()) {
                 figure = figureMap.get(position);
-                // Если попадает, то выбираем фигуру и удаляем ее из поля.
                 if (figure.contains(x, y) && selectedFigure == null) {
                     selectedFigure = figure;
+                    Log.d("Взял фигуру", "X: " + selectedFigure.getPosition().getX()
+                            + " Y: " + selectedFigure.getPosition().getY());
                     removeFigure(position);
                 }
             }
-        }
-        else {
+        } else {
             int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
             int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
             Position newPosition = new Position(positionX, positionY);
 
-            // Проверка на свободно ли место для фигуры или нет.
-            if (positionFree(newPosition)) {
-                selectedFigure.setPosition(newPosition);
-                figureMap.put(newPosition, selectedFigure);
-                selectedFigure = null;
+            while (true) {
+                if (!positionFree(newPosition)) {
+                    selectedFigure.setPosition(newPosition);
+                    figureMap.put(newPosition, selectedFigure);
+                    selectedFigure = null;
+                    Log.d("Поставил фигуру", "X: " + newPosition.getX()
+                            + " Y: " + newPosition.getY());
+                    break;
+                } else {
+                    selectedFigure.setPosition(selectedFigure.getPosition().getX(), selectedFigure.getPosition().getY());
+                    figureMap.put(new Position(x, y), selectedFigure);
+                    selectedFigure = null;
+                    break;
+                }
             }
         }
     }
 
     public boolean positionFree(Position position) {
-        return !figureMap.containsKey(position);
+        boolean isFree = false;
+        for (Position pos : figureMap.keySet()) {
+            if (position.equals(pos)) {
+                isFree = true;
+                break;
+            }
+        }
+        return isFree;
     }
 }
-
