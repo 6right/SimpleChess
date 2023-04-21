@@ -2,6 +2,7 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.example.simplechess.Figures.*;
 
@@ -13,6 +14,7 @@ public class Player {
     protected Figure selectedFigure = null;
 
     protected ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
+
     public Player(Context context, boolean isWhite, Cell cell) {
         // Для расстановки фигур по y
         int y;
@@ -53,11 +55,13 @@ public class Player {
                 new King(context, new Position(4, y), isWhite, cell)
         );
     }
+
     protected void draw(Canvas canvas) {
         for (Figure figure : figureMap.values()) {
             figure.draw(canvas);
         }
     }
+
     public void removeFigure(Position position) {
         figureMap.remove(position);
     }
@@ -74,14 +78,22 @@ public class Player {
         }
         // Проверка на то что у нас выбрана фигура, и поле пустое.
         if (!removedFigure && selectedFigure != null) {
-        // Если условия выполнены, ставим выбранную фигуру в новую позицию на поле.
+            // Если условия выполнены, ставим выбранную фигуру в новую позицию на поле.
             int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
             int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
-            Position position = new Position(positionX, positionY);
+            Position newPosition = new Position(positionX, positionY);
 
-            selectedFigure.setPosition(position);
-            figureMap.put(position, selectedFigure);
-            selectedFigure = null;
+            // Проверка на свободно ли место для фигуры или нет.
+            if (!positionFree(newPosition)) {
+                selectedFigure.setPosition(newPosition);
+                figureMap.put(newPosition, selectedFigure);
+                selectedFigure = null;
+            }
         }
     }
+
+    public boolean positionFree(Position position) {
+        return figureMap.containsKey(position);
+    }
 }
+
