@@ -66,46 +66,35 @@ public class Player {
         figureMap.remove(position);
     }
 
-    private int savedX;
-    private int savedY;
-
-
     public void handleClick(Context context, Field field, int x, int y) {
-        savedX = x;
-        savedY = y;
+
+        //Выбираем фигуру, проверяем что есть в списке.
         if (selectedFigure == null) {
             for (Position position : figureMap.keySet()) {
                 figure = figureMap.get(position);
                 if (figure.contains(x, y) && selectedFigure == null) {
                     selectedFigure = figure;
-                    Log.d("Взял фигуру", "X: " + selectedFigure.getPosition().getX()
-                            + " Y: " + selectedFigure.getPosition().getY());
                     removeFigure(position);
                 }
             }
         } else {
+            //Ставим фигуру в новую клетку
             int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
             int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
             Position newPosition = new Position(positionX, positionY);
 
-            while (true) {
-                if (!positionFree(newPosition)) {
-                    selectedFigure.setPosition(newPosition);
-                    figureMap.put(newPosition, selectedFigure);
-                    selectedFigure = null;
-                    Log.d("Поставил фигуру", "X: " + newPosition.getX()
-                            + " Y: " + newPosition.getY());
-                    break;
-                } else {
-                    selectedFigure.setPosition(selectedFigure.getPosition().getX(), selectedFigure.getPosition().getY());
-                    figureMap.put(new Position(x, y), selectedFigure);
-                    selectedFigure = null;
-                    break;
-                }
+            if (!positionFree(newPosition)) {
+                selectedFigure.setPosition(newPosition);
+                figureMap.put(newPosition, selectedFigure);
+                // Если клетка занята, возвращаем фигуру на свое место.
+            } else {
+                figureMap.put(new Position(x, y), selectedFigure);
             }
+            selectedFigure = null;
         }
     }
 
+    //Проверка на наличие другой фигуры на клетке (схожей по цвету)
     public boolean positionFree(Position position) {
         boolean isFree = false;
         for (Position pos : figureMap.keySet()) {
