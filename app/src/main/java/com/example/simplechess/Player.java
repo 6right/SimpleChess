@@ -67,24 +67,24 @@ public class Player {
     }
 
     public void handleClick(Context context, Field field, int x, int y) {
-        boolean removedFigure = false;
-        for (Position position : figureMap.keySet()) {
-            figure = figureMap.get(position);
-            if (figure.contains(x, y) && selectedFigure == null) {
-                selectedFigure = figure;
-                removeFigure(position);
-                removedFigure = true;
+        // Проходим по всем фигурам и проверяем попадает ли координата в область фигуры.
+        if(selectedFigure == null) {
+            for (Position position : figureMap.keySet()) {
+                figure = figureMap.get(position);
+                // Если попадает, то выбираем фигуру и удаляем ее из поля.
+                if (figure.contains(x, y) && selectedFigure == null) {
+                    selectedFigure = figure;
+                    removeFigure(position);
+                }
             }
         }
-        // Проверка на то что у нас выбрана фигура, и поле пустое.
-        if (!removedFigure && selectedFigure != null) {
-            // Если условия выполнены, ставим выбранную фигуру в новую позицию на поле.
+        else {
             int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
             int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
             Position newPosition = new Position(positionX, positionY);
 
             // Проверка на свободно ли место для фигуры или нет.
-            if (!positionFree(newPosition)) {
+            if (positionFree(newPosition)) {
                 selectedFigure.setPosition(newPosition);
                 figureMap.put(newPosition, selectedFigure);
                 selectedFigure = null;
@@ -93,7 +93,7 @@ public class Player {
     }
 
     public boolean positionFree(Position position) {
-        return figureMap.containsKey(position);
+        return !figureMap.containsKey(position);
     }
 }
 
