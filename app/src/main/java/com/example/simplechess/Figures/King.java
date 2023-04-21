@@ -15,9 +15,4 @@ public class King extends Figure {
                 isWhite ? R.drawable.chess_klt45 : R.drawable.chess_kdt45
         );
     }
-
-    @Override
-    public boolean canMove(Position position) {
-        return false;
-    }
 }

@@ -2,7 +2,6 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,7 +14,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Player blackPlayer;
     private ScreenSize screenSize;
 
-    private boolean shouldDrawBishop = false;
+    boolean isWhiteTurn = true;
 
     public Game(Context context) {
         super(context);
@@ -78,7 +77,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            Cell clickedCell = field.getCell();
             int x = (int) event.getX();
             int y = (int) event.getY();
             whitePlayer.handleClick(context, field, x,y);

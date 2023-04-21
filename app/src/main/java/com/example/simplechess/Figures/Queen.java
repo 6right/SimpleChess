@@ -16,9 +16,4 @@ public class Queen extends Figure {
                 isWhite ? R.drawable.chess_qlt45 : R.drawable.chess_qdt45
         );
     }
-
-    @Override
-    public boolean canMove(Position position) {
-        return false;
-    }
 }

@@ -15,9 +15,4 @@ public class Rook extends Figure {
                 isWhite ? R.drawable.chess_rlt45 : R.drawable.chess_rdt45
         );
     }
-
-    @Override
-    public boolean canMove(Position position) {
-        return false;
-    }
 }

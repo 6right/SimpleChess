@@ -15,9 +15,4 @@ public class Knight extends Figure {
                 isWhite ? R.drawable.chess_nlt45 : R.drawable.chess_ndt45
         );
     }
-
-    @Override
-    public boolean canMove(Position position) {
-        return false;
-    }
 }

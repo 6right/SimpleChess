@@ -15,9 +15,4 @@ public class Pawn extends Figure {
                 isWhite ? R.drawable.chess_plt45 : R.drawable.chess_pdt45
         );
     }
-
-    @Override
-    public boolean canMove(Position position) {
-        return false;
-    }
 }

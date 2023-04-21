@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 
 import com.example.simplechess.Cell;
-import com.example.simplechess.Figures.Position;
 
 public class Figure {
     // Взял из Cell, думаю как-то вынести в отдельный класс Object
@@ -18,8 +17,6 @@ public class Figure {
     protected Position position;
     // Для понимания какую фигуру нужно отрисовать
     protected boolean isWhite;
-    // Для понимания, нужно ли отрисовывать фигуру
-    protected boolean isDead;
     // Для отрисовки, тут хранится картинка
     Bitmap bitmap;
 
@@ -27,7 +24,6 @@ public class Figure {
     public Figure(Position position, boolean isWhite, Cell cell) {
         this.position = position;
         this.isWhite = isWhite;
-        isDead = false;
         yPositionCenter = cell.getYPositionCenter();
         xPositionCenter = cell.getXPositionCenter();
         height = cell.getHeight();
@@ -36,7 +32,6 @@ public class Figure {
 
     // Надо разобраться, сделано путем тыка
     public void draw(Canvas canvas) {
-        if (isDead) return;
         int cellX = position.getX() * width + xPositionCenter;
         int cellY = position.getY() * height + yPositionCenter;
         Rect dstRect = new Rect(cellX, cellY, cellX + width, cellY + height);
@@ -58,9 +53,7 @@ public class Figure {
         position.setY(y);
     }
 
-
-    public boolean canMove(Position position) {
-        return false;
+    public void setPosition(Position position) {
+        this.position = position;
     }
-
 }
