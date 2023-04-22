@@ -53,10 +53,6 @@ public class Figure {
         position.setY(y);
     }
 
-    public boolean eqalsPosition(Position position) {
-        return this.position.equals(position);
-    }
-
     public void setPosition(Position position) {
         this.position = position;
     }
