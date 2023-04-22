@@ -6,7 +6,7 @@ import android.graphics.Rect;
 
 import com.example.simplechess.Cell;
 
-public class Figure {
+public abstract class Figure {
     // Взял из Cell, думаю как-то вынести в отдельный класс Object
     private int yPositionCenter;
     private int xPositionCenter;
@@ -56,4 +56,7 @@ public class Figure {
     public void setPosition(Position position) {
         this.position = position;
     }
+
+
+    public abstract boolean canMove(Position position);
 }

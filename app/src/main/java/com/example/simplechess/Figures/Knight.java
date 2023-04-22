@@ -15,4 +15,15 @@ public class Knight extends Figure {
                 isWhite ? R.drawable.chess_nlt45 : R.drawable.chess_ndt45
         );
     }
+
+    @Override
+    public boolean canMove(Position selectedFigure){
+            int dx = Math.abs(position.getX() - selectedFigure.getX());
+            int dy = Math.abs(position.getY() - selectedFigure.getY());
+
+            if ((dx == 1 && dy == 2) || (dx == 2 && dy == 1)) {
+                return true; // конь может двигаться в форме буквы L
+        }
+            return false; // конь не может двигаться на данную позицию
+    }
 }

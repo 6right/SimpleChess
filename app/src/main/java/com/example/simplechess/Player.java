@@ -87,7 +87,7 @@ public class Player {
 
         } else {
             // Ставим фигуру в новую клетку
-            if (positionFree(newPosition, game.getPlayer(!isWhite)) && Actions.ruleToMove(newPosition, selectedFigure, game)) {
+            if (positionFree(newPosition, game.getPlayer(!isWhite)) && selectedFigure.canMove(newPosition)) {
                 selectedFigure.setPosition(newPosition);
                 figureMap.put(newPosition, selectedFigure);
                 selectedFigure = null;
