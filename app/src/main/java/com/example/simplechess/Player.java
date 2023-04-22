@@ -78,11 +78,9 @@ public class Player {
         //Выбираем фигуру, проверяем что есть в списке.
         if (selectedFigure == null) {
             // Проходим по всем фигурам и проверяем, есть ли фигура на этой клетке
-            for (Map.Entry<Position, Figure> entry : figureMap.entrySet()) {
-                Position position = entry.getKey();
-
+            for (Position position : figureMap.keySet()) {
                 if (position.equals(newPosition)) {
-                    selectedFigure = entry.getValue();
+                    selectedFigure = figureMap.get(position);
                     removeFigure(position);
                 }
             }
