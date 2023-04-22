@@ -71,42 +71,53 @@ public class Player {
 
     public void handleClick(Context context, Game game, int x, int y) {
         Field field = game.getField();
-        int positionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
-        int positionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
-        Position newPosition = new Position(positionX, positionY);
+        int clickedPositionX = (x - field.getCell().getXPositionCenter()) / field.getCell().getWidth();
+        int clickedPositionY = (y - field.getCell().getYPositionCenter()) / field.getCell().getHeight();
+        Position clickedPosition = new Position(clickedPositionX, clickedPositionY);
 
-        //Выбираем фигуру, проверяем что есть в списке.
         if (selectedFigure == null) {
+            // Выбираем фигуру, проверяем что есть в списке.
             // Проходим по всем фигурам и проверяем, есть ли фигура на этой клетке
             for (Position position : figureMap.keySet()) {
-                if (position.equals(newPosition)) {
-                    selectedFigure = figureMap.get(position);
-                    removeFigure(position);
+                if (position.equals(clickedPosition)) {
+                    selectFigure(position);
                 }
             }
-
         } else {
-            // Ставим фигуру в новую клетку
-            if (positionFree(newPosition, game.getPlayer(!isWhite)) && selectedFigure.canMove(newPosition)) {
-                selectedFigure.setPosition(newPosition);
-                figureMap.put(newPosition, selectedFigure);
-                selectedFigure = null;
+            if (positionFree(clickedPosition, game) && selectedFigure.canMove(clickedPosition)) {
+                // Ставим фигуру в новую клетку
+                moveFigure(clickedPosition);
             } else {
-                // Если клетка занята, то возвращаем фигуру на место
-                figureMap.put(selectedFigure.getPosition(), selectedFigure);
-                selectedFigure = null;
+                // Возвращаем фигуру на старое место
+                returnFigure();
             }
         }
     }
 
+    public void selectFigure(Position position) {
+        selectedFigure = figureMap.get(position);
+        removeFigure(position);
+    }
+
+    public void moveFigure(Position position) {
+        selectedFigure.setPosition(position);
+        figureMap.put(position, selectedFigure);
+        selectedFigure = null;
+    }
+
+    public void returnFigure() {
+        figureMap.put(selectedFigure.getPosition(), selectedFigure);
+        selectedFigure = null;
+    }
+
     // Проверка на наличие другой фигуры на клетке (схожей по цвету)
-    public boolean positionFree(Position position, Player otherPlayer) {
+    public boolean positionFree(Position position, Game game) {
         for (Position pos : figureMap.keySet()) {
             if (position.equals(pos)) {
                 return false;
             }
         }
-        for (Position pos : otherPlayer.figureMap.keySet()) {
+        for (Position pos : game.getPlayer(!isWhite).figureMap.keySet()) {
             if (position.equals(pos)) {
                 return false;
             }
