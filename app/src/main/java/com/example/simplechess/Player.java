@@ -91,6 +91,10 @@ public class Player {
                 selectedFigure.setPosition(newPosition);
                 figureMap.put(newPosition, selectedFigure);
                 selectedFigure = null;
+            } else {
+                // Если клетка занята, то возвращаем фигуру на место
+                figureMap.put(selectedFigure.getPosition(), selectedFigure);
+                selectedFigure = null;
             }
         }
     }
