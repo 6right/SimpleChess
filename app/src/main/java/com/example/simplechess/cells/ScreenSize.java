@@ -1,4 +1,4 @@
-package com.example.simplechess;
+package com.example.simplechess.cells;
 
 // Класс, хранящий размеры экрана
 public class ScreenSize {

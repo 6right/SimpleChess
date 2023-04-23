@@ -2,9 +2,8 @@ package com.example.simplechess.Figures;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import com.example.simplechess.Cell;
+import com.example.simplechess.cells.Cell;
 import com.example.simplechess.R;
 
 // Класс фигуры пешки

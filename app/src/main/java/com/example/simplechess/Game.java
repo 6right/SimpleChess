@@ -6,6 +6,10 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.simplechess.cells.CellCounts;
+import com.example.simplechess.cells.Field;
+import com.example.simplechess.cells.ScreenSize;
+
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
     private Context context;

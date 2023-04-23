@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.example.simplechess.Cell;
+import com.example.simplechess.cells.Cell;
 
 public abstract class Figure {
     // Взял из Cell, думаю как-то вынести в отдельный класс Object

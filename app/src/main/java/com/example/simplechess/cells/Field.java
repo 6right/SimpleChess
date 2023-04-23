@@ -1,4 +1,4 @@
-package com.example.simplechess;
+package com.example.simplechess.cells;
 
 import android.graphics.Canvas;
 

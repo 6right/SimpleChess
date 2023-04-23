@@ -4,6 +4,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 
 import com.example.simplechess.Figures.*;
+import com.example.simplechess.cells.Cell;
+import com.example.simplechess.cells.Field;
+import com.example.simplechess.cells.HelpCell;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,7 +17,7 @@ public class Player {
     Cell cell;
 
     protected ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
-    protected ConcurrentHashMap<Position, HelpCells> helpCell = new ConcurrentHashMap<>();
+    protected ConcurrentHashMap<Position, HelpCell> helpCell = new ConcurrentHashMap<>();
 
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
@@ -63,7 +66,7 @@ public class Player {
         for (Figure figure : figureMap.values()) {
             figure.draw(canvas);
         }
-        for (HelpCells hCell : helpCell.values()){
+        for (HelpCell hCell : helpCell.values()){
             hCell.draw(canvas);
         }
     }
@@ -98,7 +101,7 @@ public class Player {
     }
 
     public void selectFigure(Position position) {
-        helpCell.put(position, new HelpCells(position, cell));
+        helpCell.put(position, new HelpCell(position, cell));
         selectedFigure = figureMap.get(position);
         removeFigure(position);
     }
