@@ -3,27 +3,27 @@ package com.example.simplechess.Figures;
 // Класс, хранящий координаты ячейки, не зависящий от размеров доски
 // Используется для хранения координат фигур
 public class Position {
-    private int x;
-    private int y;
+    private int row;
+    private int col;
 
-    public Position(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public Position(int row, int col) {
+        this.row = row;
+        this.col = col;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-    public void setY (int y) {
-        this.y = y;
+    // Я как понял, это нужно для того, чтобы можно было сравнивать позиции
+    // Оно хранит позицию в виде одного числа, которое можно сравнивать
+    @Override
+    public int hashCode() {
+        return row * 10 + col;
     }
 
     @Override
@@ -35,8 +35,6 @@ public class Position {
             return false;
         }
         Position other = (Position) obj;
-        return this.x == other.x && this.y == other.y;
+        return this.row == other.row && this.col == other.col;
     }
-
-
 }

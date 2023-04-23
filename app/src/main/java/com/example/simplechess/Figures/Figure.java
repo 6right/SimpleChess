@@ -2,17 +2,14 @@ package com.example.simplechess.Figures;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 
-import com.example.simplechess.cells.Cell;
+import com.example.simplechess.DrawingEntity;
+import com.example.simplechess.Game;
 
-public abstract class Figure {
-    // Взял из Cell, думаю как-то вынести в отдельный класс Object
-    private int yPositionCenter;
-    private int xPositionCenter;
-    private int height;
-    private int width;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
+public abstract class Figure extends DrawingEntity {
     // Позиция фигуры на доске
     protected Position position;
     // Для понимания какую фигуру нужно отрисовать
@@ -21,31 +18,34 @@ public abstract class Figure {
     Bitmap bitmap;
 
     // Вкидываем сюда данные, которые нужны будут для отрисовки
-    public Figure(Position position, boolean isWhite, Cell cell) {
+    public Figure(Position position, boolean isWhite, int height, int width) {
+        super(height, width);
         this.position = position;
         this.isWhite = isWhite;
-        yPositionCenter = cell.getYPositionCenter();
-        xPositionCenter = cell.getXPositionCenter();
-        height = cell.getHeight();
-        width = cell.getWidth();
     }
 
     // Надо разобраться, сделано путем тыка
-    public void draw(Canvas canvas) {
-        int cellX = position.getX() * width + xPositionCenter;
-        int cellY = position.getY() * height + yPositionCenter;
-        Rect dstRect = new Rect(cellX, cellY, cellX + width, cellY + height);
-        canvas.drawBitmap(bitmap, null, dstRect, null);
+    public void draw(Canvas canvas, int xTop, int yLeft) {
+        draw(canvas, bitmap, xTop, yLeft);
     }
 
     public Position getPosition() {
         return position;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public int getXCoordinate(int leftTopX) {
+        return getXCoordinate(leftTopX, position.getRow());
     }
 
+    public int getYCoordinate(int leftTopY) {
+        return getYCoordinate(leftTopY, position.getCol());
+    }
 
     public abstract boolean canMove(Position position);
+
+    public ArrayList<Position> getAvailableMoves(Game game) { return new ArrayList<>(); };
+
+    public void move(Position position) {
+        this.position = position;
+    }
 }

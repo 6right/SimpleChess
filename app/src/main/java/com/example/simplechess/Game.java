@@ -6,9 +6,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.simplechess.cells.CellCounts;
-import com.example.simplechess.cells.Field;
-import com.example.simplechess.cells.ScreenSize;
+import com.example.simplechess.field.CellCounts;
+import com.example.simplechess.field.ScreenSize;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
@@ -81,8 +80,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         field.draw(canvas);
-        blackPlayer.draw(canvas);
-        whitePlayer.draw(canvas);
+        blackPlayer.draw(canvas, field);
+        whitePlayer.draw(canvas, field);
     }
 
     // Метод, который вызывается при нажатии на экран

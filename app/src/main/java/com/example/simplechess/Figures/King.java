@@ -3,15 +3,16 @@ package com.example.simplechess.Figures;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import com.example.simplechess.cells.Cell;
+import com.example.simplechess.field.Cell;
 import com.example.simplechess.R;
 
 // Класс фигуры короля
 public class King extends Figure {
 
     private boolean hasMoved = false;
-    public King(Context context, Position position, boolean isWhite, Cell cell) {
-        super(position,isWhite, cell);
+    public King(Context context, Position position, boolean isWhite, int height, int width){
+        super(position,isWhite, height, width);
+
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_klt45 : R.drawable.chess_kdt45
@@ -20,8 +21,8 @@ public class King extends Figure {
 
     @Override
     public boolean canMove(Position selectedFigure){
-            int dx = Math.abs(position.getX() - selectedFigure.getX());
-            int dy = Math.abs(position.getY() - selectedFigure.getY());
+            int dx = Math.abs(position.getRow() - selectedFigure.getRow());
+            int dy = Math.abs(position.getCol() - selectedFigure.getCol());
 
             if (dx <= 1 && dy <= 1) {
                 hasMoved = true;

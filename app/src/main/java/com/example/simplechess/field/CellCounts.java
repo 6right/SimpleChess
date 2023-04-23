@@ -1,4 +1,4 @@
-package com.example.simplechess.cells;
+package com.example.simplechess.field;
 
 // Класс, хранящий количество ячеек по горизонтали и вертикали
 public class CellCounts {
