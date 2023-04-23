@@ -2,22 +2,22 @@ package com.example.simplechess;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.example.simplechess.Figures.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Player {
     protected Figure selectedFigure = null;
     protected boolean isWhite;
+    Canvas canvas;
+    Cell cell;
 
     protected ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
+    protected ConcurrentHashMap<Position, HelpCells> helpCell = new ConcurrentHashMap<>();
 
     public Player(Context context, boolean isWhite, Cell cell) {
+        this.cell = cell;
         // Для расстановки фигур по y
         this.isWhite = isWhite;
         int y;
@@ -63,6 +63,9 @@ public class Player {
         for (Figure figure : figureMap.values()) {
             figure.draw(canvas);
         }
+        for (HelpCells hCell : helpCell.values()){
+            hCell.draw(canvas);
+        }
     }
 
     public void removeFigure(Position position) {
@@ -95,6 +98,7 @@ public class Player {
     }
 
     public void selectFigure(Position position) {
+        helpCell.put(position, new HelpCells(position, cell));
         selectedFigure = figureMap.get(position);
         removeFigure(position);
     }
@@ -102,11 +106,13 @@ public class Player {
     public void moveFigure(Position position) {
         selectedFigure.setPosition(position);
         figureMap.put(position, selectedFigure);
+        helpCell.clear();
         selectedFigure = null;
     }
 
     public void returnFigure() {
         figureMap.put(selectedFigure.getPosition(), selectedFigure);
+        helpCell.clear();
         selectedFigure = null;
     }
 

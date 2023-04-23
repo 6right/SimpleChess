@@ -38,19 +38,8 @@ public abstract class Figure {
         canvas.drawBitmap(bitmap, null, dstRect, null);
     }
 
-    public boolean contains(int x, int y) {
-        int cellX = position.getX() * width + xPositionCenter;
-        int cellY = position.getY() * height + yPositionCenter;
-        return x >= cellX && x <= cellX + width && y >= cellY && y <= cellY + height;
-    }
-
     public Position getPosition() {
         return position;
-    }
-
-    public void setPosition(int x, int y) {
-        position.setX(x);
-        position.setY(y);
     }
 
     public void setPosition(Position position) {
