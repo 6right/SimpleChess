@@ -5,6 +5,7 @@ import static com.example.simplechess.Constants.*;
 import android.graphics.Canvas;
 
 import com.example.simplechess.field.*;
+import com.example.simplechess.figures.Position;
 
 // Класс, хранящий информацию о поле
 public class Field {
@@ -32,8 +33,8 @@ public class Field {
 
         // Set size of cell
         int sizeCell = Math.min(screenSize.getWidth(), screenSize.getHeight());
-        int cellWidth = sizeCell / cellCounts.getXQuantity();
-        int cellHeight = sizeCell / cellCounts.getYQuantity();
+        int cellWidth = sizeCell / cellCounts.getRowQuantity();
+        int cellHeight = sizeCell / cellCounts.getColQuantity();
         cell = new Cell(cellWidth, cellHeight);
     }
 
@@ -41,6 +42,18 @@ public class Field {
     public Cell getCell() {
         return cell;
     }
+
+    public CellCounts getCellCounts() { return cellCounts; }
+
+    public int getRowQuantity() { return cellCounts.getRowQuantity(); }
+    public int getColQuantity() { return cellCounts.getColQuantity(); }
+
+    // Проверка, что позиция находится внутри поля
+    public boolean isInside(Position position) {
+        return position.getRow() >= 0 && position.getRow() < cellCounts.getRowQuantity() &&
+                position.getCol() >= 0 && position.getCol() < cellCounts.getColQuantity();
+    }
+
     public Point getLeftTop() { return leftTop; }
 
     public Point getRightBottom() { return rightBottom; }
@@ -48,8 +61,8 @@ public class Field {
     // Отрисовка поля
     public void draw(Canvas canvas) {
         // Отрисовка поля
-        for (int row = 0; row < cellCounts.getXQuantity(); row++) {
-            for (int col = 0; col < cellCounts.getYQuantity(); col++) {
+        for (int row = 0; row < cellCounts.getRowQuantity(); row++) {
+            for (int col = 0; col < cellCounts.getColQuantity(); col++) {
                 cell.draw(
                         canvas,
                         leftTop.getX() + col * cell.getWidth(),

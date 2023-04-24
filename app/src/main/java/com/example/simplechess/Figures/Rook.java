@@ -1,4 +1,4 @@
-package com.example.simplechess.Figures;
+package com.example.simplechess.figures;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;

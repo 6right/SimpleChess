@@ -1,4 +1,4 @@
-package com.example.simplechess.Figures;
+package com.example.simplechess.figures;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -51,32 +51,48 @@ public class Pawn extends Figure {
         // Рассчитываем смещение по оси Y
         int dy = (isWhite ? 1 : -1);
 
-        Player thisPlayer = game.getPlayer(isWhite);
-        Player enemyPlayer = game.getPlayer(!isWhite);
-        // Если впереди нет фигур, то пешка может двигаться одну клетку
-        // Используем figureMap из класса Player
-        if (thisPlayer.getFigureMap().get(new Position(position.getRow(), position.getCol() + dy)) == null
-                && enemyPlayer.getFigureMap().get(new Position(position.getRow(), position.getCol() + dy)) == null)
-        {
-            availableMoves.add(new Position(position.getRow(), position.getCol() + dy));
+        // Если пешка находится на границе поля, то она не может двигаться
+        // Границу узнаем через класс Field и метод isInside
+        if (!game.getField().isInside(position.add(0, dy))) {
+            return availableMoves;
         }
 
-        if (!hasMoved
-                && thisPlayer.getFigureMap().get(new Position(position.getRow(), position.getCol() + 2 * dy)) == null
-                && enemyPlayer.getFigureMap().get(new Position(position.getRow(), position.getCol() + 2 * dy)) == null)
+        Player thisPlayer = game.getPlayer(isWhite);
+        Player enemyPlayer = game.getPlayer(!isWhite);
+        // Если впереди нет фигур, то пешка может двигаться
+        // на одну клетку вперед
+        if (thisPlayer.getFigure(position.add(0, dy)) == null
+                && enemyPlayer.getFigure(position.add(0, dy)) == null)
         {
-            availableMoves.add(new Position(position.getRow(), position.getCol() + 2 * dy));
+            availableMoves.add(position.add(0, dy));
         }
 
         // Если по диагонали есть фигура противника, то пешка может съесть её
-        if (enemyPlayer.getFigureMap().get(new Position(position.getRow() + 1, position.getCol() + dy)) != null)
+        if (enemyPlayer.getFigure(position.add(1, dy)) != null)
         {
-            availableMoves.add(new Position(position.getRow() + 1, position.getCol() + dy));
+            availableMoves.add(position.add(1, dy));
+        }
+        if (enemyPlayer.getFigure(position.add(-1, dy)) != null)
+        {
+            availableMoves.add(position.add(-1, dy));
         }
 
-        if (enemyPlayer.getFigureMap().get(new Position(position.getRow() - 1, position.getCol() + dy)) != null)
+
+        // Если пешка уже двигалась, то она не может двигаться на две клетки
+        if (hasMoved) {
+            return availableMoves;
+        }
+
+        // Если через одну клетку впереди есть граница поля, то пешка не может двигаться
+        if (!game.getField().isInside(position.add(0, 2 * dy))) {
+            return availableMoves;
+        }
+
+        // Если впереди нет фигур, то пешка может двигаться на две клетки
+        if (thisPlayer.getFigure(position.add(0, 2 * dy)) == null
+                && enemyPlayer.getFigure(position.add(0, 2 * dy)) == null)
         {
-            availableMoves.add(new Position(position.getRow() - 1, position.getCol() + dy));
+            availableMoves.add(position.add(0, 2 * dy));
         }
 
         return availableMoves;

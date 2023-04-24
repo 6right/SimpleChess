@@ -2,19 +2,19 @@ package com.example.simplechess.field;
 
 // Класс, хранящий количество ячеек по горизонтали и вертикали
 public class CellCounts {
-    private int xQuantity;
-    private int yQuantity;
+    private int rowQuantity;
+    private int colQuantity;
 
-    public CellCounts(int xQuantity, int yQuantity) {
-        this.xQuantity = xQuantity;
-        this.yQuantity = yQuantity;
+    public CellCounts(int rowQuantity, int colQuantity) {
+        this.rowQuantity = rowQuantity;
+        this.colQuantity = colQuantity;
     }
 
-    public int getXQuantity() {
-        return xQuantity;
+    public int getRowQuantity() {
+        return rowQuantity;
     }
 
-    public int getYQuantity() {
-        return yQuantity;
+    public int getColQuantity() {
+        return colQuantity;
     }
 }

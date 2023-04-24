@@ -1,4 +1,4 @@
-package com.example.simplechess.Figures;
+package com.example.simplechess.figures;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import com.example.simplechess.DrawingEntity;
 import com.example.simplechess.Game;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 
 public abstract class Figure extends DrawingEntity {
@@ -43,7 +42,12 @@ public abstract class Figure extends DrawingEntity {
 
     public abstract boolean canMove(Position position);
 
-    public ArrayList<Position> getAvailableMoves(Game game) { return new ArrayList<>(); };
+    public ArrayList<Position> getAvailableMoves(Game game){
+        // Возвращаем список с одной позицией, на которой находится фигура
+        ArrayList<Position> availableMoves = new ArrayList<>();
+        availableMoves.add(position);
+        return availableMoves;
+    }
 
     public void move(Position position) {
         this.position = position;

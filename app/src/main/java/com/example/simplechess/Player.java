@@ -6,7 +6,7 @@ import static com.example.simplechess.Constants.*;
 import android.content.Context;
 import android.graphics.Canvas;
 
-import com.example.simplechess.Figures.*;
+import com.example.simplechess.figures.*;
 import com.example.simplechess.field.Cell;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class Player {
     protected Figure selectedFigure = null;
     protected boolean isWhite;
-    Canvas canvas;
     Cell cell;
 
     private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
@@ -64,8 +63,8 @@ public class Player {
         );
     }
 
-    public ConcurrentHashMap<Position, Figure> getFigureMap(){
-        return figureMap;
+    public Figure getFigure(Position position){
+        return figureMap.get(position);
     }
 
     protected void draw(Canvas canvas, Field field) {
@@ -86,7 +85,8 @@ public class Player {
         }
     }
 
-    public void handleClick(Context context, Game game, int x, int y) {
+    // Если переместил фигуру, то возвращаем true
+    public boolean handleClick(Game game, int x, int y) {
         Field field = game.getField();
         int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
         int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
@@ -94,27 +94,26 @@ public class Player {
 
         if (selectedFigure == null) {
             // Если на клетке есть фигура, то выбираем её
-            if (figureMap.get(clickedPosition) != null){
+            if (getFigure(clickedPosition) != null){
                 selectFigure(clickedPosition, game);
             }
+            return false;
         } else {
             if (positionFree(clickedPosition, game) && canMoveList.contains(clickedPosition)) {
                 // Ставим фигуру в новую клетку
                 moveFigure(clickedPosition);
+                return true;
             } else {
                 // Возвращаем фигуру на старое место
                 returnFigure();
+                return false;
             }
         }
     }
 
     public void selectFigure(Position position, Game game) {
-        selectedFigure = figureMap.get(position);
-        if (selectedFigure instanceof Pawn){
-            canMoveList.addAll(selectedFigure.getAvailableMoves(game));
-        } else {
-            canMoveList.add(position);
-        }
+        selectedFigure = getFigure(position);
+        canMoveList.addAll(selectedFigure.getAvailableMoves(game));
         figureMap.remove(position);
     }
 
@@ -133,8 +132,8 @@ public class Player {
 
     // Проверка на наличие другой фигуры на клетке (схожей по цвету)
     public boolean positionFree(Position position, Game game) {
-        if (figureMap.get(position) != null
-                || game.getPlayer(!isWhite).figureMap.get(position) != null) {
+        if (getFigure(position) != null
+                || game.getPlayer(!isWhite).getFigure(position) != null) {
             return false;
         }
 
