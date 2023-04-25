@@ -20,8 +20,8 @@ public class Queen extends Figure {
     }
     @Override
     public boolean canMove(Position selectedFigure) {
-            int dx = Math.abs(position.getRow() - selectedFigure.getRow());
-            int dy = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
             if (dx == 0 || dy == 0 || dx == dy) { // если фигура Ферзь на той же вертикали, горизонтали или диагонали, что и выбранная позиция
                 return true;
         }
@@ -36,24 +36,27 @@ public class Queen extends Figure {
         Player enemyPlayer = game.getPlayer(!isWhite);
         // Проходимся по циклу позиции, которые может занять ферзь
         // Ферзь может ходить по вертикали, горизонтали и диагонали
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                Position position = new Position(i, j);
-                // Если фигура может ходить на данную позицию
-                if (canMove(position)) {
-                    // Если на данной позиции нет фигуры
-                    if (thisPlayer.getFigure(position) == null) {
-                        availableMoves.add(position);
-                    }
-                    // Если на данной позиции есть фигура
-                    else {
-                        // Если фигура противника
-                        if (enemyPlayer.getFigure(position) != null) {
-                            availableMoves.add(position);
-                        }
-                        break;
-                    }
-                }
+
+        // Проверить, что по горизонтали нет фигур
+        // Если есть фигура, то выйти из цикла
+        // Если нет фигуры, то добавить позицию в список доступных позиций
+        // Проходимся по циклу от фигуры до границы поля
+        // Фигура на (0, 3)
+        // Пешка на (2, 3)
+
+        // (1, 3)
+
+
+        for(int i = position.getRow() + 1; i < 8; i++){
+            Position checkPosition = new Position(i, position.getCol());
+            boolean hasFigure = thisPlayer.hasFigure(checkPosition);
+
+            if (hasFigure) {
+                break;
+            }
+            availableMoves.add(checkPosition);
+            if (enemyPlayer.hasFigure(checkPosition)) {
+                break;
             }
         }
 

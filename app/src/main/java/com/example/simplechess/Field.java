@@ -50,8 +50,8 @@ public class Field {
 
     // Проверка, что позиция находится внутри поля
     public boolean isInside(Position position) {
-        return position.getRow() >= 0 && position.getRow() < cellCounts.getRowQuantity() &&
-                position.getCol() >= 0 && position.getCol() < cellCounts.getColQuantity();
+        return position.getCol() >= 0 && position.getCol() < cellCounts.getRowQuantity() &&
+                position.getRow() >= 0 && position.getRow() < cellCounts.getColQuantity();
     }
 
     public Point getLeftTop() { return leftTop; }

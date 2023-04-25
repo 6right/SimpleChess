@@ -3,7 +3,6 @@ package com.example.simplechess.figures;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import com.example.simplechess.field.Cell;
 import com.example.simplechess.R;
 
 // Класс фигуры слона
@@ -19,8 +18,8 @@ public class Bishop extends Figure {
 
     @Override
     public boolean canMove(Position selectedFigure) {
-        int dx = Math.abs(position.getRow() - selectedFigure.getRow());
-        int dy = Math.abs(position.getCol() - selectedFigure.getCol());
+        int dx = Math.abs(position.getCol() - selectedFigure.getCol());
+        int dy = Math.abs(position.getRow() - selectedFigure.getRow());
         if (dx == dy) { // слон может двигаться только по диагонали, то есть dx должен быть равен dy
             return true;
         }

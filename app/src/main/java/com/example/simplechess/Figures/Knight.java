@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 
 import com.example.simplechess.Game;
 import com.example.simplechess.Player;
-import com.example.simplechess.field.Cell;
 import com.example.simplechess.R;
 
 import java.util.ArrayList;
@@ -23,8 +22,8 @@ public class Knight extends Figure {
 
     @Override
     public boolean canMove(Position selectedFigure){
-            int dx = Math.abs(position.getRow() - selectedFigure.getRow());
-            int dy = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
 
             if ((dx == 1 && dy == 2) || (dx == 2 && dy == 1)) {
                 return true; // конь может двигаться в форме буквы L
@@ -51,7 +50,7 @@ public class Knight extends Figure {
                         // Если на позиции нет фигуры или фигура противника
                         // Проверка на присутствие фигуры противника не нужна, так как
                         // присутствие или отсутствие фигуры врага не влияет на возможность хода
-                        if (thisPlayer.getFigure(newPosition) == null) {
+                        if (!thisPlayer.hasFigure(newPosition)) {
                             availableMoves.add(newPosition);
                         }
                     }

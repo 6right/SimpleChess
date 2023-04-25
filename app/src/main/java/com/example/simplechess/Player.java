@@ -24,47 +24,51 @@ public class Player {
         this.cell = cell;
         // Для расстановки фигур по y
         this.isWhite = isWhite;
-        int col;
+        int row;
 
-        col = isWhite ? 1 : 6;
+        row = isWhite ? 1 : 6;
         for (int i = 0; i < 8; i++) {
             figureMap.put(
-                    new Position(i, col),
-                    new Pawn(context, new Position(i, col), isWhite, cell.getHeight(), cell.getWidth())
+                    new Position(row, i),
+                    new Pawn(context, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth())
             );
         }
 
-        col = isWhite ? 0 : 7;
+        row = isWhite ? 0 : 7;
         for (int i = 0; i < 2; i++) {
             figureMap.put(
-                    new Position(i * 7, col),
-                    new Rook(context, new Position(i * 7, col), isWhite, cell.getHeight(), cell.getWidth())
+                    new Position(row, i * 7),
+                    new Rook(context, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth())
             );
 
             figureMap.put(
-                    new Position(i * 5 + 1, col),
-                    new Knight(context, new Position(i * 5 + 1, col), isWhite, cell.getHeight(), cell.getWidth())
+                    new Position(row, i * 5 + 1),
+                    new Knight(context, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth())
             );
 
             figureMap.put(
-                    new Position(i * 3 + 2, col),
-                    new Bishop(context, new Position(i * 3 + 2, col), isWhite, cell.getHeight(), cell.getWidth())
+                    new Position(row, i * 3 + 2),
+                    new Bishop(context, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth())
             );
         }
 
         figureMap.put(
-                new Position(3, col),
-                new Queen(context, new Position(3, col), isWhite, cell.getHeight(), cell.getWidth())
+                new Position(row, 3),
+                new Queen(context, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth())
         );
 
         figureMap.put(
-                new Position(4, col),
-                new King(context, new Position(4, col), isWhite, cell.getHeight(), cell.getWidth())
+                new Position(row, 4),
+                new King(context, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth())
         );
     }
 
     public Figure getFigure(Position position){
         return figureMap.get(position);
+    }
+
+    public boolean hasFigure(Position position){
+        return figureMap.containsKey(position);
     }
 
     protected void draw(Canvas canvas, Field field) {
@@ -78,8 +82,8 @@ public class Player {
         for (Position position : canMoveList){
             cell.draw(
                     canvas,
-                    cell.getXCoordinate(field.getLeftTop().getX(), position.getRow()),
-                    cell.getYCoordinate(field.getLeftTop().getY(), position.getCol()),
+                    cell.getXCoordinate(field.getLeftTop().getX(), position.getCol()),
+                    cell.getYCoordinate(field.getLeftTop().getY(), position.getRow()),
                     yellowPaint
             );
         }
@@ -90,11 +94,11 @@ public class Player {
         Field field = game.getField();
         int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
         int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
-        Position clickedPosition = new Position(clickedPositionRow, clickedPositionCol);
+        Position clickedPosition = new Position(clickedPositionCol, clickedPositionRow);
 
         if (selectedFigure == null) {
             // Если на клетке есть фигура, то выбираем её
-            if (getFigure(clickedPosition) != null){
+            if (hasFigure(clickedPosition)) {
                 selectFigure(clickedPosition, game);
             }
             return false;
@@ -132,8 +136,8 @@ public class Player {
 
     // Проверка на наличие другой фигуры на клетке (схожей по цвету)
     public boolean positionFree(Position position, Game game) {
-        if (getFigure(position) != null
-                || game.getPlayer(!isWhite).getFigure(position) != null) {
+        if (hasFigure(position)
+                || game.getPlayer(!isWhite).hasFigure(position)) {
             return false;
         }
 

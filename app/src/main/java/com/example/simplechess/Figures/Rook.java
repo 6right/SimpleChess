@@ -3,7 +3,6 @@ package com.example.simplechess.figures;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import com.example.simplechess.field.Cell;
 import com.example.simplechess.R;
 
 // Класс фигуры ладьи
@@ -18,8 +17,8 @@ public class Rook extends Figure {
 
     @Override
     public boolean canMove(Position selectedFigure) {
-            int dx = Math.abs(position.getRow() - selectedFigure.getRow());
-            int dy = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
             if ((dx == 0 && dy > 0) || (dx > 0 && dy == 0)) {
                 return true; // ладья может двигаться на данную позицию
         }

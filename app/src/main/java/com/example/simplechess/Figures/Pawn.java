@@ -3,7 +3,6 @@ package com.example.simplechess.figures;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import com.example.simplechess.Field;
 import com.example.simplechess.R;
 import com.example.simplechess.Player;
 import com.example.simplechess.Game;
@@ -32,8 +31,8 @@ public class Pawn extends Figure {
 
     @Override
     public boolean canMove(Position selectedFigure) {
-            int dx = Math.abs(position.getRow() - selectedFigure.getRow());
-            int dy = position.getCol() - selectedFigure.getCol();
+            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
+            int dy = position.getRow() - selectedFigure.getRow();
 
         if (dx == 0 && dy == (isWhite ? -2 : 2) && !hasMoved) {
             hasMoved = true;
@@ -61,18 +60,18 @@ public class Pawn extends Figure {
         Player enemyPlayer = game.getPlayer(!isWhite);
         // Если впереди нет фигур, то пешка может двигаться
         // на одну клетку вперед
-        if (thisPlayer.getFigure(position.add(0, dy)) == null
-                && enemyPlayer.getFigure(position.add(0, dy)) == null)
+        if (!thisPlayer.hasFigure(position.add(0, dy))
+                && !enemyPlayer.hasFigure(position.add(0, dy)))
         {
             availableMoves.add(position.add(0, dy));
         }
 
         // Если по диагонали есть фигура противника, то пешка может съесть её
-        if (enemyPlayer.getFigure(position.add(1, dy)) != null)
+        if (enemyPlayer.hasFigure(position.add(1, dy)))
         {
             availableMoves.add(position.add(1, dy));
         }
-        if (enemyPlayer.getFigure(position.add(-1, dy)) != null)
+        if (enemyPlayer.hasFigure(position.add(-1, dy)))
         {
             availableMoves.add(position.add(-1, dy));
         }
@@ -89,8 +88,8 @@ public class Pawn extends Figure {
         }
 
         // Если впереди нет фигур, то пешка может двигаться на две клетки
-        if (thisPlayer.getFigure(position.add(0, 2 * dy)) == null
-                && enemyPlayer.getFigure(position.add(0, 2 * dy)) == null)
+        if (!thisPlayer.hasFigure(position.add(0, 2 * dy))
+                && !enemyPlayer.hasFigure(position.add(0, 2 * dy)))
         {
             availableMoves.add(position.add(0, 2 * dy));
         }

@@ -33,11 +33,11 @@ public abstract class Figure extends DrawingEntity {
     }
 
     public int getXCoordinate(int leftTopX) {
-        return getXCoordinate(leftTopX, position.getRow());
+        return getXCoordinate(leftTopX, position.getCol());
     }
 
     public int getYCoordinate(int leftTopY) {
-        return getYCoordinate(leftTopY, position.getCol());
+        return getYCoordinate(leftTopY, position.getRow());
     }
 
     public abstract boolean canMove(Position position);
