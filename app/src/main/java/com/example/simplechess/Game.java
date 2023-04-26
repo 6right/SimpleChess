@@ -47,7 +47,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             surfaceHolder.addCallback(this);
         }
         context = getContext();
-        screenSize = new ScreenSize(holder.getSurfaceFrame().width(), holder.getSurfaceFrame().height());
+        screenSize = new ScreenSize(holder.getSurfaceFrame().width(),
+                holder.getSurfaceFrame().height());
         CellCounts cellCounts = new CellCounts(8, 8);
 
         field = new Field(cellCounts, screenSize);
