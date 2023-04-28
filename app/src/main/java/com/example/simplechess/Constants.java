@@ -20,6 +20,6 @@ public class Constants {
         brownPaint.setColor(Color.parseColor("#572200"));
         orangePaint.setColor(Color.parseColor("#DB9900"));
         yellowPaint.setColor(Color.parseColor("#FFFF00"));
-        yellowPaint.setAlpha(50);
+        yellowPaint.setAlpha(70);
     }
 }
