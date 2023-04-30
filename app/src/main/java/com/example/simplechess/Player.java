@@ -16,16 +16,20 @@ import java.util.ArrayList;
 public class Player {
     protected Figure selectedFigure = null;
     protected boolean isWhite;
+    protected boolean move = false;
     Cell cell;
     private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
     private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList <Position> canMoveList = new ArrayList<>();
+
+    Context context;
 
     private int id = 0;
 
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
         // Для расстановки фигур по y
+        this.context = context;
         this.isWhite = isWhite;
         int row;
         row = isWhite ? 1 : 6;
@@ -80,7 +84,11 @@ public class Player {
     }
 
     protected void draw(Canvas canvas, Field field) {
-//        readFromDatabase();
+        // Вызываем метод readData
+        if(move) {
+            readData();
+        }
+
         for (Figure figure : figureMap.values()) {
             figure.draw(
                     canvas,
@@ -133,6 +141,7 @@ public class Player {
         figureMap.put(position, selectedFigure);
         canMoveList.clear();
         selectedFigure = null;
+        move = true;
     }
 
     public void returnFigure() {
@@ -157,8 +166,10 @@ public class Player {
         }
     }
 
-//    public void readFromDatabase(){
-//        figureMap.clear();
-//        figureMap = firebaseGameManager.readData(isWhite);
-//    }
+    // Метод для чтения данных из базы данных
+    // Берем данные из базы данных и записываем в figureMap
+    public void readData(){
+        figureMap.clear();
+        figureMap = firebaseGameManager.readData(isWhite, context, cell);
+    }
 }
