@@ -5,9 +5,12 @@ import static com.example.simplechess.Constants.*;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 
+import com.example.simplechess.dataBase.FirebaseGameManager;
 import com.example.simplechess.figures.*;
 import com.example.simplechess.field.Cell;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ public class Player {
     protected Figure selectedFigure = null;
     protected boolean isWhite;
     Cell cell;
-
+    private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
     private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList <Position> canMoveList = new ArrayList<>();
 
@@ -105,6 +108,7 @@ public class Player {
         } else {
             if (positionFree(clickedPosition, game) && canMoveList.contains(clickedPosition)) {
                 // Ставим фигуру в новую клетку
+                figureMap.put(clickedPosition, selectedFigure);
                 moveFigure(clickedPosition);
                 return true;
             } else {
@@ -140,7 +144,6 @@ public class Player {
                 || game.getPlayer(!isWhite).hasFigure(position)) {
             return false;
         }
-
         return true;
     }
 }

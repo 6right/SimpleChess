@@ -6,8 +6,13 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.simplechess.dataBase.FirebaseGameManager;
 import com.example.simplechess.field.CellCounts;
 import com.example.simplechess.field.ScreenSize;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.lwjgl.system.CallbackI;
 
 public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoop gameLoop;
@@ -17,8 +22,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Player blackPlayer;
     boolean thisIsWhitePlayer = true;
     private ScreenSize screenSize;
-
-    boolean isWhiteTurn = true;
 
     public Game(Context context) {
         super(context);
@@ -69,10 +72,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         boolean retry = true;
         while (retry) {
             try {
-                gameLoop.join();
-                retry = false;
+                SurfaceHolder holder = getHolder();
+                if (holder != null) {
+                    gameLoop.join();
+                    retry = false;
+                }
             } catch (InterruptedException e) {
-                gameLoop.startLoop();// попытаться остановить поток еще раз
+                gameLoop.stopLoop();// попытаться остановить поток еще раз
             }
         }
     }
@@ -98,9 +104,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
             int x = (int) event.getX();
             int y = (int) event.getY();
             if (thisIsWhitePlayer) {
-                thisIsWhitePlayer = !whitePlayer.handleClick( this, x,y);
+                thisIsWhitePlayer = !whitePlayer.handleClick(this, x,y);
             } else {
-                thisIsWhitePlayer = blackPlayer.handleClick( this, x,y);
+                thisIsWhitePlayer = blackPlayer.handleClick(this, x,y);
             }
         }
         return super.onTouchEvent(event);

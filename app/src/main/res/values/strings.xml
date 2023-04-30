@@ -3,4 +3,5 @@
     <string name="login">Login</string>
     <string name="registration">Registration</string>
     <string name="back_to_login">Back to Login</string>
+    <string name="tap_me">Tap me</string>
 </resources>
