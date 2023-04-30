@@ -20,6 +20,7 @@ public abstract class Figure extends DrawingEntity {
     // Вкидываем сюда данные, которые нужны будут для отрисовки
     public Figure(int id, Position position, boolean isWhite, int height, int width) {
         super(height, width);
+        this.id = id;
         this.position = position;
         this.isWhite = isWhite;
     }
@@ -35,6 +36,10 @@ public abstract class Figure extends DrawingEntity {
 
     public int getId() {
         return id;
+    }
+
+    public String getIdString() {
+        return Integer.toString(id);
     }
 
     public int getXCoordinate(int leftTopX) {

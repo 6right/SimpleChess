@@ -20,47 +20,55 @@ public class Player {
     private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
     private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList <Position> canMoveList = new ArrayList<>();
+
+    private int id = 0;
+
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
         // Для расстановки фигур по y
         this.isWhite = isWhite;
         int row;
-        int id = 0;
         row = isWhite ? 1 : 6;
         for (int i = 0; i < 8; i++) {
             figureMap.put(
                     new Position(row, i),
-                    new Pawn(context, id++, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth())
+                    new Pawn(context, id, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth())
             );
+            id++;
         }
 
         row = isWhite ? 0 : 7;
         for (int i = 0; i < 2; i++) {
             figureMap.put(
                     new Position(row, i * 7),
-                    new Rook(context, ++id, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth())
+                    new Rook(context, id, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth())
             );
+            id++;
 
             figureMap.put(
                     new Position(row, i * 5 + 1),
-                    new Knight(context, ++id, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth())
+                    new Knight(context, id, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth())
             );
+            id++;
 
             figureMap.put(
                     new Position(row, i * 3 + 2),
-                    new Bishop(context, ++id, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth())
+                    new Bishop(context, id, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth())
             );
+            id++;
         }
 
         figureMap.put(
                 new Position(row, 3),
-                new Queen(context, ++id, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth())
+                new Queen(context, id, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth())
         );
+        id++;
 
         figureMap.put(
                 new Position(row, 4),
-                new King(context, ++id, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth())
+                new King(context, id, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth())
         );
+        id++;
     }
 
     public Figure getFigure(Position position){
@@ -72,6 +80,7 @@ public class Player {
     }
 
     protected void draw(Canvas canvas, Field field) {
+//        readFromDatabase();
         for (Figure figure : figureMap.values()) {
             figure.draw(
                     canvas,
@@ -147,4 +156,9 @@ public class Player {
 
         }
     }
+
+//    public void readFromDatabase(){
+//        figureMap.clear();
+//        figureMap = firebaseGameManager.readData(isWhite);
+//    }
 }

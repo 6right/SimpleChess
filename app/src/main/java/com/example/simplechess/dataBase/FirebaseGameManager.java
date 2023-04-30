@@ -26,27 +26,30 @@ public class FirebaseGameManager {
         void onDataReceived(Position position);
     }
 
+    // Записываем данные в базу данные фигур так, чтобы они не перезаписывались
+    // Также в базе данных хранится информация о том, какая это фигура и её позиция
     public void writeData(Figure figure, Position position, boolean isWhite) {
-
-                mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                mDatabaseRef.child(Integer.toString(figure.getId())).child(figure.getClass().getSimpleName()).setValue(position);
-            }
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("games").child("players").child("figures").child(figure.getIdString()).child("position").setValue(position);
+        mDatabaseRef.child("games").child("players").child("figures").child(figure.getIdString()).child("isWhite").setValue(isWhite);
+        mDatabaseRef.child("games").child("players").child("figures").child(figure.getIdString()).child("type").setValue(figure.getClass().getSimpleName());
+    }
 
         // Добавляем слушатель событий ValueEventListener к mDatabaseRef
-        public void readData(final OnDataReceivedListener listener) {
-            mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-            mDatabaseRef.child("games").child("players").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    position = dataSnapshot.getValue(Position.class);
-                    listener.onDataReceived(position);
-                }
+    public void readData(final OnDataReceivedListener listener) {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("games").child("players").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                position = dataSnapshot.getValue(Position.class);
+                listener.onDataReceived(position);
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
-        }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+    }
 }
 
