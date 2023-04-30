@@ -1,10 +1,12 @@
 package com.example.simplechess;
 
 // Импорт констанкты
+import static android.content.ContentValues.TAG;
 import static com.example.simplechess.Constants.*;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.example.simplechess.dataBase.FirebaseGameManager;
 import com.example.simplechess.figures.*;
@@ -108,7 +110,6 @@ public class Player {
 
     // Если переместил фигуру, то возвращаем true
     public boolean handleClick(Game game, int x, int y) {
-        writeToDatabase();
         Field field = game.getField();
         int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
         int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
@@ -122,6 +123,7 @@ public class Player {
         } else {
             if (positionFree(clickedPosition, game) && canMoveList.contains(clickedPosition)) {
                 moveFigure(clickedPosition);
+                readData();
                 return true;
             } else {
                 returnFigure();
@@ -134,11 +136,13 @@ public class Player {
         selectedFigure = getFigure(position);
         canMoveList.addAll(selectedFigure.getAvailableMoves(game));
         figureMap.remove(position);
+        readData();
     }
 
     public void moveFigure(Position position) {
         selectedFigure.move(position);
         figureMap.put(position, selectedFigure);
+        writeToDatabase();
         canMoveList.clear();
         selectedFigure = null;
         move = true;
@@ -162,14 +166,20 @@ public class Player {
     public void writeToDatabase(){
         for (Figure figure : figureMap.values()) {
             firebaseGameManager.writeData(figure, figure.getPosition(), isWhite);
-
         }
     }
-
     // Метод для чтения данных из базы данных
     // Берем данные из базы данных и записываем в figureMap
     public void readData(){
-        figureMap.clear();
-        figureMap = firebaseGameManager.readData(isWhite, context, cell);
+        for (Integer id : firebaseGameManager.readData().keySet()) {
+            for (Figure figure : figureMap.values()) {
+                if (figure.getId() == id) {
+                    figureMap.put(firebaseGameManager.readData().get(id), figure);
+                    figure.move(firebaseGameManager.readData().get(id));
+                    figureMap.remove(figure.getPosition());
+                }
+            }
+        }
+//        figureMap = firebaseGameManager.readData(isWhite, id);
     }
 }

@@ -28,9 +28,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class FirebaseGameManager {
-    private Position position;
-    DatabaseReference mDatabaseRef;
 
+    DatabaseReference mDatabaseRef;
+    ConcurrentHashMap<Integer, Position> databasePositions = new ConcurrentHashMap<>();
     public interface OnDataReceivedListener {
         void onDataReceived(Position position);
     }
@@ -42,12 +42,12 @@ public class FirebaseGameManager {
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("position").setValue(position);
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("isWhite").setValue(isWhite);
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("type").setValue(figure.getClass().getSimpleName());
+        Log.d("Data Saved", "Data Saved");
     }
 
    // Считываем данные из базы данных
-    public ConcurrentHashMap<Position, Figure> readData(boolean isWhite, Context context, Cell cell){
+    public ConcurrentHashMap<Integer, Position> readData(){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -56,54 +56,17 @@ public class FirebaseGameManager {
                     Position position = figureSnapshot.child("position").getValue(Position.class);
                     boolean isWhite = figureSnapshot.child("isWhite").getValue(Boolean.class);
                     int id = Integer.parseInt(figureSnapshot.getKey());
-                    switch (type) {
-                        case "Pawn":
-                            figureMap.put(
-                                    position,
-                                    new Pawn(context, id, position, isWhite, cell.getHeight(), cell.getWidth())
-                            );
-                            break;
-                        case "Rook":
-                            figureMap.put(
-                                    position,
-                                    new Rook(context, id, position, isWhite, cell.getHeight(), cell.getWidth())
-                            );
-                            break;
-                        case "Knight":
-                            figureMap.put(
-                                    position,
-                                    new Knight(context, id, position, isWhite, cell.getHeight(), cell.getWidth())
-                            );
-                            break;
-                        case "Bishop":
-                            figureMap.put(
-                                    position,
-                                    new Bishop(context, id, position, isWhite, cell.getHeight(), cell.getWidth())
-                            );
-                            break;
-                        case "Queen":
-                            figureMap.put(
-                                    position,
-                                    new Queen(context, id, position, isWhite, cell.getHeight(), cell.getWidth())
-                            );
-                            break;
-                        case "King":
-                            figureMap.put(
-                                    position,
-                                    new King(context, id, position, isWhite, cell.getHeight(), cell.getWidth())
-                            );
-                            break;
+                    databasePositions.put(id, position);
+
                     }
                 }
-            }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "Failed to read value.", error.toException());
 
             }
         });
-        return figureMap;
+        return databasePositions;
     }
 }
 
