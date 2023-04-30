@@ -107,12 +107,17 @@ public class Player {
             return false;
         } else {
             if (positionFree(clickedPosition, game) && canMoveList.contains(clickedPosition)) {
-                // Ставим фигуру в новую клетку
-                figureMap.put(clickedPosition, selectedFigure);
-                moveFigure(clickedPosition);
+                firebaseGameManager.writeData(clickedPosition);
+                firebaseGameManager.readData(new FirebaseGameManager.OnDataReceivedListener() {
+                    @Override
+                    public void onDataReceived(Position position) {
+                        if (position != null) {
+                            moveFigure(position);
+                        }
+                    }
+                });
                 return true;
             } else {
-                // Возвращаем фигуру на старое место
                 returnFigure();
                 return false;
             }

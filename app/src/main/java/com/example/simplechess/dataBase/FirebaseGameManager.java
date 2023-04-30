@@ -18,11 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 public class FirebaseGameManager {
-    private EditText editText;
-    private TextView textView;
-    private Button button;
-
-    private Position value;
+    private Position position;
     DatabaseReference mDatabaseRef;
 
     public interface OnDataReceivedListener {
@@ -33,19 +29,16 @@ public class FirebaseGameManager {
 
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
                 mDatabaseRef.child("games").child("players").setValue(position);
-                ;
             }
 
         // Добавляем слушатель событий ValueEventListener к mDatabaseRef
-        public void registerEventListener(OnDataReceivedListener listener) {
+        public void readData(final OnDataReceivedListener listener) {
             mDatabaseRef = FirebaseDatabase.getInstance().getReference();
             mDatabaseRef.child("games").child("players").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Position position = dataSnapshot.getValue(Position.class);
-                    if (position != null) {
-                        listener.onDataReceived(position);
-                    }
+                    position = dataSnapshot.getValue(Position.class);
+                    listener.onDataReceived(position);
                 }
 
                 @Override
@@ -55,3 +48,4 @@ public class FirebaseGameManager {
             });
         }
 }
+
