@@ -48,11 +48,10 @@ public class FirebaseGameManager {
    // Считываем данные из базы данных
     public ConcurrentHashMap<Integer, Position> readData(){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("games").child("players").child("false").child("figures").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot figureSnapshot : snapshot.getChildren()) {
-                    String type = figureSnapshot.child("type").getValue(String.class);
                     Position position = figureSnapshot.child("position").getValue(Position.class);
                     boolean isWhite = figureSnapshot.child("isWhite").getValue(Boolean.class);
                     int id = Integer.parseInt(figureSnapshot.getKey());
