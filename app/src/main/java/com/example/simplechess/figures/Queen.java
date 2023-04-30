@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 // Класс фигуры ферзя
 public class Queen extends Figure {
-    public Queen(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    public Queen(Context context, int id, Position position, boolean isWhite, int height, int width){
+        super(id, position,isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_qlt45 : R.drawable.chess_qdt45

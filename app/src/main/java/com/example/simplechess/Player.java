@@ -5,12 +5,10 @@ import static com.example.simplechess.Constants.*;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 
 import com.example.simplechess.dataBase.FirebaseGameManager;
 import com.example.simplechess.figures.*;
 import com.example.simplechess.field.Cell;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
@@ -22,18 +20,17 @@ public class Player {
     private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
     private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList <Position> canMoveList = new ArrayList<>();
-
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
         // Для расстановки фигур по y
         this.isWhite = isWhite;
         int row;
-
+        int id = 0;
         row = isWhite ? 1 : 6;
         for (int i = 0; i < 8; i++) {
             figureMap.put(
                     new Position(row, i),
-                    new Pawn(context, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth())
+                    new Pawn(context, id++, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth())
             );
         }
 
@@ -41,28 +38,28 @@ public class Player {
         for (int i = 0; i < 2; i++) {
             figureMap.put(
                     new Position(row, i * 7),
-                    new Rook(context, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth())
+                    new Rook(context, ++id, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth())
             );
 
             figureMap.put(
                     new Position(row, i * 5 + 1),
-                    new Knight(context, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth())
+                    new Knight(context, ++id, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth())
             );
 
             figureMap.put(
                     new Position(row, i * 3 + 2),
-                    new Bishop(context, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth())
+                    new Bishop(context, ++id, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth())
             );
         }
 
         figureMap.put(
                 new Position(row, 3),
-                new Queen(context, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth())
+                new Queen(context, ++id, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth())
         );
 
         figureMap.put(
                 new Position(row, 4),
-                new King(context, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth())
+                new King(context, ++id, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth())
         );
     }
 
@@ -94,11 +91,11 @@ public class Player {
 
     // Если переместил фигуру, то возвращаем true
     public boolean handleClick(Game game, int x, int y) {
+        writeToDatabase();
         Field field = game.getField();
         int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
         int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
         Position clickedPosition = new Position(clickedPositionCol, clickedPositionRow);
-
         if (selectedFigure == null) {
             // Если на клетке есть фигура, то выбираем её
             if (hasFigure(clickedPosition)) {
@@ -107,15 +104,7 @@ public class Player {
             return false;
         } else {
             if (positionFree(clickedPosition, game) && canMoveList.contains(clickedPosition)) {
-                firebaseGameManager.writeData(clickedPosition);
-                firebaseGameManager.readData(new FirebaseGameManager.OnDataReceivedListener() {
-                    @Override
-                    public void onDataReceived(Position position) {
-                        if (position != null) {
-                            moveFigure(position);
-                        }
-                    }
-                });
+                moveFigure(clickedPosition);
                 return true;
             } else {
                 returnFigure();
@@ -150,5 +139,12 @@ public class Player {
             return false;
         }
         return true;
+    }
+
+    public void writeToDatabase(){
+        for (Figure figure : figureMap.values()) {
+            firebaseGameManager.writeData(figure, figure.getPosition(), isWhite);
+
+        }
     }
 }

@@ -9,8 +9,8 @@ import com.example.simplechess.R;
 public class King extends Figure {
 
     private boolean hasMoved = false;
-    public King(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    public King(Context context, int id, Position position, boolean isWhite, int height, int width){
+        super(id, position,isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),

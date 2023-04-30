@@ -7,8 +7,8 @@ import com.example.simplechess.R;
 
 // Класс фигуры ладьи
 public class Rook extends Figure {
-    public Rook(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    public Rook(Context context, int id, Position position, boolean isWhite, int height, int width){
+        super(id, position,isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_rlt45 : R.drawable.chess_rdt45

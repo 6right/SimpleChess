@@ -8,8 +8,8 @@ import com.example.simplechess.R;
 // Класс фигуры слона
 public class Bishop extends Figure {
 
-    public Bishop (Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    public Bishop (Context context, int id, Position position, boolean isWhite, int height, int width){
+        super(id, position,isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_blt45 : R.drawable.chess_bdt45

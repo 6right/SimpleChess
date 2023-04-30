@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 // Класс фигуры коня
 public class Knight extends Figure {
-    public Knight(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    public Knight(Context context, int id, Position position, boolean isWhite, int height, int width){
+        super(id, position,isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),

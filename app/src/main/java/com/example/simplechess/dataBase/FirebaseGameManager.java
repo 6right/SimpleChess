@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.simplechess.figures.Figure;
 import com.example.simplechess.figures.Position;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,10 +26,10 @@ public class FirebaseGameManager {
         void onDataReceived(Position position);
     }
 
-    public void writeData(Position position) {
+    public void writeData(Figure figure, Position position, boolean isWhite) {
 
                 mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-                mDatabaseRef.child("games").child("players").setValue(position);
+                mDatabaseRef.child(Integer.toString(figure.getId())).child(figure.getClass().getSimpleName()).setValue(position);
             }
 
         // Добавляем слушатель событий ValueEventListener к mDatabaseRef

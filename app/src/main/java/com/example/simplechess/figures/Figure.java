@@ -14,10 +14,11 @@ public abstract class Figure extends DrawingEntity {
     // Для понимания какую фигуру нужно отрисовать
     protected boolean isWhite;
     // Для отрисовки, тут хранится картинка
+    protected int id;
     Bitmap bitmap;
 
     // Вкидываем сюда данные, которые нужны будут для отрисовки
-    public Figure(Position position, boolean isWhite, int height, int width) {
+    public Figure(int id, Position position, boolean isWhite, int height, int width) {
         super(height, width);
         this.position = position;
         this.isWhite = isWhite;
@@ -30,6 +31,10 @@ public abstract class Figure extends DrawingEntity {
 
     public Position getPosition() {
         return position;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getXCoordinate(int leftTopX) {
