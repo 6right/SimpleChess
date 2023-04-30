@@ -39,22 +39,22 @@ public class FirebaseGameManager {
     // Также в базе данных хранится информация о том, какая это фигура и её позиция
     public void writeData(Figure figure, Position position, boolean isWhite) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("games").child("players").child("figures").child(figure.getIdString()).child("position").setValue(position);
-        mDatabaseRef.child("games").child("players").child("figures").child(figure.getIdString()).child("isWhite").setValue(isWhite);
-        mDatabaseRef.child("games").child("players").child("figures").child(figure.getIdString()).child("type").setValue(figure.getClass().getSimpleName());
+        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("position").setValue(position);
+        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("isWhite").setValue(isWhite);
+        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("type").setValue(figure.getClass().getSimpleName());
     }
 
    // Считываем данные из базы данных
     public ConcurrentHashMap<Position, Figure> readData(boolean isWhite, Context context, Cell cell){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
-        mDatabaseRef.child("games").child("players").child("figures").addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot figureSnapshot : snapshot.getChildren()) {
                     String type = figureSnapshot.child("type").getValue(String.class);
-                    boolean isWhite = figureSnapshot.child("isWhite").getValue(Boolean.class);
                     Position position = figureSnapshot.child("position").getValue(Position.class);
+                    boolean isWhite = figureSnapshot.child("isWhite").getValue(Boolean.class);
                     int id = Integer.parseInt(figureSnapshot.getKey());
                     switch (type) {
                         case "Pawn":
