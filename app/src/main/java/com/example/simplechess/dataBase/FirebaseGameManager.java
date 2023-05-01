@@ -3,12 +3,8 @@ package com.example.simplechess.dataBase;
 import static android.content.ContentValues.TAG;
 
 import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 // Импорт Context
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 
@@ -21,20 +17,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 // Импорт фигур
-import com.example.simplechess.figures.*;
-import com.example.simplechess.field.Cell;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
 
 
 public class FirebaseGameManager {
 
     DatabaseReference mDatabaseRef;
-    ConcurrentHashMap<Integer, Position> databasePositions = new ConcurrentHashMap<>();
-    public interface OnDataReceivedListener {
-        void onDataReceived(Position position);
-    }
-
+    ArrayList<FirebaseFigure> databasePositions = new ArrayList<>();
     // Записываем данные в базу данные фигур так, чтобы они не перезаписывались
     // Также в базе данных хранится информация о том, какая это фигура и её позиция
     public void writeData(Figure figure, Position position, boolean isWhite) {
@@ -46,7 +36,7 @@ public class FirebaseGameManager {
     }
 
    // Считываем данные из базы данных
-    public ConcurrentHashMap<Integer, Position> readData(){
+    public ArrayList<FirebaseFigure> readData(){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("games").child("players").child("false").child("figures").addValueEventListener(new ValueEventListener() {
             @Override
@@ -55,8 +45,7 @@ public class FirebaseGameManager {
                     Position position = figureSnapshot.child("position").getValue(Position.class);
                     boolean isWhite = figureSnapshot.child("isWhite").getValue(Boolean.class);
                     int id = Integer.parseInt(figureSnapshot.getKey());
-                    databasePositions.put(id, position);
-
+                    databasePositions.add(new FirebaseFigure(id, position, isWhite));
                     }
                 }
             @Override

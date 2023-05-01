@@ -38,6 +38,10 @@ public abstract class Figure extends DrawingEntity {
         return id;
     }
 
+    public boolean isWhite() {
+        return isWhite;
+    }
+
     public String getIdString() {
         return Integer.toString(id);
     }
