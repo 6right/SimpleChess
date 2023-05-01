@@ -19,12 +19,14 @@ import com.google.firebase.database.ValueEventListener;
 // Импорт фигур
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 
 public class FirebaseGameManager {
 
     DatabaseReference mDatabaseRef;
     ArrayList<FirebaseFigure> databasePositions = new ArrayList<>();
+    Semaphore semaphore = new Semaphore(0);
     // Записываем данные в базу данные фигур так, чтобы они не перезаписывались
     // Также в базе данных хранится информация о том, какая это фигура и её позиция
     public void writeData(Figure figure, Position position, boolean isWhite) {

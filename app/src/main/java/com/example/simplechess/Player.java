@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.example.simplechess.dataBase.FirebaseFigure;
 import com.example.simplechess.dataBase.FirebaseFigureList;
 import com.example.simplechess.dataBase.FirebaseGameManager;
 import com.example.simplechess.figures.*;
@@ -19,14 +20,15 @@ public class Player {
     protected Figure selectedFigure = null;
     protected boolean move = false;
     private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
-
+    private FirebaseFigureList firebaseFigureList;
     private ConcurrentHashMap<Position, Figure> figureMap;
     private ArrayList <Position> canMoveList = new ArrayList<>();
     private Cell cell;
 
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
-        this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
+//        this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
+        this.firebaseFigureList = new FirebaseFigureList(context, isWhite, cell);
         }
 
     public Figure getFigure(Position position){
@@ -44,7 +46,6 @@ public class Player {
                     figure.getXCoordinate(field.getLeftTop().getX()),
                     figure.getYCoordinate(field.getLeftTop().getY())
             );
-            Log.d("TAG", "col: " + figure.getPosition().getCol());
         }
         for (Position position : canMoveList){
             cell.draw(
@@ -87,19 +88,22 @@ public class Player {
     }
 
     public void moveFigure(Position position) {
-        selectedFigure.move(position);
-        figureMap.put(position, selectedFigure);
+
+
+//        figureMap.put(position, selectedFigure);
         Log.d("TAG", "col: " + selectedFigure.getPosition().getCol());
         Log.d("TAG", "row: " + selectedFigure.getPosition().getRow());
         Log.d("TAG", "id: " + selectedFigure.getId());
 //        writeToDatabase();
         firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
+        figureMap.clear();
+        figureMap = firebaseFigureList.getFigureMap();
         canMoveList.clear();
         selectedFigure = null;
         move = true;
     }
 
-    public void returnFigure() {    
+    public void returnFigure() {
         figureMap.put(selectedFigure.getPosition(), selectedFigure);
         canMoveList.clear();
         selectedFigure = null;

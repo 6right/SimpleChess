@@ -1,6 +1,7 @@
 package com.example.simplechess.dataBase;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.simplechess.field.Cell;
 import com.example.simplechess.figures.Bishop;
@@ -36,6 +37,14 @@ public class FirebaseFigureList {
 
     public ConcurrentHashMap<Position, Figure> getFigureMap() {
         databaseMap = firebaseGameManager.readData();
+        for (FirebaseFigure firebaseFigure : databaseMap) {
+            for (Figure figure : figureMap.values()) {
+                if (firebaseFigure.getId() == figure.getId()) {
+                    figure.move(firebaseFigure.getPosition());
+                    figureMap.put(firebaseFigure.getPosition(), figure);
+                }
+            }
+        }
         return figureMap;
     }
 
