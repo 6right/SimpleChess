@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class Player {
     protected Figure selectedFigure = null;
-    protected boolean isWhite;
     protected boolean move = false;
     private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
+
     private ConcurrentHashMap<Position, Figure> figureMap;
     private ArrayList <Position> canMoveList = new ArrayList<>();
     private Cell cell;
@@ -38,13 +38,13 @@ public class Player {
     }
 
     protected void draw(Canvas canvas, Field field) {
-        // Вызываем метод readData
         for (Figure figure : figureMap.values()) {
             figure.draw(
                     canvas,
                     figure.getXCoordinate(field.getLeftTop().getX()),
                     figure.getYCoordinate(field.getLeftTop().getY())
             );
+            Log.d("TAG", "col: " + figure.getPosition().getCol());
         }
         for (Position position : canMoveList){
             cell.draw(
@@ -54,6 +54,7 @@ public class Player {
                     yellowPaint
             );
         }
+
     }
 
     // Если переместил фигуру, то возвращаем true
@@ -91,37 +92,16 @@ public class Player {
         Log.d("TAG", "col: " + selectedFigure.getPosition().getCol());
         Log.d("TAG", "row: " + selectedFigure.getPosition().getRow());
         Log.d("TAG", "id: " + selectedFigure.getId());
-        writeToDatabase();
+//        writeToDatabase();
+        firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
         canMoveList.clear();
         selectedFigure = null;
         move = true;
     }
 
-    public void returnFigure() {
+    public void returnFigure() {    
         figureMap.put(selectedFigure.getPosition(), selectedFigure);
         canMoveList.clear();
         selectedFigure = null;
     }
-
-
-    public void writeToDatabase(){
-        for (Figure figure : figureMap.values()) {
-            firebaseGameManager.writeData(figure, figure.getPosition(), isWhite);
-        }
-    }
-    // Метод для чтения данных из базы данных
-    // Берем данные из базы данных и записываем в figureMap
-//    public void readData(){
-//        for (Integer id : firebaseGameManager.readData().keySet()) {
-//            for (Figure figure : figureMap.values()) {
-//                if (figure.getId() == id && figure.isWhite()) {
-//                    figureMap.put(firebaseGameManager.readData().get(id), figure);
-//                    figure.move(firebaseGameManager.readData().get(id));
-//                    figureMap.remove(figure.getPosition());
-//                    return;
-//                }
-//            }
-//        }
-////        figureMap = firebaseGameManager.readData(isWhite, id);
-//    }
 }

@@ -20,22 +20,21 @@ public class FirebaseFigureList {
     private boolean isWhite;
     private int id = 0;
     Context context;
+    FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
 
     private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList<FirebaseFigure> databaseMap = new ArrayList<>();
 
     public FirebaseFigureList(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
-        // Для расстановки фигур по y
         this.context = context;
         this.isWhite = isWhite;
 
         fillTheField();
+        fillTheDatabaseFigures();
     }
 
-
     public ConcurrentHashMap<Position, Figure> getFigureMap() {
-        FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
         databaseMap = firebaseGameManager.readData();
         return figureMap;
     }
@@ -43,6 +42,12 @@ public class FirebaseFigureList {
     public ConcurrentHashMap<Position, Figure> synchronizeHashMap() {
 
         return figureMap;
+    }
+
+    public void fillTheDatabaseFigures(){
+        for (Figure figure : figureMap.values()) {
+            firebaseGameManager.writeData(figure, figure.getPosition(), isWhite);
+        }
     }
 
     public void fillTheField() {
