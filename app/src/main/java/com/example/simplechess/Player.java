@@ -84,17 +84,12 @@ public class Player {
     public void selectFigure(Position position, Game game) {
         selectedFigure = getFigure(position);
         canMoveList.addAll(selectedFigure.getAvailableMoves(game));
+        firebaseGameManager.deleteFigure(selectedFigure.getId(), selectedFigure.isWhite());
         figureMap.remove(position);
     }
 
     public void moveFigure(Position position) {
-
-
 //        figureMap.put(position, selectedFigure);
-        Log.d("TAG", "col: " + selectedFigure.getPosition().getCol());
-        Log.d("TAG", "row: " + selectedFigure.getPosition().getRow());
-        Log.d("TAG", "id: " + selectedFigure.getId());
-//        writeToDatabase();
         firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
         figureMap = firebaseFigureList.getFigureMap();
         canMoveList.clear();
@@ -104,6 +99,7 @@ public class Player {
 
     public void returnFigure() {
         figureMap.put(selectedFigure.getPosition(), selectedFigure);
+        firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
         canMoveList.clear();
         selectedFigure = null;
     }
