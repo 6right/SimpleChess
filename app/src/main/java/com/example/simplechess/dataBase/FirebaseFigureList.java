@@ -31,10 +31,11 @@ public class FirebaseFigureList {
         this.context = context;
         this.isWhite = isWhite;
 
+        firebaseGameManager.clearDatabase();
         fillTheField();
         fillTheDatabase();
         fillTheDatabaseFigures();
-        firebaseGameManager.readData();
+        firebaseGameManager.readData(isWhite);
     }
 
     private void fillTheDatabase() {
@@ -47,17 +48,13 @@ public class FirebaseFigureList {
         databaseMap = firebaseGameManager.getDatabasePositions();
         for (FirebaseFigure firebaseFigure : databaseMap) {
             for (Figure figure : figureMap.values()) {
-                if (firebaseFigure.getId() == figure.getId()) {
+                if (firebaseFigure.equals(figure)) {
                     figure.move(firebaseFigure.getPosition());
+                    figureMap.remove(figure.getPosition());
                     figureMap.put(firebaseFigure.getPosition(), figure);
                 }
             }
         }
-        return figureMap;
-    }
-
-    public ConcurrentHashMap<Position, Figure> synchronizeHashMap() {
-
         return figureMap;
     }
 

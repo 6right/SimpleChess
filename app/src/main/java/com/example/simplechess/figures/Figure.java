@@ -7,6 +7,7 @@ import com.example.simplechess.DrawingEntity;
 import com.example.simplechess.Game;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public abstract class Figure extends DrawingEntity {
     // Позиция фигуры на доске
@@ -65,5 +66,17 @@ public abstract class Figure extends DrawingEntity {
 
     public void move(Position position) {
         this.position = position;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Figure)) {
+            return false;
+        }
+        Figure figure = (Figure) obj;
+        return this.id == figure.getId() && this.isWhite == figure.isWhite();
     }
 }

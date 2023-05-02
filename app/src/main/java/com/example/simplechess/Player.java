@@ -6,6 +6,7 @@ import static com.example.simplechess.Constants.*;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.SurfaceView;
 
 import com.example.simplechess.dataBase.FirebaseFigure;
 import com.example.simplechess.dataBase.FirebaseFigureList;
@@ -22,24 +23,26 @@ public class Player {
     private FirebaseGameManager firebaseGameManager = new FirebaseGameManager();
     private FirebaseFigureList firebaseFigureList;
     private ConcurrentHashMap<Position, Figure> figureMap;
-    private ArrayList <Position> canMoveList = new ArrayList<>();
+    private ArrayList<Position> canMoveList = new ArrayList<>();
     private Cell cell;
 
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
         this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
         this.firebaseFigureList = new FirebaseFigureList(context, isWhite, cell);
-        }
+    }
 
-    public Figure getFigure(Position position){
+    public Figure getFigure(Position position) {
         return figureMap.get(position);
     }
 
-    public boolean hasFigure(Position position){
+    public boolean hasFigure(Position position) {
         return figureMap.containsKey(position);
     }
 
     protected void draw(Canvas canvas, Field field) {
+        setNewPosition();
+        Log.d("Player", "draw: " + figureMap.size());
         for (Figure figure : figureMap.values()) {
             figure.draw(
                     canvas,
@@ -47,7 +50,7 @@ public class Player {
                     figure.getYCoordinate(field.getLeftTop().getY())
             );
         }
-        for (Position position : canMoveList){
+        for (Position position : canMoveList) {
             cell.draw(
                     canvas,
                     cell.getXCoordinate(field.getLeftTop().getX(), position.getCol()),
@@ -85,16 +88,17 @@ public class Player {
         selectedFigure = getFigure(position);
         canMoveList.addAll(selectedFigure.getAvailableMoves(game));
         firebaseGameManager.deleteFigure(selectedFigure.getId(), selectedFigure.isWhite());
-        figureMap.remove(position);
+//        figureMap.remove(position);
     }
 
     public void moveFigure(Position position) {
-//        figureMap.put(position, selectedFigure);
+        selectedFigure.move(position);
         firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
-        figureMap = firebaseFigureList.getFigureMap();
+        setNewPosition();
         canMoveList.clear();
         selectedFigure = null;
         move = true;
+
     }
 
     public void returnFigure() {
@@ -102,5 +106,18 @@ public class Player {
         firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
         canMoveList.clear();
         selectedFigure = null;
+    }
+
+    public void setNewPosition(){
+        for (Figure figure : figureMap.values()) {
+            for (Figure figure1 : firebaseFigureList.getFigureMap().values()) {
+                if (figure.equals(figure1)) {
+                    if(!figure.getPosition().equals(figure1.getPosition())) {
+                        figureMap.remove(figure.getPosition());
+                        figureMap.put(figure1.getPosition(), figure);
+                    }
+                }
+            }
+        }
     }
 }

@@ -32,15 +32,15 @@ public class FirebaseGameManager {
     public void writeData(Figure figure, Position position, boolean isWhite) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("position").setValue(position);
-        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("isWhite").setValue(isWhite);
+        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("isWhite").setValue(figure.isWhite());
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(figure.getIdString()).child("type").setValue(figure.getClass().getSimpleName());
         Log.d("Data Saved", "Data Saved");
     }
 
    // Считываем данные из базы данных
-    public void readData(){
+    public void readData(boolean isWhite){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot figureSnapshot : snapshot.getChildren()) {
@@ -48,8 +48,8 @@ public class FirebaseGameManager {
                     boolean isWhite = figureSnapshot.child("isWhite").getValue(Boolean.class);
                     int id = Integer.parseInt(figureSnapshot.getKey());
                     databasePositions.add(new FirebaseFigure(id, position, isWhite));
-                    }
                 }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "Failed to read value.", error.toException());
@@ -63,6 +63,12 @@ public class FirebaseGameManager {
     public void deleteFigure(int id, boolean isWhite) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child(Integer.toString(id)).removeValue();
+    }
+
+    public void clearDatabase(){
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("games").child("players").child("true").child("figures").removeValue();
+        mDatabaseRef.child("games").child("players").child("false").child("figures").removeValue();
     }
 }
 
