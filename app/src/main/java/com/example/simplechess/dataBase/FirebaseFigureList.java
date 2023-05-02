@@ -32,11 +32,19 @@ public class FirebaseFigureList {
         this.isWhite = isWhite;
 
         fillTheField();
+        fillTheDatabase();
         fillTheDatabaseFigures();
+        firebaseGameManager.readData();
+    }
+
+    private void fillTheDatabase() {
+        for (Figure figure : figureMap.values()) {
+            firebaseGameManager.writeData(figure, figure.getPosition(), isWhite);
+        }
     }
 
     public ConcurrentHashMap<Position, Figure> getFigureMap() {
-        databaseMap = firebaseGameManager.readData();
+        databaseMap = firebaseGameManager.getDatabasePositions();
         for (FirebaseFigure firebaseFigure : databaseMap) {
             for (Figure figure : figureMap.values()) {
                 if (firebaseFigure.getId() == figure.getId()) {

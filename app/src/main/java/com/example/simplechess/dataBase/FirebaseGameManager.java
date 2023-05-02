@@ -38,7 +38,7 @@ public class FirebaseGameManager {
     }
 
    // Считываем данные из базы данных
-    public ArrayList<FirebaseFigure> readData(){
+    public void readData(){
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("games").child("players").child("false").child("figures").addValueEventListener(new ValueEventListener() {
             @Override
@@ -53,9 +53,10 @@ public class FirebaseGameManager {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "Failed to read value.", error.toException());
-
             }
         });
+    }
+    public ArrayList<FirebaseFigure> getDatabasePositions() {
         return databasePositions;
     }
 }

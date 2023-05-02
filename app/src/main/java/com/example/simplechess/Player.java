@@ -27,7 +27,7 @@ public class Player {
 
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
-//        this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
+        this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
         this.firebaseFigureList = new FirebaseFigureList(context, isWhite, cell);
         }
 
@@ -96,7 +96,6 @@ public class Player {
         Log.d("TAG", "id: " + selectedFigure.getId());
 //        writeToDatabase();
         firebaseGameManager.writeData(selectedFigure, selectedFigure.getPosition(), selectedFigure.isWhite());
-        figureMap.clear();
         figureMap = firebaseFigureList.getFigureMap();
         canMoveList.clear();
         selectedFigure = null;
