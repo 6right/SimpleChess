@@ -10,11 +10,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public abstract class Figure extends DrawingEntity {
-    // Позиция фигуры на доске
     protected Position position;
-    // Для понимания какую фигуру нужно отрисовать
     protected boolean isWhite;
-    // Для отрисовки, тут хранится картинка
     protected int id;
     Bitmap bitmap;
 
@@ -55,14 +52,14 @@ public abstract class Figure extends DrawingEntity {
         return getYCoordinate(leftTopY, position.getRow());
     }
 
-    public abstract boolean canMove(Position position);
-
-    public ArrayList<Position> getAvailableMoves(Game game){
-        // Возвращаем список с одной позицией, на которой находится фигура
-        ArrayList<Position> availableMoves = new ArrayList<>();
-        availableMoves.add(position);
-        return availableMoves;
-    }
+//    public abstract boolean canMove(Position position);
+//
+//    public ArrayList<Position> getAvailableMoves(Game game){
+//        // Возвращаем список с одной позицией, на которой находится фигура
+//        ArrayList<Position> availableMoves = new ArrayList<>();
+//        availableMoves.add(position);
+//        return availableMoves;
+//    }
 
     public void move(Position position) {
         this.position = position;
