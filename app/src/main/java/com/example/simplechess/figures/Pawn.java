@@ -12,13 +12,18 @@ import java.util.ArrayList;
 // Класс фигуры пешки
 public class Pawn extends Figure {
     private boolean hasMoved = false;
-    public Pawn(Context context, int id, Position position, boolean isWhite, int height, int width){
-        super(id, position,isWhite, height, width);
+    public Pawn(Context context,Position position, boolean isWhite, int height, int width){
+        super(position, isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_plt45 : R.drawable.chess_pdt45
         );
+    }
+
+    @Override
+    public boolean canMove(Position position) {
+        return true;
     }
 
     @Override

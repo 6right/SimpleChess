@@ -1,15 +1,12 @@
 package com.example.simplechess;
 
 // Импорт констанкты
-import static com.example.simplechess.Constants.*;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
-import android.view.SurfaceView;
 
-import com.example.simplechess.dataBase.FirebaseFigure;
 import com.example.simplechess.dataBase.FirebaseGameManager;
+import com.example.simplechess.dataBase.FirebaseWriter;
 import com.example.simplechess.figures.*;
 import com.example.simplechess.field.Cell;
 
@@ -18,20 +15,21 @@ import java.util.ArrayList;
 
 public class Player {
     protected Figure selectedFigure = null;
+    protected Position selectedPosition = null;
     protected boolean move = false;
 //    private FirebaseFigureList firebaseFigureList;
-    private ConcurrentHashMap<Integer, Figure> figureMap = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList<Position> canMoveList = new ArrayList<>();
     private Cell cell;
     private Context context;
-    ;
-//    Pawn pawn = new Pawn(context, 0, new Position(3,3), true, cell.getHeight(), cell.getWidth());
-
+    private FirebaseWriter firebaseWriter = new FirebaseWriter();
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
         this.context = context;
-        figureMap.put(0, new Pawn(context, 0, new Position(3,3), true, cell.getHeight(), cell.getWidth()));
+        figureMap.put(new Position(0,0), new Pawn(context,new Position(0,0), true, cell.getHeight(), cell.getWidth()));
+//        firebaseWriter.writeDataFrom(new Position(0,0), new Position(0,0));
         new FirebaseGameManager(figureMap);
+
 
 //        this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
 //        this.firebaseFigureList = new FirebaseFigureList(context, isWhite, cell);
@@ -66,37 +64,42 @@ public class Player {
     }
 
     // Если переместил фигуру, то возвращаем true
-    public boolean handleClick(Game game, int x, int y) {
+    public void handleClick(Game game, int x, int y) {
         Field field = game.getField();
         int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
         int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
         Position clickedPosition = new Position(clickedPositionCol, clickedPositionRow);
-        if (selectedFigure == null) {
-            // Если на клетке есть фигура, то выбираем её
-            if (hasFigure(clickedPosition)) {
-                selectFigure(clickedPosition, game);
-            }
-            return false;
+
+
+        if (selectedPosition == null) {
+            selectedPosition = clickedPosition;
         } else {
-            if (canMoveList.contains(clickedPosition)) {
-                moveFigure(clickedPosition);
-                return true;
-            } else {
-                returnFigure();
-                return false;
-            }
+            firebaseWriter.writeDataFrom(selectedPosition, clickedPosition);
         }
+            // Если на клетке есть фигура, то выбираем её
+//            if (hasFigure(clickedPosition)) {
+//                selectFigure(clickedPosition, game);
+//            }
+//            return false;
+//        } else {
+//            if (canMoveList.contains(clickedPosition)) {
+////                moveFigure(clickedPosition);
+//                return true;
+//            } else {
+//                returnFigure();
+//                return false;
+//            }
+//        }
     }
 
     public void selectFigure(Position position, Game game) {
         selectedFigure = getFigure(position);
-//        canMoveList.addAll(selectedFigure.getAvailableMoves(game));
-//        firebaseGameManager.deleteFigure(selectedFigure.getId(), selectedFigure.isWhite());
-//        figureMap.remove(position);
+        canMoveList.addAll(selectedFigure.getAvailableMoves(game));
+        figureMap.remove(position);
     }
 
     public void moveFigure(Position position) {
-        selectedFigure.move(position);
+//        selectedFigure.move(position);
 //        setNewPosition();
         canMoveList.clear();
         selectedFigure = null;

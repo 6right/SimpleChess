@@ -16,16 +16,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class FirebaseGameManager {
 
-    ConcurrentHashMap<Integer, Figure> figureMap;
+    ConcurrentHashMap<Position, Figure> figureMap;
     DatabaseReference mDatabaseRef;
-    public FirebaseGameManager(ConcurrentHashMap<Integer, Figure> figureMap){
+    public FirebaseGameManager(ConcurrentHashMap<Position, Figure> figureMap){
         this.figureMap = figureMap;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Position value = snapshot.getValue(Position.class);
-                setPosition(value);
+                Position from = snapshot.child("from").getValue(Position.class);
+                Position to = snapshot.child("to").getValue(Position.class);
+
+                setPosition(from, to);
             }
 
             @Override
@@ -35,12 +37,14 @@ public class FirebaseGameManager {
         });
     }
 
-    public Figure getFigure(Integer position) {
+    public Figure getFigure(Position position) {
         return figureMap.get(position);
     }
-    private void setPosition(Position value) {
-        getFigure(0).move(value);
+    private void setPosition(Position from, Position to) {
+        getFigure(from).move(to);
     }
+
+
 
 //    public void fillTheField() {
 //        int row;
