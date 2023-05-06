@@ -23,4 +23,9 @@ public class FirebaseWriter {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("to").setValue(clickedPosition);
     }
+    public void removeData(){
+mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("users").child("from").removeValue();
+        mDatabaseRef.child("users").child("to").removeValue();
+    }
 }
