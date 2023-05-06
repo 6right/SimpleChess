@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Rook extends Figure {
     private boolean hasMoved = false;
 
-    public Rook(Context context, Position position, boolean isWhite, int height, int width) {
-        super(position, isWhite, height, width);
+    public Rook(Context context, boolean isWhite, int height, int width) {
+        super(isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_rlt45 : R.drawable.chess_rdt45
@@ -26,7 +26,7 @@ public class Rook extends Figure {
     }
 
     @Override
-    public ArrayList<Position> getAvailableMoves(Game game) {
+    public ArrayList<Position> getAvailableMoves(Game game, Position position) {
         ArrayList<Position> availableMoves = new ArrayList<>();
 
         // Цикл для движения ладьи вверх
@@ -36,7 +36,7 @@ public class Rook extends Figure {
                 break;  // Выйти из цикла, если вышли за границы поля
             }
             Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
-            if (figure != null) {
+            if (!game.getPlayer(isWhite).hasFigure(newPosition)) {
                 if (figure.isWhite() != isWhite) {
                     availableMoves.add(newPosition);
                 }

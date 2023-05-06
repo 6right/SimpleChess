@@ -12,15 +12,15 @@ import java.util.ArrayList;
 // Класс фигуры слона
 public class Bishop extends Figure {
 
-    public Bishop(Context context, Position position, boolean isWhite, int height, int width) {
-        super(position, isWhite, height, width);
+    public Bishop(Context context, boolean isWhite, int height, int width) {
+        super(isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_blt45 : R.drawable.chess_bdt45
         );
     }
 
-    public ArrayList<Position> getAvailableMoves(Game game) {
+    public ArrayList<Position> getAvailableMoves(Game game, Position position) {
         ArrayList<Position> availableMoves = new ArrayList<>();
         Player thisPlayer = game.getPlayer(isWhite);
         Player enemyPlayer = game.getPlayer(!isWhite);

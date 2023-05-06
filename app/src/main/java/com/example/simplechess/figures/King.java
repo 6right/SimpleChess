@@ -13,8 +13,8 @@ public class King extends Figure {
 
     private boolean hasMoved = false;
 
-    public King(Context context, Position position, boolean isWhite, int height, int width) {
-        super(position, isWhite, height, width);
+    public King(Context context, boolean isWhite, int height, int width) {
+        super(isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
@@ -26,7 +26,7 @@ public class King extends Figure {
         this.hasMoved = hasMoved;
     }
 
-    public ArrayList<Position> getAvailableMoves(Game game) {
+    public ArrayList<Position> getAvailableMoves(Game game, Position position) {
         ArrayList<Position> availableMoves = new ArrayList<>();
         // Расчитываем возможные ходы короля
         for (int dx = -1; dx <= 1; dx++) {
