@@ -21,6 +21,8 @@ public class FirebaseGameManager {
     public FirebaseGameManager(ArrayList<Figure> figureList){
         this.figureList = figureList;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        // Этот объект нужен, чтобы мы меняли координаты фигуры, только после того, как поменяется данные to В базе.
+        // Предотвращает перестановку фигуры на To, при первом клике на нее (был баг)
         previousToPosition = new Position(5, 5);
         mDatabaseRef.child("users").addValueEventListener(new ValueEventListener() {
             @Override
