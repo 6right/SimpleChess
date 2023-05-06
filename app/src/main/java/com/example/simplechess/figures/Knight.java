@@ -21,17 +21,6 @@ public class Knight extends Figure {
     }
 
     @Override
-    public boolean canMove(Position selectedFigure){
-            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
-            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
-
-            if ((dx == 1 && dy == 2) || (dx == 2 && dy == 1)) {
-                return true; // конь может двигаться в форме буквы L
-        }
-            return false; // конь не может двигаться на данную позицию
-    }
-
-    @Override
     public ArrayList<Position> getAvailableMoves(Game game){
         ArrayList<Position> availableMoves = new ArrayList<>();
 

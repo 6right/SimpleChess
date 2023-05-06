@@ -88,13 +88,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         field.draw(canvas);
-//        if (thisIsWhitePlayer) {
             whitePlayer.draw(canvas, field);
-//            blackPlayer.draw(canvas, field);
-//        } else {
-//            blackPlayer.draw(canvas, field);
-//            whitePlayer.draw(canvas, field);
-//        }
+            blackPlayer.draw(canvas, field);
     }
 
     // Метод, который вызывается при нажатии на экран

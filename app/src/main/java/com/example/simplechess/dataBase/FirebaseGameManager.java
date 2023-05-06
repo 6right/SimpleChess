@@ -4,8 +4,10 @@ package com.example.simplechess.dataBase;
 import androidx.annotation.NonNull;
 
 import com.example.simplechess.figures.Figure;
+import com.example.simplechess.figures.King;
 import com.example.simplechess.figures.Pawn;
 import com.example.simplechess.figures.Position;
+import com.example.simplechess.figures.Rook;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,6 +57,12 @@ public class FirebaseGameManager {
         if (figure != null) {
             if (figure instanceof Pawn && !from.equals(to)) {
                 ((Pawn) figure).setHasMoved(true);
+                figure.move(to);
+            } else if (figure instanceof King && !from.equals(to)) {
+                ((King) figure).setHasMoved(true);
+                figure.move(to);
+            } else if (figure instanceof Rook && !from.equals(to)) {
+                ((Rook) figure).setHasMoved(true);
                 figure.move(to);
             } else {
                 figure.move(to);

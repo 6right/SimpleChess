@@ -3,25 +3,96 @@ package com.example.simplechess.figures;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
+import com.example.simplechess.Game;
 import com.example.simplechess.R;
 
+import java.util.ArrayList;
+
 // Класс фигуры ладьи
+
 public class Rook extends Figure {
-    public Rook(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    private boolean hasMoved = false;
+
+    public Rook(Context context, Position position, boolean isWhite, int height, int width) {
+        super(position, isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_rlt45 : R.drawable.chess_rdt45
         );
     }
 
+    public void setHasMoved (boolean hasMoved){
+        this.hasMoved = hasMoved;
+    }
+
     @Override
-    public boolean canMove(Position selectedFigure) {
-            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
-            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
-            if ((dx == 0 && dy > 0) || (dx > 0 && dy == 0)) {
-                return true; // ладья может двигаться на данную позицию
+    public ArrayList<Position> getAvailableMoves(Game game) {
+        ArrayList<Position> availableMoves = new ArrayList<>();
+
+        // Цикл для движения ладьи вверх
+        for (int dy = 1; dy < 8; dy++) {
+            Position newPosition = position.add(0, dy);
+            if (!game.getField().isInside(newPosition)) {
+                break;  // Выйти из цикла, если вышли за границы поля
+            }
+            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
+            if (figure != null) {
+                if (figure.isWhite() != isWhite) {
+                    availableMoves.add(newPosition);
+                }
+                break;  // Выйти из цикла, если встретили фигуру
+            }
+            availableMoves.add(newPosition);
         }
-        return false; // ладья не может двигаться на данную позицию
+
+        // Цикл для движения ладьи вниз
+        for (int dy = -1; dy > -8; dy--) {
+            Position newPosition = position.add(0, dy);
+            if (!game.getField().isInside(newPosition)) {
+                break;
+            }
+            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
+            if (figure != null) {
+                if (figure.isWhite() != isWhite) {
+                    availableMoves.add(newPosition);
+                }
+                break;
+            }
+            availableMoves.add(newPosition);
+        }
+
+        // Цикл для движения ладьи вправо
+        for (int dx = 1; dx < 8; dx++) {
+            Position newPosition = position.add(dx, 0);
+            if (!game.getField().isInside(newPosition)) {
+                break;
+            }
+            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
+            if (figure != null) {
+                if (figure.isWhite() != isWhite) {
+                    availableMoves.add(newPosition);
+                }
+                break;
+            }
+            availableMoves.add(newPosition);
+        }
+
+        // Цикл для движения ладьи влево
+        for (int dx = -1; dx > -8; dx--) {
+            Position newPosition = position.add(dx, 0);
+            if (!game.getField().isInside(newPosition)) {
+                break;
+            }
+            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
+            if (figure != null) {
+                if (figure.isWhite() != isWhite) {
+                    availableMoves.add(newPosition);
+                }
+                break;
+            }
+            availableMoves.add(newPosition);
+        }
+
+        return availableMoves;
     }
 }

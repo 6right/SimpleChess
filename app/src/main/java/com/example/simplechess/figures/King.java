@@ -3,7 +3,10 @@ package com.example.simplechess.figures;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
+import com.example.simplechess.Game;
 import com.example.simplechess.R;
+
+import java.util.ArrayList;
 
 // Класс фигуры короля
 public class King extends Figure {
@@ -18,33 +21,39 @@ public class King extends Figure {
         );
     }
 
-    @Override
-    public boolean canMove(Position selectedFigure){
-            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
-            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
-
-            if (dx <= 1 && dy <= 1) {
-                hasMoved = true;
-                return true; // король может двигаться на одну клетку в любом направлении
+    public void setHasMoved ( boolean hasMoved){
+        this.hasMoved = hasMoved;
+    }
+    public ArrayList<Position> getAvailableMoves(Game game) {
+        ArrayList<Position> availableMoves = new ArrayList<>();
+        // Расчитываем возможные ходы короля
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                // Если король находится на границе поля, то он не может двигаться
+                // Границу узнаем через класс Field и метод isInside
+                if (!game.getField().isInside(position.add(dx, dy))) {
+                    continue;
+                }
+                // Получаем фигуру на позиции
+                Figure figure = game.getPlayer(isWhite).getFigure(position.add(dx, dy));
+                // Если фигура на позиции есть
+                if (figure != null) {
+                    // Если фигура того же цвета, что и король, то король не может двигаться
+                    if (figure.isWhite() == isWhite) {
+                        continue;
+                    }
+                }
+                // Если фигуры на позиции нет, то король может двигаться
+                availableMoves.add(position.add(dx, dy));
             }
+        }
 
-            // Проверяем возможность рокировки для короля
-//            if (!hasMoved) {
-//                int y = selectedFigure.getY();
-//                if ((position.getX() == 2 && position.getY() == y) // Короткая рокировка
-//                        && game.getFigureAtPosition(new Position(3, y)) == null
-//                        && game.getFigureAtPosition(new Position(2, y)) == null
-//                        && game.getFigureAtPosition(new Position(1, y)) instanceof Rook
-//                        && !game.getFigureAtPosition(new Position(1, y)).isMoved()) {
-//                    return true;
-//                } else if ((position.getX() == 6 && position.getY() == y) // Длинная рокировка
-//                        && game.getFigureAtPosition(new Position(5, y)) == null
-//                        && game.getFigureAtPosition(new Position(6, y)) == null
-//                        && game.getFigureAtPosition(new Position(7, y)) instanceof Rook
-//                        && !game.getFigureAtPosition(new Position(7, y)).isMoved()) {
-//                    return true;
-//                }
-//            }
-            return false; // король не может двигаться на данную позицию
+        // Рокировка
+        // Проверяем, что на пути к Ладье нет фигур
+        // Проверяем, что король и ладья не двигались
+        // Проверяем, что король не находится под шахом
+
+
+        return availableMoves;
     }
 }

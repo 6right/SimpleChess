@@ -18,15 +18,6 @@ public class Queen extends Figure {
                 isWhite ? R.drawable.chess_qlt45 : R.drawable.chess_qdt45
         );
     }
-    @Override
-    public boolean canMove(Position selectedFigure) {
-            int dx = Math.abs(position.getCol() - selectedFigure.getCol());
-            int dy = Math.abs(position.getRow() - selectedFigure.getRow());
-            if (dx == 0 || dy == 0 || dx == dy) { // если фигура Ферзь на той же вертикали, горизонтали или диагонали, что и выбранная позиция
-                return true;
-        }
-        return false; // фигура Ферзь не может двигаться на данную позицию
-    }
 
     // TODO Переделать
     @Override

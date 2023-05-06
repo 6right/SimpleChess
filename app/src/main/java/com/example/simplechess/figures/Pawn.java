@@ -31,21 +31,6 @@ public class Pawn extends Figure {
     }
 
     @Override
-    public boolean canMove(Position selectedFigure) {
-        int dx = Math.abs(position.getCol() - selectedFigure.getCol());
-        int dy = position.getRow() - selectedFigure.getRow();
-
-        if (dx == 0 && dy == (isWhite ? -2 : 2) && !hasMoved) {
-            hasMoved = true;
-            return true; // пешка может двигаться на две клетки вперед только на первом ходу
-        } else if ((dy == 1 && !isWhite) || (dy == -1 && isWhite)) {
-            hasMoved = true;
-            return dx == 0; // пешка может двигаться на одну клетку вперед
-        }
-        return false; // пешка не может двигаться на данную позицию
-    }
-
-    @Override
     public ArrayList<Position> getAvailableMoves(Game game) {
         ArrayList<Position> availableMoves = new ArrayList<>();
         // Рассчитываем смещение по оси Y

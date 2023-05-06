@@ -41,8 +41,6 @@ public abstract class Figure extends DrawingEntity {
         return getYCoordinate(leftTopY, position.getRow());
     }
 
-    public abstract boolean canMove(Position position);
-
     public ArrayList<Position> getAvailableMoves(Game game){
         // Возвращаем список с одной позицией, на которой находится фигура
         ArrayList<Position> availableMoves = new ArrayList<>();
