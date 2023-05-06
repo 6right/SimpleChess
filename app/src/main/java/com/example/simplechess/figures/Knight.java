@@ -57,7 +57,6 @@ public class Knight extends Figure {
                 }
             }
         }
-
         return availableMoves;
     }
 }

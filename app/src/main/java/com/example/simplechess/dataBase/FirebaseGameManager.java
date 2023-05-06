@@ -17,15 +17,20 @@ public class FirebaseGameManager {
 
     ArrayList<Figure> figureList;
     DatabaseReference mDatabaseRef;
+    Position previousToPosition;
     public FirebaseGameManager(ArrayList<Figure> figureList){
         this.figureList = figureList;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        previousToPosition = new Position(5, 5);
         mDatabaseRef.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Position from = snapshot.child("from").getValue(Position.class);
                 Position to = snapshot.child("to").getValue(Position.class);
-                setPosition(from, to);
+                if (!to.equals(previousToPosition)) {
+                    setPosition(from, to);
+                    previousToPosition = to;
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

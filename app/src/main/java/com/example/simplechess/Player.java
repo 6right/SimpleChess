@@ -34,7 +34,7 @@ public class Player {
         // Не придумал пока как нам при инициализации игры, убирать данные из дб
         // Создал метод removeData, но он пока вызывает ошибку при 1м ходе
         // Если при инициализации указывать позицию внутри поля, то при 1м ходе, фигурка будет вставать на эту позицию
-        firebaseWriter.writeDataFromTo(new Position(9, 9), new Position(9, 9));
+        firebaseWriter.writeDataFromTo(new Position(5, 5), new Position(5, 5));
         fillTheField();
         new FirebaseGameManager(figureList);
     }
@@ -66,26 +66,24 @@ public class Player {
                     yellowPaint
             );
         }
-
     }
 
     public void handleClick(Game game, int x, int y) {
         Field field = game.getField();
-        int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
-        int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
-        Position clickedPosition = new Position(clickedPositionCol, clickedPositionRow);
+        int clickedPositionСol = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
+        int clickedPositionRow = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
+        Position clickedPosition = new Position(clickedPositionRow, clickedPositionСol);
 
         if (selectedFigure == null) {
             if (hasFigure(clickedPosition)) {
                 selectFigure(clickedPosition, game);
-                firebaseWriter.writeDataFrom(clickedPosition);
             }
         } else {
             if (canMoveList.contains(clickedPosition)) {
                 moveFigure(clickedPosition);
-                firebaseWriter.writeDataTo(clickedPosition);
+//                firebaseWriter.writeDataTo(clickedPosition);
             } else {
-                //                returnFigure();
+                returnFigure();
             }
         }
     }
@@ -95,6 +93,7 @@ public class Player {
         for (Figure figure : figureList) {
             if (figure.getPosition().equals(position)) {
                 hasFigure = true;
+                break;
             }
         }
         return hasFigure;
@@ -102,24 +101,24 @@ public class Player {
 
     public void selectFigure(Position position, Game game) {
         selectedFigure = getFigure(position);
+        firebaseWriter.writeDataFrom(position);
         canMoveList.addAll(selectedFigure.getAvailableMoves(game));
     }
 
     public void moveFigure(Position position) {
-        firebaseWriter.writeDataFromTo(selectedFigure.getPosition(), position);
+        firebaseWriter.writeDataTo(position);
         selectedFigure = null;
         canMoveList.clear();
         selectedFigure = null;
     }
 
-//    public void returnFigure() {
-////        figureMap.put(selectedFigure.getPosition(), selectedFigure);
-//        canMoveList.clear();
-//        selectedFigure = null;
-//    }
+    public void returnFigure() {
+        firebaseWriter.writeDataTo(selectedFigure.getPosition());
+        canMoveList.clear();
+        selectedFigure = null;
+    }
 
-        public void fillTheField() {
-//            figureList.add(new Pawn(context, new Position(3, 3), isWhite, cell.getHeight(), cell.getWidth()));
+    public void fillTheField() {
         int row;
         row = isWhite ? 1 : 6;
         for (int i = 0; i < 8; i++) {
@@ -131,7 +130,7 @@ public class Player {
             figureList.add(new Knight(context, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth()));
             figureList.add(new Bishop(context, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth()));
         }
-            figureList.add(new Queen(context, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth()));
-            figureList.add(new King(context, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth()));
+        figureList.add(new Queen(context, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth()));
+        figureList.add(new King(context, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth()));
     }
 }
