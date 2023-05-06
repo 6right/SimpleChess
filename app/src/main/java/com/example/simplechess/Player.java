@@ -2,6 +2,8 @@ package com.example.simplechess;
 
 // Импорт констанкты
 
+import static com.example.simplechess.Constants.yellowPaint;
+
 import android.content.Context;
 import android.graphics.Canvas;
 
@@ -10,119 +12,122 @@ import com.example.simplechess.dataBase.FirebaseWriter;
 import com.example.simplechess.figures.*;
 import com.example.simplechess.field.Cell;
 
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.ArrayList;
 
 public class Player {
     protected Figure selectedFigure = null;
     protected Position selectedPosition = null;
     protected boolean move = false;
-//    private FirebaseFigureList firebaseFigureList;
-    private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
     private ArrayList<Position> canMoveList = new ArrayList<>();
+    private ArrayList<Figure> figureList = new ArrayList<>();
     private Cell cell;
     private Context context;
     private FirebaseWriter firebaseWriter = new FirebaseWriter();
+    private boolean isWhite;
+
+
     public Player(Context context, boolean isWhite, Cell cell) {
         this.cell = cell;
         this.context = context;
-        figureMap.put(new Position(0,0), new Pawn(context,new Position(0,0), true, cell.getHeight(), cell.getWidth()));
-//        firebaseWriter.writeDataFrom(new Position(0,0), new Position(0,0));
-        new FirebaseGameManager(figureMap);
-
-
-//        this.figureMap = new FirebaseFigureList(context, isWhite, cell).getFigureMap();
-//        this.firebaseFigureList = new FirebaseFigureList(context, isWhite, cell);
+        this.isWhite = isWhite;
+        firebaseWriter.writeDataFromTo(new Position(3, 3), new Position(3, 3));
+        fillTheField();
+        new FirebaseGameManager(figureList);
     }
 
     public Figure getFigure(Position position) {
-        return figureMap.get(position);
-    }
-
-    public boolean hasFigure(Position position) {
-        return figureMap.containsKey(position);
+        Figure figure = null;
+        for (Figure figureInList : figureList) {
+            if (figureInList.getPosition().equals(position)) {
+                figure = figureInList;
+                break;
+            }
+        }
+        return figure;
     }
 
     protected void draw(Canvas canvas, Field field) {
-        for (Figure figure : figureMap.values()) {
+        for (Figure figure : figureList) {
             figure.draw(
                     canvas,
                     figure.getXCoordinate(field.getLeftTop().getX()),
                     figure.getYCoordinate(field.getLeftTop().getY())
             );
         }
-//        }
-//        for (Position position : canMoveList) {
-//            cell.draw(
-//                    canvas,
-//                    cell.getXCoordinate(field.getLeftTop().getX(), position.getCol()),
-//                    cell.getYCoordinate(field.getLeftTop().getY(), position.getRow()),
-//                    yellowPaint
-//            );
-//        }
+        for (Position position : canMoveList) {
+            cell.draw(
+                    canvas,
+                    cell.getXCoordinate(field.getLeftTop().getX(), position.getCol()),
+                    cell.getYCoordinate(field.getLeftTop().getY(), position.getRow()),
+                    yellowPaint
+            );
+        }
 
     }
 
-    // Если переместил фигуру, то возвращаем true
     public void handleClick(Game game, int x, int y) {
         Field field = game.getField();
         int clickedPositionRow = (x - field.getLeftTop().getX()) / field.getCell().getWidth();
         int clickedPositionCol = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
         Position clickedPosition = new Position(clickedPositionCol, clickedPositionRow);
 
-
-        if (selectedPosition == null) {
-            selectedPosition = clickedPosition;
+        if (selectedFigure == null) {
+            if (hasFigure(clickedPosition)) {
+                selectFigure(clickedPosition, game);
+                firebaseWriter.writeDataFrom(clickedPosition);
+            }
         } else {
-            firebaseWriter.writeDataFrom(selectedPosition, clickedPosition);
+            if (canMoveList.contains(clickedPosition)) {
+                moveFigure(clickedPosition);
+                firebaseWriter.writeDataTo(clickedPosition);
+            } else {
+                //                returnFigure();
+            }
         }
-            // Если на клетке есть фигура, то выбираем её
-//            if (hasFigure(clickedPosition)) {
-//                selectFigure(clickedPosition, game);
-//            }
-//            return false;
-//        } else {
-//            if (canMoveList.contains(clickedPosition)) {
-////                moveFigure(clickedPosition);
-//                return true;
-//            } else {
-//                returnFigure();
-//                return false;
-//            }
-//        }
+    }
+
+    public boolean hasFigure(Position position) {
+        for (Figure figure : figureList) {
+            if (figure.getPosition().equals(position)) {
+                return true;
+            }
+        }
+        return true;
     }
 
     public void selectFigure(Position position, Game game) {
         selectedFigure = getFigure(position);
         canMoveList.addAll(selectedFigure.getAvailableMoves(game));
-        figureMap.remove(position);
+
     }
 
     public void moveFigure(Position position) {
-//        selectedFigure.move(position);
-//        setNewPosition();
-        canMoveList.clear();
+        firebaseWriter.writeDataFromTo(selectedFigure.getPosition(), position);
         selectedFigure = null;
-        move = true;
-
-    }
-
-    public void returnFigure() {
-//        figureMap.put(selectedFigure.getPosition(), selectedFigure);
         canMoveList.clear();
         selectedFigure = null;
     }
 
-//    public void setNewPosition(){
-//        for (Figure figure : figureMap.values()) {
-//            for (Figure figure1 : firebaseFigureList.getFigureMap().values()) {
-//                if (figure.equals(figure1)) {
-//                    if(!figure.getPosition().equals(figure1.getPosition())) {
-//                        figureMap.remove(figure.getPosition());
-//                        figureMap.put(figure1.getPosition(), figure);
-//                    }
-//                }
-//            }
-//        }
+//    public void returnFigure() {
+////        figureMap.put(selectedFigure.getPosition(), selectedFigure);
+//        canMoveList.clear();
+//        selectedFigure = null;
 //    }
+
+        public void fillTheField() {
+//            figureList.add(new Pawn(context, new Position(3, 3), isWhite, cell.getHeight(), cell.getWidth()));
+        int row;
+        row = isWhite ? 1 : 6;
+        for (int i = 0; i < 8; i++) {
+            figureList.add(new Pawn(context, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth()));
+        }
+        row = isWhite ? 0 : 7;
+        for (int i = 0; i < 2; i++) {
+            figureList.add(new Rook(context, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth()));
+            figureList.add(new Knight(context, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth()));
+            figureList.add(new Bishop(context, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth()));
+        }
+            figureList.add(new Queen(context, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth()));
+            figureList.add(new King(context, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth()));
+    }
 }

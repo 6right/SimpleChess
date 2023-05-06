@@ -9,15 +9,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseWriter {
     DatabaseReference mDatabaseRef;
-    public void writeDataFrom(Position from, Position to) {
+    public void writeDataFromTo(Position from, Position to) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("from").setValue(from);
         mDatabaseRef.child("users").child("to").setValue(to);
     }
+    public void writeDataFrom(Position from){
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("users").child("from").setValue(from);
+    }
 
-//        Figure figure, Position position, boolean isWhite
-//        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child("position").setValue(position);
-//        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child("isWhite").setValue(figure.isWhite());
-//        mDatabaseRef.child("games").child("players").child(isWhite ? "true" : "false").child("figures").child("type").setValue(figure.getClass().getSimpleName());
-
+    public void writeDataTo(Position clickedPosition) {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("users").child("to").setValue(clickedPosition);
+    }
 }
