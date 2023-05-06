@@ -91,18 +91,18 @@ public class Player {
     }
 
     public boolean hasFigure(Position position) {
+        boolean hasFigure = false;
         for (Figure figure : figureList) {
             if (figure.getPosition().equals(position)) {
-                return true;
+                hasFigure = true;
             }
         }
-        return true;
+        return hasFigure;
     }
 
     public void selectFigure(Position position, Game game) {
         selectedFigure = getFigure(position);
         canMoveList.addAll(selectedFigure.getAvailableMoves(game));
-
     }
 
     public void moveFigure(Position position) {
