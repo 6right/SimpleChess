@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class Pawn extends Figure {
     private boolean hasMoved = false;
 
-    public Pawn(Context context, Position position, boolean isWhite, int height, int width) {
-        super(position, isWhite, height, width);
+    public Pawn(Context context, boolean isWhite, int height, int width) {
+        super(isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
@@ -23,16 +23,12 @@ public class Pawn extends Figure {
     }
 
     @Override
-    public void move(Position position) {
-        super.move(position);
-    }
-
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
+    public void move() {
+        hasMoved = true;
     }
 
     @Override
-    public ArrayList<Position> getAvailableMoves(Game game) {
+    public ArrayList<Position> getAvailableMoves(Game game, Position position) {
         ArrayList<Position> availableMoves = new ArrayList<>();
         // Рассчитываем смещение по оси Y
         int dy = (isWhite ? 1 : -1);

@@ -11,15 +11,14 @@ import com.example.simplechess.dataBase.FirebaseGameManager;
 import com.example.simplechess.dataBase.FirebaseWriter;
 import com.example.simplechess.figures.*;
 import com.example.simplechess.field.Cell;
+import com.example.simplechess.player.FigureCollection;
 
 import java.util.ArrayList;
 
 public class Player {
-    protected Figure selectedFigure = null;
     protected Position selectedPosition = null;
-    protected boolean move = false;
     private ArrayList<Position> canMoveList = new ArrayList<>();
-    private ArrayList<Figure> figureList = new ArrayList<>();
+    private FigureCollection figureCollection = new FigureCollection();
     private Cell cell;
     private Context context;
     private FirebaseWriter firebaseWriter = new FirebaseWriter();
@@ -36,28 +35,20 @@ public class Player {
         // Если при инициализации указывать позицию внутри поля, то при 1м ходе, фигурка будет вставать на эту позицию
         firebaseWriter.writeDataFromTo(new Position(9, 9), new Position(9, 9));
         fillTheField();
-        new FirebaseGameManager(figureList);
-    }
-
-    public Figure getFigure(Position position) {
-        Figure figure = null;
-        for (Figure figureInList : figureList) {
-            if (figureInList.getPosition().equals(position)) {
-                figure = figureInList;
-                break;
-            }
-        }
-        return figure;
+        new FirebaseGameManager(figureCollection);
     }
 
     protected void draw(Canvas canvas, Field field) {
-        for (Figure figure : figureList) {
+        // Проходимся по мапе, берем как элемент позиции так и фигуру
+        figureCollection.getFigureMap().forEach((position, figure) -> {
             figure.draw(
                     canvas,
-                    figure.getXCoordinate(field.getLeftTop().getX()),
-                    figure.getYCoordinate(field.getLeftTop().getY())
+                    figure.getXCoordinate(field.getLeftTop().getX(), position.getCol()),
+                    figure.getYCoordinate(field.getLeftTop().getY(), position.getRow())
             );
-        }
+        });
+
+
         for (Position position : canMoveList) {
             cell.draw(
                     canvas,
@@ -74,8 +65,8 @@ public class Player {
         int clickedPositionRow = (y - field.getLeftTop().getY()) / field.getCell().getHeight();
         Position clickedPosition = new Position(clickedPositionRow, clickedPositionСol);
 
-        if (selectedFigure == null) {
-            if (hasFigure(clickedPosition)) {
+        if (selectedPosition == null) {
+            if (figureCollection.hasFigure(clickedPosition)) {
                 selectFigure(clickedPosition, game);
             }
         } else {
@@ -87,49 +78,49 @@ public class Player {
         }
     }
 
-    public boolean hasFigure(Position position) {
-        boolean hasFigure = false;
-        for (Figure figure : figureList) {
-            if (figure.getPosition().equals(position)) {
-                hasFigure = true;
-                break;
-            }
-        }
-        return hasFigure;
-    }
-
     public void selectFigure(Position position, Game game) {
-        selectedFigure = getFigure(position);
+        selectedPosition = position;
         firebaseWriter.writeDataFrom(position);
-        canMoveList.addAll(selectedFigure.getAvailableMoves(game));
+        canMoveList.addAll(selectedFigure().getAvailableMoves(game, selectedPosition));
     }
 
     public void moveFigure(Position position) {
         firebaseWriter.writeDataTo(position);
-        selectedFigure = null;
+        selectedPosition = null;
         canMoveList.clear();
-        selectedFigure = null;
     }
 
     public void returnFigure() {
-        firebaseWriter.writeDataTo(selectedFigure.getPosition());
+        firebaseWriter.writeDataTo(selectedPosition);
         canMoveList.clear();
-        selectedFigure = null;
+        selectedPosition = null;
     }
 
     public void fillTheField() {
         int row;
         row = isWhite ? 1 : 6;
         for (int i = 0; i < 8; i++) {
-            figureList.add(new Pawn(context, new Position(row, i), isWhite, cell.getHeight(), cell.getWidth()));
+            figureCollection.addFigure(new Position(row, i), new Pawn(context, isWhite, cell.getHeight(), cell.getWidth()));
         }
         row = isWhite ? 0 : 7;
         for (int i = 0; i < 2; i++) {
-            figureList.add(new Rook(context, new Position(row, i * 7), isWhite, cell.getHeight(), cell.getWidth()));
-            figureList.add(new Knight(context, new Position(row, i * 5 + 1), isWhite, cell.getHeight(), cell.getWidth()));
-            figureList.add(new Bishop(context, new Position(row, i * 3 + 2), isWhite, cell.getHeight(), cell.getWidth()));
+            figureCollection.addFigure(new Position(row, i * 7), new Rook(context, isWhite, cell.getHeight(), cell.getWidth()));
+            figureCollection.addFigure(new Position(row, i * 5 + 1), new Knight(context, isWhite, cell.getHeight(), cell.getWidth()));
+            figureCollection.addFigure(new Position(row, i * 3 + 2), new Bishop(context, isWhite, cell.getHeight(), cell.getWidth()));
         }
-        figureList.add(new Queen(context, new Position(row, 3), isWhite, cell.getHeight(), cell.getWidth()));
-        figureList.add(new King(context, new Position(row, 4), isWhite, cell.getHeight(), cell.getWidth()));
+        figureCollection.addFigure(new Position(row, 3), new Queen(context, isWhite, cell.getHeight(), cell.getWidth()));
+        figureCollection.addFigure(new Position(row, 4), new King(context, isWhite, cell.getHeight(), cell.getWidth()));
+    }
+
+    public boolean hasFigure(Position position) {
+        return figureCollection.hasFigure(position);
+    }
+
+    public Figure getFigure(Position position) {
+        return figureCollection.getFigure(position);
+    }
+
+    public Figure selectedFigure() {
+        return figureCollection.getFigure(selectedPosition);
     }
 }

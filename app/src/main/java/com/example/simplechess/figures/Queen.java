@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 // Класс фигуры ферзя
 public class Queen extends Figure {
-    public Queen(Context context, Position position, boolean isWhite, int height, int width) {
-        super(position, isWhite, height, width);
+    public Queen(Context context, boolean isWhite, int height, int width) {
+        super(isWhite, height, width);
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
                 isWhite ? R.drawable.chess_qlt45 : R.drawable.chess_qdt45
@@ -21,7 +21,7 @@ public class Queen extends Figure {
 
     // TODO Переделать
     @Override
-    public ArrayList<Position> getAvailableMoves(Game game) {
+    public ArrayList<Position> getAvailableMoves(Game game, Position position) {
         ArrayList<Position> availableMoves = new ArrayList<>();
         Player thisPlayer = game.getPlayer(isWhite);
         Player enemyPlayer = game.getPlayer(!isWhite);

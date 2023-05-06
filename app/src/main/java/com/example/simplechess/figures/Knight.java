@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 // Класс фигуры коня
 public class Knight extends Figure {
-    public Knight(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+    public Knight(Context context, boolean isWhite, int height, int width){
+        super(isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
@@ -21,7 +21,7 @@ public class Knight extends Figure {
     }
 
     @Override
-    public ArrayList<Position> getAvailableMoves(Game game){
+    public ArrayList<Position> getAvailableMoves(Game game, Position position){
         ArrayList<Position> availableMoves = new ArrayList<>();
 
         Player thisPlayer = game.getPlayer(isWhite);
