@@ -25,9 +25,9 @@ public class Pawn extends Figure {
     @Override
     public void move(Position position) {
         super.move(position);
-        if (!hasMoved) {
-            hasMoved = true;
-        }
+    }
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 
     @Override
