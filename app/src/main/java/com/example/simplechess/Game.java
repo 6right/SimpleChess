@@ -21,6 +21,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Player whitePlayer;
     private Player blackPlayer;
     boolean thisIsWhitePlayer = true;
+    // Переменная для определения, какой игрок ходит
+    boolean isWhitePlayerMove = true;
     private ScreenSize screenSize;
 
     public Game(Context context) {
@@ -54,11 +56,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 holder.getSurfaceFrame().height());
         CellCounts cellCounts = new CellCounts(8, 8);
 
+        // Создание игроков и поля
         field = new Field(cellCounts, screenSize);
         whitePlayer = new Player(context, true, field.getCell());
         blackPlayer = new Player(context, false, field.getCell());
-        gameLoop = new GameLoop(this, holder);
+        // Рандомно выдаётся цвет игроку
+        thisIsWhitePlayer = Math.random() > 0.5;
 
+        gameLoop = new GameLoop(this, holder);
         gameLoop.startLoop();
     }
 
@@ -98,13 +103,21 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             int x = (int) event.getX();
             int y = (int) event.getY();
-//            if (thisIsWhitePlayer) {
-//                thisIsWhitePlayer = !whitePlayer.handleClick(this, x,y);
-//            } else {
-//                thisIsWhitePlayer = blackPlayer.handleClick(this, x,y);
-//            }
-            whitePlayer.handleClick(this, x, y);
-            blackPlayer.handleClick(this, x, y);
+
+            // false != true - ходит черный игрок != это устройство белого игрока
+            // true != false - ходит белый игрок != это устройство черного игрока
+            // То есть проверяем, ходит ли игрок, которому принадлежит это устройство
+            // Если нет то выходим из метода
+            if (isWhitePlayerMove != thisIsWhitePlayer) {
+                return super.onTouchEvent(event);
+            }
+
+            if (isWhitePlayerMove) {
+                whitePlayer.handleClick(this, x,y);
+            } else {
+               blackPlayer.handleClick(this, x,y);
+            }
+
         }
         return super.onTouchEvent(event);
     }
