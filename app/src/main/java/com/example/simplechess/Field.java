@@ -43,10 +43,17 @@ public class Field {
         return cell;
     }
 
-    public CellCounts getCellCounts() { return cellCounts; }
+    public CellCounts getCellCounts() {
+        return cellCounts;
+    }
 
-    public int getRowQuantity() { return cellCounts.getRowQuantity(); }
-    public int getColQuantity() { return cellCounts.getColQuantity(); }
+    public int getRowQuantity() {
+        return cellCounts.getRowQuantity();
+    }
+
+    public int getColQuantity() {
+        return cellCounts.getColQuantity();
+    }
 
     // Проверка, что позиция находится внутри поля
     public boolean isInside(Position position) {
@@ -54,9 +61,13 @@ public class Field {
                 position.getRow() >= 0 && position.getRow() < cellCounts.getColQuantity();
     }
 
-    public Point getLeftTop() { return leftTop; }
+    public Point getLeftTop() {
+        return leftTop;
+    }
 
-    public Point getRightBottom() { return rightBottom; }
+    public Point getRightBottom() {
+        return rightBottom;
+    }
 
     // Отрисовка поля
     public void draw(Canvas canvas) {

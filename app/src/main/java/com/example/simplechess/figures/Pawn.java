@@ -26,6 +26,7 @@ public class Pawn extends Figure {
     public void move(Position position) {
         super.move(position);
     }
+
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
@@ -49,18 +50,15 @@ public class Pawn extends Figure {
         // на одну клетку вперед
 
         if (!thisPlayer.hasFigure(position.add(0, dy))
-                && !enemyPlayer.hasFigure(position.add(0, dy)))
-        {
+                && !enemyPlayer.hasFigure(position.add(0, dy))) {
             availableMoves.add(position.add(0, dy));
         }
 
         // Если по диагонали есть фигура противника, то пешка может съесть её
-        if (enemyPlayer.hasFigure(position.add(1, dy)))
-        {
+        if (enemyPlayer.hasFigure(position.add(1, dy))) {
             availableMoves.add(position.add(1, dy));
         }
-        if (enemyPlayer.hasFigure(position.add(-1, dy)))
-        {
+        if (enemyPlayer.hasFigure(position.add(-1, dy))) {
             availableMoves.add(position.add(-1, dy));
         }
 
@@ -77,8 +75,7 @@ public class Pawn extends Figure {
 
         // Если впереди нет фигур, то пешка может двигаться на две клетки
         if (!thisPlayer.hasFigure(position.add(0, 2 * dy))
-                && !enemyPlayer.hasFigure(position.add(0, 2 * dy)))
-        {
+                && !enemyPlayer.hasFigure(position.add(0, 2 * dy))) {
             availableMoves.add(position.add(0, 2 * dy));
         }
         return availableMoves;

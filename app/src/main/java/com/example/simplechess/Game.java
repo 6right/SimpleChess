@@ -88,8 +88,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         super.draw(canvas);
 
         field.draw(canvas);
-            whitePlayer.draw(canvas, field);
-            blackPlayer.draw(canvas, field);
+        whitePlayer.draw(canvas, field);
+        blackPlayer.draw(canvas, field);
     }
 
     // Метод, который вызывается при нажатии на экран
@@ -103,7 +103,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 //            } else {
 //                thisIsWhitePlayer = blackPlayer.handleClick(this, x,y);
 //            }
-            whitePlayer.handleClick(this, x,y);
+            whitePlayer.handleClick(this, x, y);
         }
         return super.onTouchEvent(event);
     }

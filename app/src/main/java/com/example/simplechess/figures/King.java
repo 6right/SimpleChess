@@ -12,8 +12,9 @@ import java.util.ArrayList;
 public class King extends Figure {
 
     private boolean hasMoved = false;
-    public King(Context context, Position position, boolean isWhite, int height, int width){
-        super(position,isWhite, height, width);
+
+    public King(Context context, Position position, boolean isWhite, int height, int width) {
+        super(position, isWhite, height, width);
 
         bitmap = BitmapFactory.decodeResource(
                 context.getResources(),
@@ -21,9 +22,10 @@ public class King extends Figure {
         );
     }
 
-    public void setHasMoved ( boolean hasMoved){
+    public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
+
     public ArrayList<Position> getAvailableMoves(Game game) {
         ArrayList<Position> availableMoves = new ArrayList<>();
         // Расчитываем возможные ходы короля

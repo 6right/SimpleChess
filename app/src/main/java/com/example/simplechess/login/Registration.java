@@ -30,7 +30,7 @@ public class Registration extends AppCompatActivity {
     ProgressBar progressBar;
     TextView textViewLogin;
 
-//    @Override
+    //    @Override
 //    public void onStart() {
 //        super.onStart();
 //        // Check if user is signed in (non-null) and update UI accordingly.
@@ -54,7 +54,7 @@ public class Registration extends AppCompatActivity {
         buttonRegister = findViewById(R.id.registration_btn);
         progressBar = findViewById(R.id.progressBar);
         textViewLogin = findViewById(R.id.loginLink);
-        textViewLogin.setOnClickListener(new View.OnClickListener(){
+        textViewLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Login.class);
@@ -63,7 +63,7 @@ public class Registration extends AppCompatActivity {
             }
         });
 
-        buttonRegister.setOnClickListener(new View.OnClickListener(){
+        buttonRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);

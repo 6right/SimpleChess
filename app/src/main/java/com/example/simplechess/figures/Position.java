@@ -29,6 +29,7 @@ public class Position {
     public Position add(int row, int col) {
         return new Position(this.row + col, this.col + row);
     }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -40,6 +41,7 @@ public class Position {
         Position other = (Position) obj;
         return this.col == other.col && this.row == other.row;
     }
+
     @Override
     public int hashCode() {
         return col * 10 + row;

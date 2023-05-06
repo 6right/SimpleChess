@@ -14,7 +14,8 @@ public class GameLoop extends Thread {
         surfaceHolder = holder;
 
     }
-    public void startLoop(){
+
+    public void startLoop() {
         isRunning = true;
         start();
     }
@@ -37,18 +38,19 @@ public class GameLoop extends Thread {
                 if (canvas != null) {
                     try {
                         surfaceHolder.unlockCanvasAndPost(canvas);
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
     }
+
     public void stopLoop() {
         isRunning = false;
         try {
             join();
-        } catch (InterruptedException e){
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

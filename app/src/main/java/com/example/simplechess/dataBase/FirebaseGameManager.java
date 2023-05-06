@@ -21,7 +21,8 @@ public class FirebaseGameManager {
     ArrayList<Figure> figureList;
     DatabaseReference mDatabaseRef;
     Position previousToPosition;
-    public FirebaseGameManager(ArrayList<Figure> figureList){
+
+    public FirebaseGameManager(ArrayList<Figure> figureList) {
         this.figureList = figureList;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         // Этот объект нужен, чтобы мы меняли координаты фигуры, только после того, как поменяется данные to В базе.
@@ -37,11 +38,13 @@ public class FirebaseGameManager {
                     previousToPosition = to;
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
+
     public Figure getFigure(Position position) {
         Figure figure = null;
         for (Figure figureInList : figureList) {
@@ -52,6 +55,7 @@ public class FirebaseGameManager {
         }
         return figure;
     }
+
     private void setPosition(Position from, Position to) {
         Figure figure = getFigure(from);
         if (figure != null) {

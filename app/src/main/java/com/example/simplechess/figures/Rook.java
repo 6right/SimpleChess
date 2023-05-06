@@ -21,7 +21,7 @@ public class Rook extends Figure {
         );
     }
 
-    public void setHasMoved (boolean hasMoved){
+    public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
 

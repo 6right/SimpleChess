@@ -10,8 +10,8 @@ public abstract class DrawingEntity {
     protected int width;
 
     public DrawingEntity(int height, int width) {
-          this.height = height;
-          this.width = width;
+        this.height = height;
+        this.width = width;
     }
 
     public int getXCoordinate(int leftTopX, int row) {

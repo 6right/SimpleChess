@@ -9,12 +9,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseWriter {
     DatabaseReference mDatabaseRef;
+
     public void writeDataFromTo(Position from, Position to) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("from").setValue(from);
         mDatabaseRef.child("users").child("to").setValue(to);
     }
-    public void writeDataFrom(Position from){
+
+    public void writeDataFrom(Position from) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("from").setValue(from);
     }
@@ -23,8 +25,9 @@ public class FirebaseWriter {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("to").setValue(clickedPosition);
     }
-    public void removeData(){
-mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+
+    public void removeData() {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("from").removeValue();
         mDatabaseRef.child("users").child("to").removeValue();
     }
