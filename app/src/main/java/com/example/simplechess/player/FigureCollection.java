@@ -5,10 +5,11 @@ import com.example.simplechess.figures.Position;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FigureCollection {
     // Объект состоящий из мапы с позициями и фигурами
-    private HashMap<Position, Figure> figureMap = new HashMap<>();
+    private ConcurrentHashMap<Position, Figure> figureMap = new ConcurrentHashMap<>();
 
     // Метод для получения массива фигур ArrayList
     public ArrayList<Figure> getFigureList() {
@@ -19,7 +20,7 @@ public class FigureCollection {
         return new ArrayList<Position>(figureMap.keySet());
     }
 
-    public HashMap<Position, Figure> getFigureMap() {
+    public ConcurrentHashMap<Position, Figure> getFigureMap() {
         return figureMap;
     }
 

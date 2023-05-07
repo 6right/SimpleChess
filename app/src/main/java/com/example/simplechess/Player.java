@@ -30,10 +30,7 @@ public class Player {
         this.context = context;
         this.isWhite = isWhite;
 
-        // Не придумал пока как нам при инициализации игры, убирать данные из дб
-        // Создал метод removeData, но он пока вызывает ошибку при 1м ходе
-        // Если при инициализации указывать позицию внутри поля, то при 1м ходе, фигурка будет вставать на эту позицию
-        firebaseWriter.writeDataFromTo(new Position(9, 9), new Position(9, 9));
+//        firebaseWriter.startGame();
         fillTheField();
         new FirebaseGameManager(figureCollection);
     }

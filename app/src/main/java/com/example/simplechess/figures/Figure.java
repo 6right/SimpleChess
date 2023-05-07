@@ -7,6 +7,7 @@ import com.example.simplechess.DrawingEntity;
 import com.example.simplechess.Game;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Figure extends DrawingEntity {
     protected boolean isWhite;

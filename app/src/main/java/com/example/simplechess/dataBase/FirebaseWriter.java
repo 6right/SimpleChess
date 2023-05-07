@@ -10,11 +10,11 @@ import com.google.firebase.database.FirebaseDatabase;
 public class FirebaseWriter {
     DatabaseReference mDatabaseRef;
 
-    public void writeDataFromTo(Position from, Position to) {
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("users").child("from").setValue(from);
-        mDatabaseRef.child("users").child("to").setValue(to);
-    }
+//    public void writeDataFromTo(Position from, Position to) {
+//        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+//        mDatabaseRef.child("users").child("from").setValue(from);
+//        mDatabaseRef.child("users").child("to").setValue(to);
+//    }
 
     public void writeDataFrom(Position from) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
@@ -30,5 +30,15 @@ public class FirebaseWriter {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("users").child("from").removeValue();
         mDatabaseRef.child("users").child("to").removeValue();
+    }
+
+    public void startGame() {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("gameID").child("ID").child("user_1").setValue("UID_1");
+        mDatabaseRef.child("gameID").child("ID").child("user_2").setValue("UID_2");
+        mDatabaseRef.child("gameID").child("ID").child("moves").child("from").setValue(new Position(9, 9));
+        mDatabaseRef.child("gameID").child("ID").child("moves").child("to").setValue(new Position(9, 9));
+        mDatabaseRef.child("gameID").child("ID").child("whoseMove").child("black").setValue(true);
+        mDatabaseRef.child("gameID").child("ID").child("whoseMove").child("white").setValue(false);
     }
 }
