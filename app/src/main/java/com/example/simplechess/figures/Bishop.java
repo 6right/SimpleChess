@@ -35,18 +35,9 @@ public class Bishop extends Figure {
         // Если на этой позиции нет фигуры, то добавляем ее в availableMoves
         for (int i = -1; i <= 1; i += 2) {
             for (int j = -1; j <=1; j += 2) {
-                int row = position.getRow();
-                int col = position.getCol();
-                Position checkPosition = new Position(row, col);
-                while (true) {
-                    row += i;
-                    col += j;
-                    checkPosition = checkPosition.add(i, j);
+                Position checkPosition = new Position(position.getRow() + i, position.getCol() + j);
 
-                    if (!game.getField().isInside(checkPosition)) {
-                        break;
-                    }
-
+                while (game.getField().isInside(checkPosition)) {
                     if (thisPlayer.hasFigure(checkPosition)) {
                         break;
                     }
@@ -54,6 +45,8 @@ public class Bishop extends Figure {
                     if (enemyPlayer.hasFigure(checkPosition)) {
                         break;
                     }
+
+                    checkPosition = checkPosition.add(i, j);
                 }
             }
         }

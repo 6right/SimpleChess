@@ -30,69 +30,8 @@ public class Rook extends Figure {
     public ArrayList<Position> getAvailableMoves(Game game, Position position) {
         ArrayList<Position> availableMoves = new ArrayList<>();
 
-        // Цикл для движения ладьи вверх
-        for (int dy = 1; dy < 8; dy++) {
-            Position newPosition = position.add(dy, 0);
-            if (!game.getField().isInside(newPosition)) {
-                break;  // Выйти из цикла, если вышли за границы поля
-            }
-            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
-            if (!game.getPlayer(isWhite).hasFigure(newPosition)) {
-                if (figure.isWhite() != isWhite) {
-                    availableMoves.add(newPosition);
-                }
-                break;  // Выйти из цикла, если встретили фигуру
-            }
-            availableMoves.add(newPosition);
-        }
+        // Проверка по горизонтали
 
-        // Цикл для движения ладьи вниз
-        for (int dy = -1; dy > -8; dy--) {
-            Position newPosition = position.add(dy, 0);
-            if (!game.getField().isInside(newPosition)) {
-                break;
-            }
-            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
-            if (figure != null) {
-                if (figure.isWhite() != isWhite) {
-                    availableMoves.add(newPosition);
-                }
-                break;
-            }
-            availableMoves.add(newPosition);
-        }
-
-        // Цикл для движения ладьи вправо
-        for (int dx = 1; dx < 8; dx++) {
-            Position newPosition = position.add(0, dx);
-            if (!game.getField().isInside(newPosition)) {
-                break;
-            }
-            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
-            if (figure != null) {
-                if (figure.isWhite() != isWhite) {
-                    availableMoves.add(newPosition);
-                }
-                break;
-            }
-            availableMoves.add(newPosition);
-        }
-
-        // Цикл для движения ладьи влево
-        for (int dx = -1; dx > -8; dx--) {
-            Position newPosition = position.add(0, dx);
-            if (!game.getField().isInside(newPosition)) {
-                break;
-            }
-            Figure figure = game.getPlayer(isWhite).getFigure(newPosition);
-            if (figure != null) {
-                if (figure.isWhite() != isWhite) {
-                    availableMoves.add(newPosition);
-                }
-                break;
-            }
-            availableMoves.add(newPosition);
-        }
 
         return availableMoves;
     }
