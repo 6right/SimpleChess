@@ -41,7 +41,7 @@ public class FirebaseGameManager {
                 Position to = snapshot.child("to").getValue(Position.class);
                 if (!to.equals(previousToPosition)) {
                     // Если на позиции to есть фигура, то мы ее удаляем, иначе перемещаем фигуру
-                        if (whiteCollection.hasFigure(to)) {
+                    if (whiteCollection.hasFigure(to)) {
                         whiteCollection.removeFigure(to);
                     } else {
                         setWhitePosition(from, to);
@@ -61,32 +61,12 @@ public class FirebaseGameManager {
         });
     }
 
-    public void whoMove() {
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("gameID").child("ID").child("whoseMove").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean move = snapshot.getValue(boolean.class);
-                if (move == true) {
-                    mDatabaseRef.setValue(false);
-                    game.setMove();
-                } else {
-                    mDatabaseRef.setValue(true);
-                    game.setMove();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-
     private void setWhitePosition(Position from, Position to) {
-        whoMove();
+        game.setMove();
         whiteCollection.moveFigure(from, to);
     }
     private void setBlackCollection(Position from, Position to) {
-        whoMove();
+        game.setMove();
         blackCollection.moveFigure(from, to);
     }
 }
