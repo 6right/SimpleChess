@@ -31,7 +31,38 @@ public class Rook extends Figure {
         ArrayList<Position> availableMoves = new ArrayList<>();
 
         // Проверка по горизонтали
+        for (int i = -1; i <= 1; i += 2) {
+            Position checkPosition = new Position(position.getRow(), position.getCol() + i);
 
+            while (game.getField().isInside(checkPosition)) {
+                if (game.getPlayer(isWhite).hasFigure(checkPosition)) {
+                    break;
+                }
+                availableMoves.add(checkPosition);
+                if (game.getPlayer(!isWhite).hasFigure(checkPosition)) {
+                    break;
+                }
+
+                checkPosition = checkPosition.add(0, i);
+            }
+        }
+
+        // Проверка по вертикали
+        for (int i = -1; i <= 1; i += 2) {
+            Position checkPosition = new Position(position.getRow() + i, position.getCol());
+
+            while (game.getField().isInside(checkPosition)) {
+                if (game.getPlayer(isWhite).hasFigure(checkPosition)) {
+                    break;
+                }
+                availableMoves.add(checkPosition);
+                if (game.getPlayer(!isWhite).hasFigure(checkPosition)) {
+                    break;
+                }
+
+                checkPosition = checkPosition.add(i, 0);
+            }
+        }
 
         return availableMoves;
     }
