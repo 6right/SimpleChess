@@ -57,6 +57,6 @@ public class FirebaseWriter {
         mDatabaseRef.child("gameID").child("ID").child("user_2").setValue("UID_2");
         mDatabaseRef.child("gameID").child("ID").child("moves").child("from").setValue(new Position(9, 9));
         mDatabaseRef.child("gameID").child("ID").child("moves").child("to").setValue(new Position(9, 9));
-        mDatabaseRef.child("gameID").child("ID").child("whoseMove").setValue("true");
+        mDatabaseRef.child("gameID").child("ID").child("whoseMove").setValue(true);
     }
 }

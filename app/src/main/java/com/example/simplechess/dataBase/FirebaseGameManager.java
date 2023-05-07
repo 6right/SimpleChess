@@ -82,9 +82,11 @@ public class FirebaseGameManager {
     }
 
     private void setWhitePosition(Position from, Position to) {
+        whoMove();
         whiteCollection.moveFigure(from, to);
     }
     private void setBlackCollection(Position from, Position to) {
+        whoMove();
         blackCollection.moveFigure(from, to);
     }
 }
