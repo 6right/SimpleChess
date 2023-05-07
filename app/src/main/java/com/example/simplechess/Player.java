@@ -105,8 +105,8 @@ public class Player {
             figureCollection.addFigure(new Position(row, i * 5 + 1), new Knight(context, isWhite, cell.getHeight(), cell.getWidth()));
             figureCollection.addFigure(new Position(row, i * 3 + 2), new Bishop(context, isWhite, cell.getHeight(), cell.getWidth()));
         }
-        figureCollection.addFigure(new Position(row, 3), new Queen(context, isWhite, cell.getHeight(), cell.getWidth()));
-        figureCollection.addFigure(new Position(row, 4), new King(context, isWhite, cell.getHeight(), cell.getWidth()));
+        figureCollection.addFigure(new Position(row, 4), new Queen(context, isWhite, cell.getHeight(), cell.getWidth()));
+        figureCollection.addFigure(new Position(row, 3), new King(context, isWhite, cell.getHeight(), cell.getWidth()));
     }
 
     public boolean hasFigure(Position position) {

@@ -78,7 +78,7 @@ public class Field {
                         canvas,
                         leftTop.getX() + col * cell.getWidth(),
                         leftTop.getY() + row * cell.getHeight(),
-                        (row + col) % 2 == 0 ? orangePaint : whitePaint
+                        (row + col) % 2 == 0 ? whitePaint : orangePaint
                 );
             }
         }
