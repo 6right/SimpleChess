@@ -30,7 +30,7 @@ public class Player {
         this.context = context;
         this.isWhite = isWhite;
 
-//        firebaseWriter.startGame();
+        firebaseWriter.startGame();
         fillTheField();
         new FirebaseGameManager(figureCollection);
     }

@@ -32,8 +32,8 @@ public class FirebaseGameManager {
         mDatabaseRef.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Position from = snapshot.child("from").getValue(Position.class);
-                Position to = snapshot.child("to").getValue(Position.class);
+                Position from = snapshot.child("gameID").child("ID").child("moves").child("from").getValue(Position.class);
+                Position to = snapshot.child("gameID").child("ID").child("moves").child("to").getValue(Position.class);
                 if (!to.equals(previousToPosition)) {
                     setPosition(from, to);
                     previousToPosition = to;
