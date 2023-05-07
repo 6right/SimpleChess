@@ -36,14 +36,15 @@ public class FigureCollection {
         figureMap.remove(position);
     }
 
-    public void moveFigure(Position from, Position to) {
+    public boolean moveFigure(Position from, Position to) {
         Figure figure = figureMap.get(from);
         if (figure == null) {
-            return;
+            return false;
         }
 
         figureMap.remove(from);
         figureMap.put(to, figure);
+        return true;
     }
 
     public boolean hasFigure(Position position) {

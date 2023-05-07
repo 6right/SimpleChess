@@ -53,8 +53,9 @@ public class FirebaseGameManager {
     }
 
     private void setPosition(FigureCollection figureCollection, Position from, Position to) {
-        game.setMove();
-        figureCollection.moveFigure(from, to);
+        if (figureCollection.moveFigure(from, to)){
+            game.setMove();
+        }
     }
 }
 
