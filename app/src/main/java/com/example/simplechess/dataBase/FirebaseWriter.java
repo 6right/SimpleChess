@@ -18,18 +18,18 @@ public class FirebaseWriter {
 
     public void writeDataFrom(Position from) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("users").child("from").setValue(from);
+        mDatabaseRef.child("gameID").child("ID").child("moves").child("from").setValue(from);
     }
 
     public void writeDataTo(Position clickedPosition) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("users").child("to").setValue(clickedPosition);
+        mDatabaseRef.child("gameID").child("ID").child("moves").child("to").setValue(clickedPosition);
     }
 
     public void removeData() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("users").child("from").removeValue();
-        mDatabaseRef.child("users").child("to").removeValue();
+        mDatabaseRef.child("").child("").removeValue();
+        mDatabaseRef.child("").child("").removeValue();
     }
 
     public void startGame() {

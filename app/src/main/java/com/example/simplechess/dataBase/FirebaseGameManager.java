@@ -29,11 +29,11 @@ public class FirebaseGameManager {
         // Этот объект нужен, чтобы мы меняли координаты фигуры, только после того, как поменяется данные to В базе.
         // Предотвращает перестановку фигуры на To, при первом клике на нее (был баг)
         previousToPosition = new Position(5, 5);
-        mDatabaseRef.child("users").addValueEventListener(new ValueEventListener() {
+        mDatabaseRef.child("gameID").child("ID").child("moves").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Position from = snapshot.child("gameID").child("ID").child("moves").child("from").getValue(Position.class);
-                Position to = snapshot.child("gameID").child("ID").child("moves").child("to").getValue(Position.class);
+                Position from = snapshot.child("from").getValue(Position.class);
+                Position to = snapshot.child("to").getValue(Position.class);
                 if (!to.equals(previousToPosition)) {
                     setPosition(from, to);
                     previousToPosition = to;
