@@ -20,6 +20,7 @@ public class Constants {
         brownPaint.setColor(Color.parseColor("#572200"));
         orangePaint.setColor(Color.parseColor("#DB9900"));
         yellowPaint.setColor(Color.parseColor("#FFFF00"));
-        yellowPaint.setAlpha(70);
+        // ranges from 0 (fully transparent) to 255 (fully opaque).
+        yellowPaint.setAlpha(128); // 50% transparent
     }
 }

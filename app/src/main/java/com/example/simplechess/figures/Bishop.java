@@ -24,9 +24,6 @@ public class Bishop extends Figure {
         ArrayList<Position> availableMoves = new ArrayList<>();
         Player thisPlayer = game.getPlayer(isWhite);
         Player enemyPlayer = game.getPlayer(!isWhite);
-        // Границы поля
-        int maxRow = game.getField().getCellCounts().getRowQuantity() - 1;
-        int maxCol = game.getField().getCellCounts().getColQuantity() - 1;
 
         // Проходимся по всем возможным направлениям относительно position
         // Отталкиваем от row и col и прибавляем к ним i и j
@@ -35,12 +32,9 @@ public class Bishop extends Figure {
         // Если на этой позиции нет фигуры, то добавляем ее в availableMoves
         for (int i = -1; i <= 1; i += 2) {
             for (int j = -1; j <=1; j += 2) {
-                Position checkPosition = new Position(position.getRow() + i, position.getCol() + j);
+                Position checkPosition = position.add(i, j);
 
-                while (game.getField().isInside(checkPosition)) {
-                    if (thisPlayer.hasFigure(checkPosition)) {
-                        break;
-                    }
+                while (game.getField().isInside(checkPosition) && !thisPlayer.hasFigure(checkPosition)) {
                     availableMoves.add(checkPosition);
                     if (enemyPlayer.hasFigure(checkPosition)) {
                         break;

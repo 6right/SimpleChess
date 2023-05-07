@@ -25,29 +25,48 @@ public class Queen extends Figure {
         ArrayList<Position> availableMoves = new ArrayList<>();
         Player thisPlayer = game.getPlayer(isWhite);
         Player enemyPlayer = game.getPlayer(!isWhite);
-        // Проходимся по циклу позиции, которые может занять ферзь
-        // Ферзь может ходить по вертикали, горизонтали и диагонали
 
-        // Проверить, что по горизонтали нет фигур
-        // Если есть фигура, то выйти из цикла
-        // Если нет фигуры, то добавить позицию в список доступных позиций
-        // Проходимся по циклу от фигуры до границы поля
-        // Фигура на (0, 3)
-        // Пешка на (2, 3)
+        // Проверка по горизонтали
+        for (int i = -1; i <= 1; i += 2) {
+            Position checkPosition = position.add(0, i);
 
-        // (1, 3)
+            while (game.getField().isInside(checkPosition) && !thisPlayer.hasFigure(checkPosition)) {
+                availableMoves.add(checkPosition);
+                if (enemyPlayer.hasFigure(checkPosition)) {
+                    break;
+                }
 
-
-        for (int i = position.getRow() + 1; i < 8; i++) {
-            Position checkPosition = new Position(i, position.getCol());
-            boolean hasFigure = thisPlayer.hasFigure(checkPosition);
-
-            if (hasFigure) {
-                break;
+                checkPosition = checkPosition.add(0, i);
             }
-            availableMoves.add(checkPosition);
-            if (enemyPlayer.hasFigure(checkPosition)) {
-                break;
+        }
+
+        // Проверка по вертикали
+        for (int i = -1; i <= 1; i += 2) {
+            Position checkPosition = position.add(i, 0);
+
+            while (game.getField().isInside(checkPosition) && !thisPlayer.hasFigure(checkPosition)) {
+                availableMoves.add(checkPosition);
+                if (enemyPlayer.hasFigure(checkPosition)) {
+                    break;
+                }
+
+                checkPosition = checkPosition.add(i, 0);
+            }
+        }
+
+        // Проверка по диагонали
+        for (int i = -1; i <= 1; i += 2) {
+            for (int j = -1; j <=1; j += 2) {
+                Position checkPosition = position.add(i, j);
+
+                while (game.getField().isInside(checkPosition) && !thisPlayer.hasFigure(checkPosition)) {
+                    availableMoves.add(checkPosition);
+                    if (enemyPlayer.hasFigure(checkPosition)) {
+                        break;
+                    }
+
+                    checkPosition = checkPosition.add(i, j);
+                }
             }
         }
 
