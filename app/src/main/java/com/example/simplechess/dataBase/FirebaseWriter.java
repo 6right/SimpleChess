@@ -2,19 +2,42 @@ package com.example.simplechess.dataBase;
 
 import android.util.Log;
 
-import com.example.simplechess.figures.Figure;
 import com.example.simplechess.figures.Position;
+import com.example.simplechess.player.Users;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseWriter {
     DatabaseReference mDatabaseRef;
+    Users user;
+    String Uid;
 
-//    public void writeDataFromTo(Position from, Position to) {
-//        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-//        mDatabaseRef.child("users").child("from").setValue(from);
-//        mDatabaseRef.child("users").child("to").setValue(to);
-//    }
+    public FirebaseWriter() {
+    }
+
+    public FirebaseWriter(Users user) {
+        this.user = user;
+        Uid = user.getUid();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userID = dataSnapshot.child("gameID").child("ID").child("user_1").getValue(String.class);
+                if (userID != null) {
+                    mDatabaseRef.child("gameID").child("ID").child("user_1").setValue(Uid);
+                } else {
+                    mDatabaseRef.child("gameID").child("ID").child("user_2").setValue(Uid);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
 
     public void writeDataFrom(Position from) {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();

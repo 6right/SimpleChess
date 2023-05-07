@@ -7,10 +7,13 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.simplechess.dataBase.FirebaseGameManager;
+import com.example.simplechess.dataBase.FirebaseWriter;
 import com.example.simplechess.field.CellCounts;
 import com.example.simplechess.field.ScreenSize;
+import com.example.simplechess.player.Users;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.ktx.Firebase;
 
 import org.lwjgl.system.CallbackI;
 
@@ -28,6 +31,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public Game(Context context) {
         super(context);
 
+        FirebaseWriter firebaseWriter = new FirebaseWriter(new Users());
         // Получить ячейку по координатам
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
