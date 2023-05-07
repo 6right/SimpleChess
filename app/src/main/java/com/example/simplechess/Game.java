@@ -50,7 +50,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void setMove(){
-        isWhitePlayerMove = !isWhitePlayerMove;
+        this.isWhitePlayerMove = !this.isWhitePlayerMove;
     }
 
     // Пытался создавать объекты в конструкторе Game, но была проблема с Canvas
@@ -122,11 +122,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                 return super.onTouchEvent(event);
             }
 
-            if (isWhitePlayerMove) {
+            if (thisIsWhitePlayer) {
                 whitePlayer.handleClick(this, x,y);
-
             } else {
-               blackPlayer.handleClick(this, x,y);
+                blackPlayer.handleClick(this, x,y);
             }
 
         }

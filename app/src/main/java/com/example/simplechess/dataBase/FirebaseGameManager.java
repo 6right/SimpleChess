@@ -4,11 +4,7 @@ package com.example.simplechess.dataBase;
 import androidx.annotation.NonNull;
 
 import com.example.simplechess.Game;
-import com.example.simplechess.figures.Figure;
-import com.example.simplechess.figures.King;
-import com.example.simplechess.figures.Pawn;
 import com.example.simplechess.figures.Position;
-import com.example.simplechess.figures.Rook;
 import com.example.simplechess.player.FigureCollection;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,12 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 public class FirebaseGameManager {
-
-    private FigureCollection whiteCollection;
-    private FigureCollection blackCollection;
     DatabaseReference mDatabaseRef;
     Position previousToPosition;
     Game game;
@@ -35,8 +26,8 @@ public class FirebaseGameManager {
         mDatabaseRef.child("gameID").child("ID").child("moves").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                whiteCollection = game.getPlayer(true).getFigureCollection();
-                blackCollection = game.getPlayer(false).getFigureCollection();
+                FigureCollection whiteCollection = game.getPlayer(true).getFigureCollection();
+                FigureCollection blackCollection = game.getPlayer(false).getFigureCollection();
                 Position from = snapshot.child("from").getValue(Position.class);
                 Position to = snapshot.child("to").getValue(Position.class);
                 if (!to.equals(previousToPosition)) {
@@ -44,12 +35,12 @@ public class FirebaseGameManager {
                     if (whiteCollection.hasFigure(to)) {
                         whiteCollection.removeFigure(to);
                     } else {
-                        setWhitePosition(from, to);
+                        setPosition(whiteCollection, from, to);
                     }
                     if (blackCollection.hasFigure(to)) {
                         blackCollection.removeFigure(to);
                     } else {
-                        setBlackCollection(from, to);
+                        setPosition(blackCollection, from, to);
                     }
                     previousToPosition = to;
                 }
@@ -61,13 +52,9 @@ public class FirebaseGameManager {
         });
     }
 
-    private void setWhitePosition(Position from, Position to) {
+    private void setPosition(FigureCollection figureCollection, Position from, Position to) {
         game.setMove();
-        whiteCollection.moveFigure(from, to);
-    }
-    private void setBlackCollection(Position from, Position to) {
-        game.setMove();
-        blackCollection.moveFigure(from, to);
+        figureCollection.moveFigure(from, to);
     }
 }
 
