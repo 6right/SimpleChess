@@ -35,7 +35,12 @@ public class FirebaseGameManager {
                 Position from = snapshot.child("from").getValue(Position.class);
                 Position to = snapshot.child("to").getValue(Position.class);
                 if (!to.equals(previousToPosition)) {
-                    setPosition(from, to);
+                    // Если на позиции to есть фигура, то мы ее удаляем, иначе перемещаем фигуру
+                    if (figureCollection.hasFigure(to)) {
+                        figureCollection.removeFigure(to);
+                    } else {
+                        setPosition(from, to);
+                    }
                     previousToPosition = to;
                 }
             }
