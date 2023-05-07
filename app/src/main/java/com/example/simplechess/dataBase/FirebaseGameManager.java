@@ -3,6 +3,7 @@ package com.example.simplechess.dataBase;
 
 import androidx.annotation.NonNull;
 
+import com.example.simplechess.Game;
 import com.example.simplechess.figures.Figure;
 import com.example.simplechess.figures.King;
 import com.example.simplechess.figures.Pawn;
@@ -19,12 +20,14 @@ import java.util.ArrayList;
 
 public class FirebaseGameManager {
 
-    private FigureCollection figureCollection;
+    private FigureCollection whiteCollection;
+    private FigureCollection blackCollection;
     DatabaseReference mDatabaseRef;
     Position previousToPosition;
+    Game game;
 
-    public FirebaseGameManager(FigureCollection figureCollection) {
-        this.figureCollection = figureCollection;
+    public FirebaseGameManager(Game game) {
+        this.game = game;
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         // Этот объект нужен, чтобы мы меняли координаты фигуры, только после того, как поменяется данные to В базе.
         // Предотвращает перестановку фигуры на To, при первом клике на нее (был баг)
@@ -32,14 +35,21 @@ public class FirebaseGameManager {
         mDatabaseRef.child("gameID").child("ID").child("moves").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                whiteCollection = game.getPlayer(true).getFigureCollection();
+                blackCollection = game.getPlayer(false).getFigureCollection();
                 Position from = snapshot.child("from").getValue(Position.class);
                 Position to = snapshot.child("to").getValue(Position.class);
                 if (!to.equals(previousToPosition)) {
                     // Если на позиции to есть фигура, то мы ее удаляем, иначе перемещаем фигуру
-                    if (figureCollection.hasFigure(to)) {
-                        figureCollection.removeFigure(to);
+                        if (whiteCollection.hasFigure(to)) {
+                        whiteCollection.removeFigure(to);
                     } else {
-                        setPosition(from, to);
+                        setWhitePosition(from, to);
+                    }
+                    if (blackCollection.hasFigure(to)) {
+                        blackCollection.removeFigure(to);
+                    } else {
+                        setBlackCollection(from, to);
                     }
                     previousToPosition = to;
                 }
@@ -51,8 +61,31 @@ public class FirebaseGameManager {
         });
     }
 
-    private void setPosition(Position from, Position to) {
-        figureCollection.moveFigure(from, to);
+    public void whoMove() {
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
+        mDatabaseRef.child("gameID").child("ID").child("whoseMove").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean move = snapshot.getValue(boolean.class);
+                if (move == true) {
+                    mDatabaseRef.setValue(false);
+                    game.setMove();
+                } else {
+                    mDatabaseRef.setValue(true);
+                    game.setMove();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    private void setWhitePosition(Position from, Position to) {
+        whiteCollection.moveFigure(from, to);
+    }
+    private void setBlackCollection(Position from, Position to) {
+        blackCollection.moveFigure(from, to);
     }
 }
 

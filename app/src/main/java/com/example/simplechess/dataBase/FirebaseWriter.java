@@ -2,6 +2,8 @@ package com.example.simplechess.dataBase;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.simplechess.figures.Position;
 import com.example.simplechess.player.Users;
 import com.google.firebase.database.DataSnapshot;
@@ -49,19 +51,12 @@ public class FirebaseWriter {
         mDatabaseRef.child("gameID").child("ID").child("moves").child("to").setValue(clickedPosition);
     }
 
-    public void removeData() {
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("").child("").removeValue();
-        mDatabaseRef.child("").child("").removeValue();
-    }
-
     public void startGame() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
         mDatabaseRef.child("gameID").child("ID").child("user_1").setValue("UID_1");
         mDatabaseRef.child("gameID").child("ID").child("user_2").setValue("UID_2");
         mDatabaseRef.child("gameID").child("ID").child("moves").child("from").setValue(new Position(9, 9));
         mDatabaseRef.child("gameID").child("ID").child("moves").child("to").setValue(new Position(9, 9));
-        mDatabaseRef.child("gameID").child("ID").child("whoseMove").child("black").setValue(true);
-        mDatabaseRef.child("gameID").child("ID").child("whoseMove").child("white").setValue(false);
+        mDatabaseRef.child("gameID").child("ID").child("whoseMove").setValue("true");
     }
 }

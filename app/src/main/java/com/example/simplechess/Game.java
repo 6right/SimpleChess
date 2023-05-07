@@ -27,11 +27,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     // Переменная для определения, какой игрок ходит
     boolean isWhitePlayerMove = true;
     private ScreenSize screenSize;
+    FirebaseGameManager firebaseGameManager;
 
     public Game(Context context) {
         super(context);
 
-        FirebaseWriter firebaseWriter = new FirebaseWriter(new Users());
+        new FirebaseWriter(new Users());
+        firebaseGameManager = new FirebaseGameManager(this);
         // Получить ячейку по координатам
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
@@ -45,6 +47,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public Field getField() {
         return field;
+    }
+
+    public void setMove(){
+        isWhitePlayerMove = !isWhitePlayerMove;
     }
 
     // Пытался создавать объекты в конструкторе Game, но была проблема с Canvas
@@ -118,6 +124,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
             if (isWhitePlayerMove) {
                 whitePlayer.handleClick(this, x,y);
+
             } else {
                blackPlayer.handleClick(this, x,y);
             }

@@ -14,6 +14,7 @@ import com.example.simplechess.field.Cell;
 import com.example.simplechess.player.FigureCollection;
 
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Player {
     protected Position selectedPosition = null;
@@ -32,7 +33,7 @@ public class Player {
 
         firebaseWriter.startGame();
         fillTheField();
-        new FirebaseGameManager(figureCollection);
+//        new FirebaseGameManager(figureCollection);
     }
 
     protected void draw(Canvas canvas, Field field) {
@@ -82,6 +83,7 @@ public class Player {
     }
 
     public void moveFigure(Position position) {
+
         firebaseWriter.writeDataTo(position);
         selectedPosition = null;
         canMoveList.clear();
@@ -119,5 +121,9 @@ public class Player {
 
     public Figure selectedFigure() {
         return figureCollection.getFigure(selectedPosition);
+    }
+
+    public FigureCollection getFigureCollection() {
+        return figureCollection;
     }
 }

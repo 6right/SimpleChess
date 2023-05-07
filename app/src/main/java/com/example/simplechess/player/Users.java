@@ -15,7 +15,6 @@ public class Users {
 
     public Users(String Uid) {
         this.Uid = Uid;
-
     }
 
     public String getUid() {
