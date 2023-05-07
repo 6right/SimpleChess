@@ -37,11 +37,11 @@ public class King extends Figure {
             for (int dy = -1; dy <= 1; dy++) {
                 // Если король находится на границе поля, то он не может двигаться
                 // Границу узнаем через класс Field и метод isInside
-                if (!game.getField().isInside(position.add(dx, dy))) {
+                if (!game.getField().isInside(position.add(dy, dx))) {
                     continue;
                 }
                 // Получаем фигуру на позиции
-                Figure figure = game.getPlayer(isWhite).getFigure(position.add(dx, dy));
+                Figure figure = game.getPlayer(isWhite).getFigure(position.add(dy, dx));
                 // Если фигура на позиции есть
                 if (figure != null) {
                     // Если фигура того же цвета, что и король, то король не может двигаться
@@ -50,7 +50,7 @@ public class King extends Figure {
                     }
                 }
                 // Если фигуры на позиции нет, то король может двигаться
-                availableMoves.add(position.add(dx, dy));
+                availableMoves.add(position.add(dy, dx));
             }
         }
 

@@ -32,7 +32,7 @@ public class Rook extends Figure {
 
         // Цикл для движения ладьи вверх
         for (int dy = 1; dy < 8; dy++) {
-            Position newPosition = position.add(0, dy);
+            Position newPosition = position.add(dy, 0);
             if (!game.getField().isInside(newPosition)) {
                 break;  // Выйти из цикла, если вышли за границы поля
             }
@@ -48,7 +48,7 @@ public class Rook extends Figure {
 
         // Цикл для движения ладьи вниз
         for (int dy = -1; dy > -8; dy--) {
-            Position newPosition = position.add(0, dy);
+            Position newPosition = position.add(dy, 0);
             if (!game.getField().isInside(newPosition)) {
                 break;
             }
@@ -64,7 +64,7 @@ public class Rook extends Figure {
 
         // Цикл для движения ладьи вправо
         for (int dx = 1; dx < 8; dx++) {
-            Position newPosition = position.add(dx, 0);
+            Position newPosition = position.add(0, dx);
             if (!game.getField().isInside(newPosition)) {
                 break;
             }
@@ -80,7 +80,7 @@ public class Rook extends Figure {
 
         // Цикл для движения ладьи влево
         for (int dx = -1; dx > -8; dx--) {
-            Position newPosition = position.add(dx, 0);
+            Position newPosition = position.add(0, dx);
             if (!game.getField().isInside(newPosition)) {
                 break;
             }

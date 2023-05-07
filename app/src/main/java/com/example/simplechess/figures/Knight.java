@@ -33,7 +33,7 @@ public class Knight extends Figure {
         for (int i = -2; i <= 2; i++) {
             for (int j = -2; j <= 2; j++) {
                 if (Math.abs(i) + Math.abs(j) == 3) {
-                    Position newPosition = position.add(i, j);
+                    Position newPosition = position.add(j, i);
                     // Если позиция находится в пределах доски
                     if (game.getField().isInside(newPosition)) {
                         // Если на позиции нет фигуры или фигура противника

@@ -27,7 +27,7 @@ public class Position {
     }
 
     public Position add(int row, int col) {
-        return new Position(this.row + col, this.col + row);
+        return new Position(this.row + row, this.col + col);
     }
 
     @Override

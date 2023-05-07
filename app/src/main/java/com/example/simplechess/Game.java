@@ -61,7 +61,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         whitePlayer = new Player(context, true, field.getCell());
         blackPlayer = new Player(context, false, field.getCell());
         // Рандомно выдаётся цвет игроку
-        thisIsWhitePlayer = Math.random() > 0.5;
+        thisIsWhitePlayer = true;
 
         gameLoop = new GameLoop(this, holder);
         gameLoop.startLoop();

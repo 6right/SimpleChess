@@ -35,7 +35,7 @@ public class Pawn extends Figure {
 
         // Если пешка находится на границе поля, то она не может двигаться
         // Границу узнаем через класс Field и метод isInside
-        if (!game.getField().isInside(position.add(0, dy))) {
+        if (!game.getField().isInside(position.add(dy, 0))) {
             return availableMoves;
         }
 
@@ -45,17 +45,17 @@ public class Pawn extends Figure {
         // Если впереди нет фигур, то пешка может двигаться
         // на одну клетку вперед
 
-        if (!thisPlayer.hasFigure(position.add(0, dy))
-                && !enemyPlayer.hasFigure(position.add(0, dy))) {
-            availableMoves.add(position.add(0, dy));
+        if (!thisPlayer.hasFigure(position.add(dy, 0))
+                && !enemyPlayer.hasFigure(position.add(dy, 0))) {
+            availableMoves.add(position.add(dy, 0));
         }
 
         // Если по диагонали есть фигура противника, то пешка может съесть её
-        if (enemyPlayer.hasFigure(position.add(1, dy))) {
-            availableMoves.add(position.add(1, dy));
+        if (enemyPlayer.hasFigure(position.add(dy, 1))) {
+            availableMoves.add(position.add(dy, 1));
         }
-        if (enemyPlayer.hasFigure(position.add(-1, dy))) {
-            availableMoves.add(position.add(-1, dy));
+        if (enemyPlayer.hasFigure(position.add(dy, -1))) {
+            availableMoves.add(position.add(dy, -1));
         }
 
 
@@ -65,14 +65,14 @@ public class Pawn extends Figure {
         }
 
         // Если через одну клетку впереди есть граница поля, то пешка не может двигаться
-        if (!game.getField().isInside(position.add(0, 2 * dy))) {
+        if (!game.getField().isInside(position.add(2 * dy, 0))) {
             return availableMoves;
         }
 
         // Если впереди нет фигур, то пешка может двигаться на две клетки
-        if (!thisPlayer.hasFigure(position.add(0, 2 * dy))
-                && !enemyPlayer.hasFigure(position.add(0, 2 * dy))) {
-            availableMoves.add(position.add(0, 2 * dy));
+        if (!thisPlayer.hasFigure(position.add(2 * dy, 0))
+                && !enemyPlayer.hasFigure(position.add(2 * dy, 0))) {
+            availableMoves.add(position.add(2 * dy, 0));
         }
         return availableMoves;
     }

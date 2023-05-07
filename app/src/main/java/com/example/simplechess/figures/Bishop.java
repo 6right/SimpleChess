@@ -24,25 +24,40 @@ public class Bishop extends Figure {
         ArrayList<Position> availableMoves = new ArrayList<>();
         Player thisPlayer = game.getPlayer(isWhite);
         Player enemyPlayer = game.getPlayer(!isWhite);
-        // Проходимся по циклу позиции, которые может занять слон
-        // Слон может ходить только по диагонали
-        // Также проверяем, чтобы он не ходил за границы поля
-        for (int i = -7; i <= 7; i++) {
-            for (int j = -7; j <= 7; j++) {
-                if (Math.abs(i) == Math.abs(j)) {
-                    Position newPosition = position.add(i, j);
-                    // Если позиция находится в пределах доски
-                    if (game.getField().isInside(newPosition)) {
-                        // Если на позиции нет фигуры или фигура противника
-                        // Проверка на присутствие фигуры противника не нужна, так как
-                        // присутствие или отсутствие фигуры врага не влияет на возможность хода
-                        if (!thisPlayer.hasFigure(newPosition)) {
-                            availableMoves.add(newPosition);
-                        }
+        // Границы поля
+        int maxRow = game.getField().getCellCounts().getRowQuantity() - 1;
+        int maxCol = game.getField().getCellCounts().getColQuantity() - 1;
+
+        // Проходимся по всем возможным направлениям относительно position
+        // Отталкиваем от row и col и прибавляем к ним i и j
+        // Проверяем, что позиция не выходит за границы поля
+        // Если позиция не выходит за границы поля, то проверяем, что на этой позиции нет фигуры
+        // Если на этой позиции нет фигуры, то добавляем ее в availableMoves
+        for (int i = -1; i <= 1; i += 2) {
+            for (int j = -1; j <=1; j += 2) {
+                int row = position.getRow();
+                int col = position.getCol();
+                Position checkPosition = new Position(row, col);
+                while (true) {
+                    row += i;
+                    col += j;
+                    checkPosition = checkPosition.add(i, j);
+
+                    if (!game.getField().isInside(checkPosition)) {
+                        break;
+                    }
+
+                    if (thisPlayer.hasFigure(checkPosition)) {
+                        break;
+                    }
+                    availableMoves.add(checkPosition);
+                    if (enemyPlayer.hasFigure(checkPosition)) {
+                        break;
                     }
                 }
             }
         }
+
         return availableMoves;
     }
 }
