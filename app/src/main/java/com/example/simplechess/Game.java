@@ -100,6 +100,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     // Отрисовка поля и фигур через игроков
     public void draw(Canvas canvas) {
+        if(canvas == null) {
+            return;
+        }
         super.draw(canvas);
 
         field.draw(canvas);

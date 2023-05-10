@@ -27,11 +27,12 @@ public class FirebaseWriter {
         mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                int id = 1;
                 String userID = dataSnapshot.child("gameID").child("ID").child("user_1").getValue(String.class);
-                if (userID != null) {
-                    mDatabaseRef.child("gameID").child("ID").child("user_1").setValue(Uid);
+                if (userID == null) {
+                    mDatabaseRef.child("gameID").child("ID").child("user_" + id).setValue(Uid);
                 } else {
-                    mDatabaseRef.child("gameID").child("ID").child("user_2").setValue(Uid);
+                    mDatabaseRef.child("gameID").child("ID").child("user_" + ++id).setValue(Uid);
                 }
             }
             @Override
@@ -53,8 +54,8 @@ public class FirebaseWriter {
 
     public void startGame() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference();
-        mDatabaseRef.child("gameID").child("ID").child("user_1").setValue("UID_1");
-        mDatabaseRef.child("gameID").child("ID").child("user_2").setValue("UID_2");
+//        mDatabaseRef.child("gameID").child("ID").child("user_1").setValue("UID_1");
+//        mDatabaseRef.child("gameID").child("ID").child("user_2").setValue("UID_2");
         mDatabaseRef.child("gameID").child("ID").child("moves").child("from").setValue(new Position(9, 9));
         mDatabaseRef.child("gameID").child("ID").child("moves").child("to").setValue(new Position(9, 9));
         mDatabaseRef.child("gameID").child("ID").child("whoseMove").setValue(true);
