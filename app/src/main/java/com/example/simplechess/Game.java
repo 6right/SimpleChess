@@ -32,7 +32,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     public Game(Context context) {
         super(context);
 
-        new FirebaseWriter(new Users());
+        new FirebaseWriter();
         firebaseGameManager = new FirebaseGameManager(this);
         // Получить ячейку по координатам
         SurfaceHolder surfaceHolder = getHolder();
